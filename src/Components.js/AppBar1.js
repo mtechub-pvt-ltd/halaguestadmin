@@ -29,6 +29,8 @@ import AllDriversTable from './AllDriversTable';
 import HotelTable from './HotelTable';
 import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
+import Settings from './Settings';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
@@ -43,23 +45,23 @@ const useStyles = makeStyles({
         color: '#9a9cab'
     },
     Header: {
-       textAlign: 'center',
-       fontSize: '20px',
-       fontWeight: '500',
-       height: '30px',
-       margin: '18px auto',
-       display: 'block',
-       color: '#83d8ae'
-   }, ListStyle1: {
-       marginTop: '-10px'
-   }, listStyle: {
-       backgroundColor: '#1f1f2b',
-       color: '#9a9cab',
-       height: '100%'
-   }, head: {
-       backgroundColor: '#1f1f2b',
-       color: '#9a9cab',
-   }
+        textAlign: 'center',
+        fontSize: '20px',
+        fontWeight: '500',
+        height: '30px',
+        margin: '18px auto',
+        display: 'block',
+        color: '#83d8ae'
+    }, ListStyle1: {
+        marginTop: '-10px'
+    }, listStyle: {
+        backgroundColor: '#1f1f2b',
+        color: 'white',
+        height: '100%'
+    }, head: {
+        backgroundColor: '#1f1f2b',
+        color: '#9a9cab',
+    }
 
 })
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -110,6 +112,29 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 function AppBar1() {
+    // getting value email 
+    // const { state } = this.props.location
+    // Logout Session 
+    const [email, setEmail] = useState("");
+    // setEmail(state);
+    // console.log(state);
+    const headers={
+        'Content-Type':'application/json'
+    }
+    const submitHandler = (e) => {
+        e.preventDefault()
+        // POst Request 
+        axios.put('https://hiiguest.com/logout-admin-profile',{
+        email:email,
+    },{headers}).then(response => {
+                console.log(response)
+                // window.alert('Login Successfully')
+                navigate('/')
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
     const classes = useStyles();
     const theme = useTheme();
 
@@ -123,212 +148,237 @@ function AppBar1() {
         setOpen(false);
     };
     let navigate = useNavigate();
-    const [show,setShow] =React.useState(true);
-    const [show1,setShow1] =React.useState(false);
-    const [show2,setShow2] =React.useState(false);
-    const [show3,setShow3] =React.useState(false);
-    const [show4,setShow4] =React.useState(false);
-    const [show5,setShow5] =React.useState(false);
-    const [show6,setShow6] =React.useState(false);
-  return (
-    <>
-    {/* AppBar  */}
-                <AppBar position="fixed" open={open}>
-                    <Toolbar className={classes.BackGround}>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                        >
-                            <MenuIcon className={classes.iconColor} />
-                        </IconButton>
-                        <Typography variant="h6" noWrap component="div">
-                            Dashboard
-                        </Typography>
+    const [show, setShow] = React.useState(true);
+    const [show1, setShow1] = React.useState(false);
+    const [show2, setShow2] = React.useState(false);
+    const [show3, setShow3] = React.useState(false);
+    const [show4, setShow4] = React.useState(false);
+    const [show5, setShow5] = React.useState(false);
+    const [show6, setShow6] = React.useState(false);
+    const [show7, setShow7] = React.useState(false);
+    return (
+        <>
+            {/* AppBar  */}
+            <AppBar position="fixed" open={open}>
+                <Toolbar className={classes.BackGround}>
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                    >
+                        <MenuIcon className={classes.iconColor} />
+                    </IconButton>
+                    <Typography variant="h6" noWrap component="div">
+                        Dashboard
+                    </Typography>
 
-                    </Toolbar>
-                </AppBar>
+                </Toolbar>
+            </AppBar>
 
-                 <Drawer
-                    sx={{
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
                         width: drawerWidth,
-                        flexShrink: 0,
-                        '& .MuiDrawer-paper': {
-                            width: drawerWidth,
-                            boxSizing: 'border-box',
-                        },
-                    }}
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                >
-                    <DrawerHeader className={classes.head}>
-                        <div className={classes.Header}>Admin</div>
-                        <IconButton onClick={handleDrawerClose}>
-                            {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
-                        </IconButton>
-                    </DrawerHeader>
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <DrawerHeader className={classes.head}>
+                    <div className={classes.Header} onClick={() => {
+                        setShow(true);
+                        setShow1(false);
+                        setShow2(false)
+                        setShow3(false);
+                        setShow4(false);
+                        setShow5(false);
+                        setShow6(false);
+                        setShow7(false);
+                    }}>Admin</div>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
+                    </IconButton>
+                </DrawerHeader>
 
-                    <List className={classes.listStyle}>
-
-
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton   onClick={() => {
-                                         setShow(false);
-                                         setShow1(false);
-                                         setShow2(false)
-                                         setShow3(false);
-                                         setShow4(true);
-                                         setShow5(false);
-                                         setShow6(false);
-                                    }} >
-                                <ListItemIcon>
-                                    <HotelIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Guests" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton onClick={() => {
-                                setShow(false);
-                                setShow1(false);
-                                setShow2(false)
-                                setShow3(true);
-                                setShow4(false);
-                                setShow5(false);
-                                setShow6(false);
-                                    }}>
-                                <ListItemIcon>
-                                    <DirectionsBusIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Dispachers" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton  onClick={() => {
-                                setShow(false);
-                                setShow1(false);
-                                setShow2(true);
-                                setShow3(false);
-                                setShow4(false);
-                                setShow5(false);
-                                setShow6(false);
-
-                                    }}>
-                                <ListItemIcon>
-                                    <ShoppingCartIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Orders" />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton  onClick={() => {
-                                setShow(false);
-                                setShow1(false);
-                                setShow2(false);
-                                setShow3(false);
-                                setShow4(false);
-                                setShow5(false);
-                                setShow6(true);
-
-                                    }}>
-                                <ListItemIcon>
-                                    <ShoppingCartIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Vehicles" />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton  onClick={() => {
-                                setShow(false);
-                                setShow1(true);
-                                setShow2(false)
-                                setShow3(false);
-                                setShow4(false);
-                                setShow5(false);
-                                setShow6(false);
-
-                                    }}>
-                                <ListItemIcon>
-                                    <ShoppingCartIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Companies" />
-                            </ListItemButton>
-                        </ListItem>
-
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton  onClick={() => {
-                                setShow(false);
-                                setShow1(false);
-                                setShow2(false)
-                                setShow3(false);
-                                setShow4(false);
-                                setShow5(true);
-                                setShow6(false);
-                                    }}>
-                                <ListItemIcon>
-                                    <ShoppingCartIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Hotel Types" />
-                            </ListItemButton>
-                        </ListItem>
-                        
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton onClick={() => {
-                                    }}>
-                                <ListItemIcon>
-                                    <AccountCircleIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Users" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton onClick={() => {
-                                    }}>
-                                <ListItemIcon>
-                                    <SettingsIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Settings" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton onClick={() => {
-                                    }}>
-                                <ListItemIcon>
-                                    <AttachMoneyIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Earnings" />
-                            </ListItemButton>
-                        </ListItem>
-                        <ListItem disablePadding className={classes.ListStyle1}>
-                            <ListItemButton>
-                                <ListItemIcon>
-                                    <DraftsIcon className={classes.iconColor}/>
-                                </ListItemIcon>
-                                <ListItemText primary="Logout" />
-                            </ListItemButton>
-                        </ListItem>
-                    </List>
-
-                </Drawer>
-                <Main open={open} style={MarginTop} className={classes.BackGround}>
-    
-                {show?<DashboardUser/> :null}
-                  {show1?<CompanyTable/>:null}
-                  {show2?<OrderTable/>:null}
-                  {show3?<AllDriversTable/>:null}
-                  {show4?<HotelTable/>:null}
-                  {show5?<HotelTypesTable/>:null}
-                  {show6?<VehicleTable/>:null}
+                <List className={classes.listStyle}>
 
 
-</Main>
-    </>
-  )
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(true);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                        }} >
+                            <ListItemIcon>
+                                <HotelIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Hotels" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(true);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                        }}>
+                            <ListItemIcon>
+                                <DirectionsBusIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Dispachers" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(true);
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+
+                        }}>
+                            <ListItemIcon>
+                                <ShoppingCartIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Orders" />
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false);
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(true);
+                            setShow7(false);
+
+                        }}>
+                            <ListItemIcon>
+                                <ShoppingCartIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Vehicles" />
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(true);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+
+                        }}>
+                            <ListItemIcon>
+                                <ShoppingCartIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Companies" />
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(true);
+                            setShow6(false);
+                            setShow7(false);
+                        }}>
+                            <ListItemIcon>
+                                <ShoppingCartIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Hotel Types" />
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                        }}>
+                            <ListItemIcon>
+                                <AccountCircleIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Users" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(true);
+                        }}>
+                            <ListItemIcon>
+                                <SettingsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Settings" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                        }}>
+                            <ListItemIcon>
+                                <AttachMoneyIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Earnings" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={submitHandler}>
+                            <ListItemIcon>
+                                <DraftsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Logout" />
+                        </ListItemButton>
+                    </ListItem>
+                </List>
+
+            </Drawer>
+            <Main open={open} style={MarginTop} className={classes.BackGround}>
+
+                {show ? <DashboardUser /> : null}
+                {show1 ? <CompanyTable /> : null}
+                {show2 ? <OrderTable /> : null}
+                {show3 ? <AllDriversTable /> : null}
+                {show4 ? <HotelTable /> : null}
+                {show5 ? <HotelTypesTable /> : null}
+                {show6 ? <VehicleTable /> : null}
+                {show7 ? <Settings /> : null}
+
+
+            </Main>
+        </>
+    )
 }
 
 export default AppBar1

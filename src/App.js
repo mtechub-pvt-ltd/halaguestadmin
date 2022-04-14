@@ -9,11 +9,6 @@ import {
 import ViewData from './Pages.js/ViewData';
 import Homepage from './Pages.js/Homepage';
 import { makeStyles } from '@material-ui/core/styles'
-import PostForm from './Pages.js/PostForm'
-import FormPost from './Components.js/FormPost'
-import FormData from './Components.js/FormData'
-import UploadAndDisplayImage from './Components.js/UploadAndDisplayImage';
-import ImageUpload from './Components.js/ImageUpload';
 
 const useStyles = makeStyles({
   root1: {
@@ -40,7 +35,7 @@ function App() {
           <Routes>
             <Route exact path="/home" element={<Homepage />}></Route>
           </Routes>
-          <Routes>
+          {/* <Routes>
             <Route exact path="/post" element={<PostForm />}></Route>
           </Routes>
           <Routes>
@@ -55,6 +50,13 @@ function App() {
           <Routes>
             <Route exact path="/img" element={<ImageUpload/>}></Route>
           </Routes>
+          <Routes>
+            <Route exact path="/get" element={<Getdata/>}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/create" element={<CreateAdmin/>}></Route>
+          </Routes> */}
+          
          
         </Router>
       </div>

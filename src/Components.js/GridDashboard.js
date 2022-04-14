@@ -8,8 +8,10 @@ import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import { makeStyles } from '@material-ui/core/styles'
 import driver from './driver.png'
+import hotel from './Images/hotel.png'
+import guest from './Images/guests.png'
+import dispachers from './Images/dispacher.png'
 import { Avatar } from '@mui/material';
-import { style } from '@mui/system';
 
 
 const useStyles = makeStyles({
@@ -59,10 +61,10 @@ const useStyles = makeStyles({
         backgroundColor: '#5044c9',
         border: ' none',
         color: 'white',
-        padding: '12px 16px',
-        fontSize: ' 16px',
+        padding:' 11px 24px',
+        fontSize: '39px',
         cursor: 'pointer',
-        borderRadius: '5px'
+        borderRadius: '17px'
     },
     iconStyle:{
         marginTop:'3px',
@@ -70,6 +72,14 @@ const useStyles = makeStyles({
     }
 })
  const styleBtn = {
+    border: ' none',
+    // color: 'white',
+    // padding: '12px 16px',
+    width:'70px',
+    height:'70px',
+    fontSize: ' 32px',
+    cursor: 'pointer',
+    borderRadius: '24px',
 
 }
 function Item(props) {
@@ -130,7 +140,7 @@ function GridDashboard() {
                         </Item>
                         <Item>
                             {/* <button > */}
-                                 <Avatar alt="Remy Sharp" variant="square" className={classes.btn} src={driver}/>
+                                 <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={dispachers}/>
                                  {/* </button> */}
 
                         </Item>
@@ -147,13 +157,11 @@ function GridDashboard() {
                                 <span className={classes.iconStyle}><HotelIcon/></span>
                                  <span>3</span>
                                  </div><br />
-                            <div className={classes.remarks}>Total Guests</div>
+                            <div className={classes.remarks}>Total Hotels</div>
                         </Item>
                         
                         <Item>
-                            <button className={classes.btn1}>
-                            <HotelIcon/>
-                            </button>
+                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={hotel}/>
 
                         </Item>
 
@@ -173,9 +181,7 @@ function GridDashboard() {
                             <div className={classes.remarks}>Total Drivers</div>
                         </Item>
                         <Item>
-                            <button className={classes.btn4}>
-                            <DriveEtaIcon />
-                            </button>
+                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={driver}/>
 
                         </Item>
 
@@ -194,9 +200,8 @@ function GridDashboard() {
                             <div className={classes.remarks}>Total Earnings</div>
                         </Item>
                         <Item>
-                            <button className={classes.btn2}>
-                            <AttachMoneyIcon/>
-                            </button>
+                        {/* <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={guest}/> */}
+                        <button className={classes.btn4}>$</button>
 
                         </Item>
 

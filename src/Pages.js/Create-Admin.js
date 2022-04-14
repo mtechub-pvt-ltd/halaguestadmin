@@ -1,15 +1,9 @@
-import { useState, createContext, useContext } from "react";
-import ReactDOM from "react-dom";
+import React, { useState } from 'react'
 import axios from 'axios';
 import { Avatar, Grid } from '@mui/material'
 import Button from '@mui/material/Button';
 import image from './image.svg'
 import { useNavigate } from 'react-router-dom'
-import Homepage from "./Homepage";
-import { Link } from "react-router-dom";
-
-const UserContext = createContext();
-
 
 
 const logoStyle = {
@@ -33,15 +27,15 @@ const btn = {
     borderColor: '#ada6f2'
 }
 
-const InputStyle = {
+const InputStyle={
     border: ' 1px solid #2d2d3f',
     borderRadius: '4px',
-    backgroundColor: '#181821',
-    color: 'white',
-    width: '87%',
-
-    height: '15px',
-    padding: '20px'
+    backgroundColor:'#181821',
+    color:'white',
+    width:'87%',
+   
+    height:'15px',
+    padding:'20px'
 
 
 }
@@ -58,38 +52,29 @@ const gridCont = {
 
 const heading = "ADMIN LOGIN"
 function Login() {
-    // Session 
-    const [user, setUser] = useState("");
-    //    Get 
     let navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const headers = {
-        'Content-Type': 'application/json'
+    const headers={
+        'Content-Type':'application/json'
     }
     const submitHandler = (e) => {
         e.preventDefault()
         // POst Request 
-        axios.put('https://hiiguest.com/login-admin-profile', {
-            email: email,
-            password: password
-        }, { headers }).then(response => {
-            console.log(response)
-            // window.alert('Login Successfully')
-            // navigate('/home');
-            // console.log(response.data.email);
-
-            setUser(response.data.session);
-            console.log(user);
-            navigate('/home');
-        })
+        axios.post('https://hiiguest.com/create-admin-profile',{
+        email:email,
+        password:password 
+    },{headers}).then(response => {
+                console.log(response)
+                window.alert('Admin Creted Successfully')
+                // navigate('/home')
+            })
             .catch(err => {
                 console.log(err)
             })
     }
 
     return (
-        // <UserContext.Provider value={user}>
         <div >
             < Grid container spacing={2} style={ContainerStyle}>
                 <Grid item xs={4} sm={4} md={4} lg={4} xl={4}></Grid>
@@ -98,34 +83,30 @@ function Login() {
                         <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
                         <h6 style={headingStyle}>{heading}</h6>
                         <input style={InputStyle} name="email" value={email} type="text" placeholder="Enter Email"
-                            onChange={
-                                (e) => setEmail(e.target.value)
-                            }
-
+                        onChange={
+                            (e) => setEmail(e.target.value) 
+                        }
+                        
                         />
-                        <br /><br />
-                        <input style={InputStyle} name="password" value={password} type="password" placeholder="Enter Password"
-                            onChange={
-                                (e) => setPassword(e.target.value)
-                            }
+                        <br /><br/>
+                        <input style={InputStyle} name="password" value={password} type="text" placeholder="Enter Password"
+                        onChange={
+                            (e) => setPassword(e.target.value) 
+                        }
                         />
 
                         <br />
                         <Button variant="contained" onClick={
                             //  navigate('/home')
                             submitHandler
-
-                        } style={btn} >Login</Button>
-
-                            <br />
-                            {/* <Homepage user={user} /> */}
+                              } style={btn} >Create</Button>
+                        <br />
                     </Grid>
 
                 </Grid>
                 <Grid item xs={4} md={4} ></Grid>
             </Grid>
         </div>
-        // </UserContext.Provider>
     )
 }
 
