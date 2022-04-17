@@ -13,7 +13,7 @@ import guest from './Images/guests.png'
 import dispachers from './Images/dispacher.png'
 import { Avatar } from '@mui/material';
 import axios from 'axios';
-import BedIcon from '@mui/icons-material/Bed';
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 
 
 const useStyles = makeStyles({
@@ -117,83 +117,55 @@ Item.propTypes = {
 };
 
 
-function GridDashboard() {
-  const classes = useStyles();
-   //Get API Axios
-   const [data, setData] = useState([]);
-   const url = 'https://hiiguest.com/';
-   const getAllData = () => {
-       axios.get(`${url}get-all-vehicles`)
-           .then((response) => {
-               const allData = response.data;
-               console.log(allData.length);
-               setData(allData.length);
-            //    setData(response.data);
-            //    setLoading(true)
-           })
-           .catch(error => console.error(`Error:${error}`));
-
-   }
-    //Get API Axios Hotel
-    const [data1, setData1] = useState([]);
-    const getAllData1 = () => {
-        axios.get(`${url}get-all-hotels`)
-            .then((response) => {
-                const allData = response.data;
-                console.log(allData.length);
-                setData1(allData.length);
-             //    setData(response.data);
-                // setLoading(true)
-            })
-            .catch(error => console.error(`Error:${error}`));
- 
-    }
-    // Get Drivers 
-    const [data2, setData2] = useState([]);
-    const getAllData2 = () => {
-        axios.get(`${url}get-all-drivers`)
-            .then((response) => {
-                const allData = response.data;
-                console.log(allData.length);
-                setData2(allData.length);
-             //    setData(response.data);
-                // setLoading(true)
-            })
-            .catch(error => console.error(`Error:${error}`));
- 
-    }
-    // Get customers 
-    const [data3, setData3] = useState([]);
-    const getAllData3 = () => {
-        axios.get(`${url}get-all-drivers`)
-            .then((response) => {
-                const allData = response.data;
-                console.log(allData.length);
-                setData3(allData.length);
-             //    setData(response.data);
-                // setLoading(true)
-            })
-            .catch(error => console.error(`Error:${error}`));
- 
-    }
-   useEffect(() => {
-       getAllData();
-       getAllData1();
-       getAllData2();
-       getAllData3();
-   }, []);
-
-    return (
-        <div>
+function GridOrders() {
+    const classes = useStyles();
+     // Get customers 
+     const [data, setData] = useState([]);
+     const url = 'https://hiiguest.com/';
+     const getAllData = () => {
+         axios.get(`${url}get-all-orders`)
+             .then((response) => {
+                 const allData = response.data;
+                 console.log(allData.length);
+                 setData(allData.length);
+              //    setData(response.data);
+                 // setLoading(true)
+             })
+             .catch(error => console.error(`Error:${error}`));
+  
+     }
+      // Get Sales 
+      const [data1, setData1] = useState([]);
+      const getAllData1 = () => {
+          axios.get(`${url}get-all-sales`)
+              .then((response) => {
+                  const allData = response.data;
+                  console.log('sales')
+                  console.log(allData.salesLength);
+                  setData1(allData.salesLength);
+               //    setData(response.data);
+                  // setLoading(true)
+              })
+              .catch(error => console.error(`Error:${error}`));
+   
+      }
+    useEffect(() => {
+        getAllData();
+        getAllData1();
+    
+    }, []);
+    
+  return (
+    <div>
             <Grid container spacing={2}>
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                   
                     <Box
                         sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                     >
                         <Item sx={{ flexGrow: 1 }}>
                             <div className={classes.number}>
-                                <span className={classes.iconStyle}><DirectionsBusIcon/></span>
+                                <span className={classes.iconStyle}><ShoppingBasketIcon/></span>
                                 {/* Get get-per-km-rate */}
 
                                  <span>
@@ -201,7 +173,7 @@ function GridDashboard() {
 
                                  </span>
                                  </div><br />
-                            <div className={classes.remarks}>Total Dispachers</div>
+                            <div className={classes.remarks}>Total Orders</div>
                         </Item>
                         <Item>
                             {/* <button > */}
@@ -212,8 +184,9 @@ function GridDashboard() {
 
                     </Box>
                 </Grid>
+                {/* <Grid item xs={12} md={4}></Grid> */}
                 {/* second card  */}
-                <Grid item xs={12} md={3}>
+                <Grid item xs={12} md={6}>
                     <Box
                         sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                     >
@@ -222,7 +195,7 @@ function GridDashboard() {
                                 <span className={classes.iconStyle}><HotelIcon/></span>
                                  <span>{data1}</span>
                                  </div><br />
-                            <div className={classes.remarks}>Total Hotels</div>
+                            <div className={classes.remarks}>Total Sales</div>
                         </Item>
                         
                         <Item>
@@ -233,52 +206,10 @@ function GridDashboard() {
                     </Box>
 
                 </Grid>
-                {/* 3rd card  */}
-                <Grid item xs={12} md={3}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <div className={classes.number}>
-                                <span className={classes.iconStyle}><DriveEtaIcon /></span>
-                                 <span>{data2}</span>
-                                 </div><br />
-                            <div className={classes.remarks}>Total Drivers</div>
-                        </Item>
-                        <Item>
-                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={driver}/>
-
-                        </Item>
-
-                    </Box>
-                </Grid>
-                {/* 4th card  */}
-                <Grid item xs={12} md={3}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <div className={classes.number}>
-                                <span className={classes.iconStyle}><BedIcon/></span>
-                               
-                                 <span>{data3}</span>
-                                 </div><br />
-                            <div className={classes.remarks}>Total Guests</div>
-                        </Item>
-                        <Item>
-                        {/* <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={guest}/> */}
-                        {/* <button className={classes.btn4}>$</button> */}
-                        
-                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={guest}/>
-
-                        </Item>
-
-                    </Box>
-                    {/* <Hotel/> */}
-                </Grid>
+               
             </Grid>
         </div>
-    )
+  )
 }
 
-export default GridDashboard
+export default GridOrders

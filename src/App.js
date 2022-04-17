@@ -1,5 +1,5 @@
 import './App.css';
-import * as React from 'react'
+import  React,{useEffect, useState} from 'react'
 import Login from './Pages.js/Login';
 import {
   BrowserRouter as Router,
@@ -9,6 +9,9 @@ import {
 import ViewData from './Pages.js/ViewData';
 import Homepage from './Pages.js/Homepage';
 import { makeStyles } from '@material-ui/core/styles'
+import Logout from './Pages.js/Logout';
+import CreateAdmin from './Pages.js/Create-Admin'
+import ProfileData from './Components.js/ProfileData'
 
 const useStyles = makeStyles({
   root1: {
@@ -22,8 +25,15 @@ const useStyles = makeStyles({
 
 function App() {
   const classes = useStyles();
+
+  // const [token, setToken] = useState("");
+  // if(token===null) {
+  //   return <Login setToken={setToken} />
+  // }
+ 
   return (
     <>
+
       <div className={classes.root1}>
         <Router>
           <Routes>
@@ -35,6 +45,16 @@ function App() {
           <Routes>
             <Route exact path="/home" element={<Homepage />}></Route>
           </Routes>
+          <Routes>
+            <Route exact path="/logout" element={<Logout />}></Route>
+          </Routes>
+          {/* <Routes>
+            <Route exact path="/delete" element={<Delete/>}></Route>
+          </Routes>
+       
+          <Routes>
+            <Route exact path="/tabs" element={<Tabsui/>}></Route>
+          </Routes> */}
           {/* <Routes>
             <Route exact path="/post" element={<PostForm />}></Route>
           </Routes>
@@ -52,14 +72,32 @@ function App() {
           </Routes>
           <Routes>
             <Route exact path="/get" element={<Getdata/>}></Route>
-          </Routes>
+  </Routes>*/}
+
           <Routes>
             <Route exact path="/create" element={<CreateAdmin/>}></Route>
+          </Routes> 
+          {/* <Routes>
+            <Route exact path="/postdata" element={<Postdata/>}></Route>
+          </Routes> 
+          <Routes>
+            <Route exact path="/postdetails" element={<Postdetails/>}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/profile1" element={<Profile/>}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/print" element={<Print/>}></Route>
           </Routes> */}
+          <Routes>
+            <Route exact path="/profiledata" element={<ProfileData/>}></Route>
+          </Routes>
           
          
         </Router>
       </div>
+
+      
 
     </>
   );

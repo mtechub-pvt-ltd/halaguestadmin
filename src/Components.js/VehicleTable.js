@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
+import Button from '@mui/material/Button';
+import AddIcon from '@mui/icons-material/Add';
+
 //dialog
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -250,7 +253,7 @@ function VehicleTable() {
     //      getAllData1();
     //  }, []);
 
-
+   
     return (
         <div>
             <Grid container spacing={2}>
@@ -284,12 +287,16 @@ function VehicleTable() {
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
                                 <Item sx={{ flexGrow: 1 }}>
-                                    <Typography variant='h6'>Vehicles</Typography>
+                                    <Typography variant='h6'>Dispachers</Typography>
                                 </Item>
                                 <Item>
-                                    <button className={classes.btn}
+                                    {/* <button className={classes.btn}
                                         onClick={handleClickOpen2}
-                                    >Add</button>
+                                    >Add
+                                    </button> */}
+                                    <Button variant="contained" color='success'  startIcon={<AddIcon />} onClick={handleClickOpen2}>
+                                        Guests
+                                    </Button>
                                 </Item>
                                 <Dialog open={open2} onClose={handleClose2}>
                                     <DialogTitle>Fill Hotel Data</DialogTitle>

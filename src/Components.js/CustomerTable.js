@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 import { useNavigate } from 'react-router-dom'
+import AddIcon from '@mui/icons-material/Add';
 //dialog
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -25,11 +26,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContentText from '@mui/material/DialogContentText';
 import Img from './sir.jpg'
 // Alert 
-import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 // Axios 
 import axios from 'axios'
+import Swal from 'sweetalert2'
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles({
         marginTop: '45px',
         padding: '30px',
     }, btn: {
-        backgroundColor: '#83d8ae',
+        backgroundColor: 'transparent',
         border: ' none',
         color: 'white',
         padding: '12px 16px',
@@ -46,19 +47,19 @@ const useStyles = makeStyles({
         cursor: 'pointer',
         borderRadius: '5px'
     }, btn1: {
-        backgroundColor: '#fc9494',
+        backgroundColor: 'transparent',
         border: ' none',
-        color: 'white',
+        color: '#fc9494',
         padding: '12px 16px',
         fontSize: ' 16px',
         marginLeft: '10px',
         cursor: 'pointer',
         borderRadius: '5px',
-    },
+    }, 
     closebtn: {
-        backgroundColor: '#83d8ae',
+        backgroundColor: 'transparent',
         border: ' none',
-        color: 'white',
+        // color: 'white',
         fontSize: ' 16px',
         cursor: 'pointer',
         borderRadius: '5px'
@@ -83,34 +84,6 @@ const useStyles = makeStyles({
 const TextColor = {
     color: '#9a9cab',
 }
-
-
-//end
-// function createData(id, name, email, gender) {
-//     return { id, name, email, gender };
-// }
-// const rows = [
-//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-// ];
-// Dialog data 
-// function createProfile(name, data) {
-//     return { name, data };
-// }
-
-// const rows1 = [
-//     createProfile('User Id', 1),
-//     createProfile('User Name', 'Usama'),
-//     createProfile('Full Name', 'Muhammad Usama'),
-//     createProfile('Gender', 'Male'),
-//     createProfile('Date of Birth', '--'),
-//     createProfile('Country', '--'),
-//     createProfile('Email', '--'),
-//     createProfile('Bio', '--'),
-//     createProfile('Genre', '--'),
-// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -191,7 +164,7 @@ export default function CustomerTable() {
         setOpen(false);
     };
     // Alert 
-    const [open1, setOpen1] = React.useState(false);
+    // const [open1, setOpen1] = React.useState(false);
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -229,7 +202,27 @@ export default function CustomerTable() {
     useEffect(() => {
         getAllData1();
     }, []);
+    // Delete Dialog 
+    const DeleteFunc = () => {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "You won't be able to revert this!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire(
+                    'Deleted!',
+                    'Data has been deleted.',
+                    'success'
+                )
+            }
+        })
 
+    }
     let navigate = useNavigate();
     //  Form Dialog 
     const [open2, setOpen2] = React.useState(false);
@@ -242,15 +235,15 @@ export default function CustomerTable() {
         setOpen2(false);
     };
     //Customer Added alert
-    const [show,setShow] =React.useState(false);
+    const [show, setShow] = React.useState(false);
     //Customer Data Image upload 
-    const[file,setFile]=React.useState([])
-     const handlefile=(e)=>{
+    const [file, setFile] = React.useState([])
+    const handlefile = (e) => {
         //   console.log(e.target.files,'$$$$');
         //   console.log(e.target.files[0],"$$$$");
-        let file= e.target.files[0]
-        this.setFile({file:file})
-      }
+        let file = e.target.files[0]
+        this.setFile({ file: file })
+    }
     return (
         <div>
             <Grid container spacing={2}>
@@ -259,51 +252,36 @@ export default function CustomerTable() {
                     {/* heading */}
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
+                            
                         </Grid>
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
                                 <Item sx={{ flexGrow: 1 }}>
-                                    <Typography variant='h6'>Recent Customers</Typography>
+                                    <Typography variant='h6'>Recent Guests</Typography>
                                 </Item>
                                 <Item>
-                                    <button className={classes.btn}
+                                    {/* <button className={classes.btn}
                                         onClick={handleClickOpen2}
                                     // {() => {
                                     //     // navigate('/view')
 
                                     // }}
-                                    >Add Customer</button>
+                                    > <AddIcon /></button> */}
+                                    <Button variant="contained" color='success'  startIcon={<AddIcon />} onClick={handleClickOpen2}>
+                                        Guests
+                                    </Button>
                                     <Dialog open={open2} onClose={handleClose2}>
                                         <DialogTitle>Fill Customer Data</DialogTitle>
-                                        
+
                                         <DialogContent>
                                             <DialogContentText>
-                                                {show? <Alert severity="success">Customer Added Successfully</Alert>:null}
-                                                </DialogContentText>
-                                                <input type="file" name="file" onChange={(e) => {
+                                                {show ? <Alert severity="success">Customer Added Successfully</Alert> : null}
+                                            </DialogContentText>
+                                            <input type="file" name="file" onChange={(e) => {
                                                 handlefile(e)
-                                                }}/>
+                                            }} />
                                             <TextField
                                                 autoFocus
                                                 margin="dense"
@@ -362,7 +340,8 @@ export default function CustomerTable() {
                                         <DialogActions>
                                             <Button onClick={handleClose2}>Cancel</Button>
                                             <Button onClick={() => {
-                                         setShow(true)}}>Submit</Button>
+                                                setShow(true)
+                                            }}>Submit</Button>
                                         </DialogActions>
                                     </Dialog>
                                 </Item>
@@ -457,10 +436,9 @@ export default function CustomerTable() {
 
                                             </BootstrapDialog>
                                             <button className={classes.btn1}
-                                                onClick={() => {
-                                                    setOpen1(true);
-
-                                                }}
+                                                onClick={DeleteFunc}
+                                            // () => {
+                                            // setOpen1(true);}}
                                             > <BackspaceIcon /></button>
 
 

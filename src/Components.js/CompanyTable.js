@@ -222,11 +222,6 @@ function CompanyTable() {
              .catch(error => console.error(`Error:${error}`));
  
      }
-    //  useEffect(() => {
-    //      getAllData1();
-    //  }, []);
- 
-
     return (
         <div>
             <Grid container spacing={2}>

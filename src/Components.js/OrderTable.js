@@ -25,6 +25,7 @@ import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 // Axios 
 import axios from 'axios'
+import GridOrders from './GridOrders';
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -147,7 +148,8 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-function HotelTable() {
+function OrderTable() {
+
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
@@ -207,13 +209,14 @@ function HotelTable() {
 
     return (
         <div>
+            <GridOrders/>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={12} className={classes.GridStyle}>
 
                     {/* heading */}
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
+                            {/* <Collapse in={open1}>
                                 <Alert variant="filled" severity="error"
                                     action={
                                         <IconButton
@@ -231,7 +234,7 @@ function HotelTable() {
                                 >
                                     Data Deleted Successfully
                                 </Alert>
-                            </Collapse>
+                            </Collapse> */}
                         </Grid>
                         <Grid item xs={12} md={12}>
                             <Box
@@ -358,4 +361,4 @@ function HotelTable() {
     )
 }
 
-export default HotelTable
+export default OrderTable

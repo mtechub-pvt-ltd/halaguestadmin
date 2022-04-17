@@ -9,8 +9,6 @@ import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CloseIcon from '@mui/icons-material/Close';
 
-
-
 const useStyles = makeStyles({
     GridStyle: {
         border: ' 1px solid #e4e6ef',
@@ -69,7 +67,7 @@ function Settings() {
     }
     useEffect(() => {
         getAllData();
-         getAllData1();
+        getAllData1();
     }, []);
     const headers = {
         'Content-Type': 'application/json'
@@ -154,7 +152,7 @@ function Settings() {
                                                     }
                                                     sx={{ mb: 2 }}
                                                 >
-                                                    Close me!
+                                                    Updated Successfully
                                                 </Alert>
                                             </Collapse>
 
@@ -268,10 +266,10 @@ function Settings() {
                                         <Grid item xs={12} md={12}>
 
                                             <input className={classes.InputStyle} name="first" type="text" placeholder="Enter Value"
-                                            value={data1}
-                                            onChange={
-                                                (e) => setData1(e.target.value)
-                                            }
+                                                value={data1}
+                                                onChange={
+                                                    (e) => setData1(e.target.value)
+                                                }
                                             />
                                         </Grid>
                                         <Grid item xs={12} md={12}>

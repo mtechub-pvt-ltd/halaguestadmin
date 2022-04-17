@@ -208,7 +208,7 @@ function HotelTable() {
     }
     useEffect(() => {
         getAllData();
-        getAllData1();
+        // getAllData1();
     }, []);
 
      //Get Specific API Axios

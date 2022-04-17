@@ -12,17 +12,20 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
+import BusinessIcon from '@mui/icons-material/Business';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import HotelIcon from '@mui/icons-material/Hotel';
+import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import List from '@mui/material/List';
 import { makeStyles } from '@material-ui/core/styles'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import DashboardUser from '../Pages.js/DashboardUser';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompanyTable from './CompanyTable';
 import OrderTable from './OrderTable'
 import AllDriversTable from './AllDriversTable';
@@ -30,7 +33,9 @@ import HotelTable from './HotelTable';
 import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
-import axios from 'axios';
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import ProfileData from './ProfileData';
+
 
 const drawerWidth = 240;
 
@@ -112,29 +117,7 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     }),
 );
 function AppBar1() {
-    // getting value email 
-    // const { state } = this.props.location
-    // Logout Session 
-    const [email, setEmail] = useState("");
-    // setEmail(state);
-    // console.log(state);
-    const headers={
-        'Content-Type':'application/json'
-    }
-    const submitHandler = (e) => {
-        e.preventDefault()
-        // POst Request 
-        axios.put('https://hiiguest.com/logout-admin-profile',{
-        email:email,
-    },{headers}).then(response => {
-                console.log(response)
-                // window.alert('Login Successfully')
-                navigate('/')
-            })
-            .catch(err => {
-                console.log(err)
-            })
-    }
+   
     const classes = useStyles();
     const theme = useTheme();
 
@@ -148,6 +131,7 @@ function AppBar1() {
         setOpen(false);
     };
     let navigate = useNavigate();
+    // False set show to view profile page 
     const [show, setShow] = React.useState(true);
     const [show1, setShow1] = React.useState(false);
     const [show2, setShow2] = React.useState(false);
@@ -200,7 +184,7 @@ function AppBar1() {
                         setShow5(false);
                         setShow6(false);
                         setShow7(false);
-                    }}>Admin</div>
+                    }}>Logo</div>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
                     </IconButton>
@@ -208,7 +192,46 @@ function AppBar1() {
 
                 <List className={classes.listStyle}>
 
+                <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                        }} >
+                            <ListItemIcon>
+                                <DashboardIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Dashboard" />
+                        </ListItemButton>
+                    </ListItem>
 
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false);
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(true);
+                            setShow7(false);
+
+                        }}>
+                            <ListItemIcon>
+                                <DriveEtaIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Dispachers" />
+                        </ListItemButton>
+                    </ListItem>
+
+
+                    
+                   
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
@@ -240,9 +263,28 @@ function AppBar1() {
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
+                            <ListItemText primary="Drivers" />
                         </ListItemButton>
                     </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(true);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                        }} >
+                            <ListItemIcon>
+                                <HotelIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Guests" />
+                        </ListItemButton>
+                    </ListItem>
+
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
@@ -262,24 +304,7 @@ function AppBar1() {
                         </ListItemButton>
                     </ListItem>
 
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false);
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(true);
-                            setShow7(false);
-
-                        }}>
-                            <ListItemIcon>
-                                <ShoppingCartIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Vehicles" />
-                        </ListItemButton>
-                    </ListItem>
+                  
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
@@ -294,7 +319,7 @@ function AppBar1() {
 
                         }}>
                             <ListItemIcon>
-                                <ShoppingCartIcon className={classes.iconColor} />
+                                <BusinessIcon className={classes.iconColor} />
                             </ListItemIcon>
                             <ListItemText primary="Companies" />
                         </ListItemButton>
@@ -312,7 +337,7 @@ function AppBar1() {
                             setShow7(false);
                         }}>
                             <ListItemIcon>
-                                <ShoppingCartIcon className={classes.iconColor} />
+                                <StorefrontIcon className={classes.iconColor} />
                             </ListItemIcon>
                             <ListItemText primary="Hotel Types" />
                         </ListItemButton>
@@ -354,18 +379,27 @@ function AppBar1() {
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={submitHandler}>
+                        <ListItemButton >
                             <ListItemIcon>
                                 <DraftsIcon className={classes.iconColor} />
                             </ListItemIcon>
                             <ListItemText primary="Logout" />
                         </ListItemButton>
                     </ListItem>
+{/* Logout  */}
+                    {/* <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton >
+                            <ListItemIcon>
+                                <DraftsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <Link to="/logout">Logout</Link>
+                        </ListItemButton>
+                    </ListItem> */}
                 </List>
 
             </Drawer>
             <Main open={open} style={MarginTop} className={classes.BackGround}>
-
+            {/* <ProfileData/> */}
                 {show ? <DashboardUser /> : null}
                 {show1 ? <CompanyTable /> : null}
                 {show2 ? <OrderTable /> : null}
@@ -382,3 +416,6 @@ function AppBar1() {
 }
 
 export default AppBar1
+// AppBar1.propTypes = {
+//     setSession: PropTypes.func.isRequired
+//   }
