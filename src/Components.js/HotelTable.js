@@ -18,13 +18,25 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Button } from '@mui/material';
+import DialogContentText from '@mui/material/DialogContentText';
+import ImageUpload from '../Pages.js/ImageUpload'
+// Tabs 
+import Checkbox from '@mui/material/Checkbox';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 import Img from './sir.jpg'
 // Alert 
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
+import { useNavigate } from 'react-router-dom';
+
 // Axios 
 import axios from 'axios'
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -33,20 +45,20 @@ const useStyles = makeStyles({
         marginTop: '45px',
         padding: '30px',
     }, btn: {
-        backgroundColor: '#83d8ae',
+        backgroundColor: 'transparent',
         border: ' none',
         color: 'white',
-        padding: '12px 16px',
+        // padding: '12px 16px',
         fontSize: ' 16px',
         cursor: 'pointer',
         borderRadius: '5px'
     }, btn1: {
-        backgroundColor: '#fc9494',
+        backgroundColor: 'transparent',
         border: ' none',
-        color: 'white',
-        padding: '12px 16px',
+        color: '#fc9494',
+        // padding: '12px 16px',
         fontSize: ' 16px',
-        marginLeft: '10px',
+        // marginLeft: '10px',
         cursor: 'pointer',
         borderRadius: '5px',
     },
@@ -73,10 +85,70 @@ const useStyles = makeStyles({
     },
     dialogTitle: {
         marginTop: '30px',
+    }, inputStyle: {
+        width: '100%',
+        padding: '5px',
+        marginTop: '10px',
+        marginBottom: '5px',
+        borderRadius: '5px',
+        border: '1px solid ',
+        height: '20px'
+
+    }, TextStyle: {
+        color: 'black',
+        marginTop: '10px',
+        fontWeight: 'bold'
+    }, gridS: {
+        // padding:'20px'
+    }, btnSubmit: {
+        backgroundColor: '#36f195',
+        padding: '10px',
+        fontSize: '15px',
+        border: 'transparent',
+        borderRadius: '5px',
+        color: 'white',
+        marginLeft: '234px'
     }
 })
 const TextColor = {
     color: '#9a9cab',
+}
+// Tabs 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+const TabsStyle = {
+    color: 'white'
+
 }
 
 
@@ -175,25 +247,39 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-const imgStyle={
-    width:'50px',
+const imgStyle = {
+    width: '50px',
 }
 function HotelTable() {
+     // Tabs 
+     const [value, setValue] = React.useState(0);
+
+     const handleChange = (event, newValue) => {
+         setValue(newValue);
+     };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const navigate = useNavigate();
+
+    const handleClickOpen = (idData) => {
+        console.log(idData);
+        // setShow(false);
+        navigate('/profilehotel',
+            {
+                state: {
+                    post_id: idData,
+                }
+            });
     };
     const handleClose = () => {
         setOpen(false);
     };
-    // Alert 
-    const [open1, setOpen1] = React.useState(false);
+  
     //Get API Axios
     const [data, setData] = useState([]);
-    const [loading,setLoading]= useState(false);
+    const [loading, setLoading] = useState(false);
     const url = 'https://hiiguest.com/';
     const getAllData = () => {
         axios.get(`${url}get-all-hotels`)
@@ -208,28 +294,104 @@ function HotelTable() {
     }
     useEffect(() => {
         getAllData();
-        // getAllData1();
+        getAllData1();
     }, []);
+    // Add 
+    const [openAdd, setOpenAdd] = React.useState(false);
 
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    const [image, setImage] = useState("");
+    const [Phno, setPhno] = useState("");
+    const [hotelName, sethotelName] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [city, setCity] = useState("");
+    const [hoteltype, setHotelType] = useState("");
+    const [jobTitle, setJobTitle] = useState("");
+
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+        // POst Request 
+        axios.post('https://hiiguest.com/create-hotel', {
+            image: image,
+            phoneNo: Phno,
+            hotelName: hotelName,
+            name: name,
+            email: email,
+            city: city,
+            hotelType: hoteltype,
+            jobTitle: jobTitle
+
+        }, { headers }).then(response => {
+            console.log(response)
+            window.alert('Created Hotel Successfully')
+        })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    const checkbox = (Did) => {
+        console.log(Did);
+
+        axios.put('https://hiiguest.com/approve-hotel-profile', {
+            phoneNo: Did
+        }, { headers }).then(response => {
+            console.log(response);
+            console.log('Hotel Approved')
+            // setShow(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    }
+     // Delete 
+       // Alert 
+    const [open1, setOpen1] = React.useState(false);
+     const deleteData = (phoneNo) => {
+        console.log('deleting phone no')
+        console.log(phoneNo);
+        axios.delete('https://hiiguest.com/delete-hotel', {
+            data: {
+                phoneNo: phoneNo
+            }
+        }, { headers })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setOpen1(true);
+            }).catch(err => {
+                console.log(err)
+            })
+    }
      //Get Specific API Axios
      const [data1, setData1] = useState([]);
-     const [loading1,setLoading1]= useState(false);
-     const getAllData1 = () => {
-         axios.get(`${url}get-all-companies`)
+     const [loading1, setLoading1] = useState(false);
+     const getAllData1 = async () => {
+         await axios.get(`${url}get-all-hotels`)
              .then((response) => {
-                 const allData = response.data;
-                 console.log(allData);
+                 console.log('Approve data')
+                 const allData1 = response.data;
+                 console.log(allData1);
                  setData1(response.data);
                  setLoading1(true)
+                 // }
              })
              .catch(error => console.error(`Error:${error}`));
  
      }
-    //  useEffect(() => {
-    //      getAllData1();
-    //  }, []);
  
-
     return (
         <div>
             <Grid container spacing={2}>
@@ -265,13 +427,151 @@ function HotelTable() {
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Hotels</Typography>
                                 </Item>
+                                {/* Add Hotel  */}
+                                <Item>
+                                    {/* startIcon={<AddIcon />} */}
+                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                        + Hotel
+                                    </Button>
+                                    {/* Dialog */}
+                                    <Dialog open={openAdd} onClose={handleCloseAdd}>
+                                        <DialogTitle>Add Hotel</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fill All Fields to add new Hotel
+                                            </DialogContentText>
+                                            {/* Form  */}
+
+                                            <form onSubmit={submitHandler}>
+                                                <Grid container spacing={2} className={classes.gridS}>
+                                                <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Add Image
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        {/* <input type="text" name="image" className={classes.inputStyle} value={image} placeholder="image"
+                        onChange={(e) => setImage(e.target.value) 
+                        } /> */}
+                                                        <ImageUpload />
+                                                    </Grid>
+                                                
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                             Phone Number :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={Phno} placeholder="Enter Phone Number"
+                                                            onChange={
+                                                                (e) => setPhno(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                             Hotel Name :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={hotelName} placeholder="Enter Hotel Name"
+                                                            onChange={
+                                                                (e) => sethotelName(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+
+                                                            Name:
+                                                        </div>
+                                                    </Grid>
+
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="Name" className={classes.inputStyle} value={name} placeholder="Enter Name"
+                                                            onChange={(e) => setName(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Email
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="email" className={classes.inputStyle} value={email} placeholder="Enter Email"
+                                                            onChange={(e) => setEmail(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            City
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="city" className={classes.inputStyle} value={city} placeholder="Enter City"
+                                                            onChange={(e) => setCity(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Hotel Type
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="hoteltype" className={classes.inputStyle} value={hoteltype} placeholder="Enter Hotel Type"
+                                                            onChange={(e) => setHotelType(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Job Title
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="jobTitle" className={classes.inputStyle} value={jobTitle} placeholder="Enter Job Title"
+                                                            onChange={(e) => setJobTitle(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6} >
+                                                        <button className={classes.btnSubmit} type='submit'>Submit</button>
+                                                    </Grid>
+                                                    
+                                                </Grid>
+                                            </form>
+
+                                            {/* End form  */}
+                                        </DialogContent>
+                                        {/* <DialogActions>
+                                            <Button onClick={handleCloseAdd}>Cancel</Button>
+                                            <Button onClick={handleCloseAdd}>Subscribe</Button>
+                                        </DialogActions> */}
+                                    </Dialog>
+                                    {/* Dialog End  */}
+                                </Item>
 
                             </Box>
                         </Grid>
+                        {/* Tabs  */}
+                        <Grid item xs={12} md={12}>
 
-                    </Grid>
-                    {/* Table  */}
-                    <TableContainer >
+<Box sx={{ width: '100%' }}>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab style={TabsStyle} label="View All Hotels" {...a11yProps(0)} />
+            <Tab style={TabsStyle} label="Approved Hotels" {...a11yProps(1)} />
+            <Tab style={TabsStyle} label="Unapproved Hotels" {...a11yProps(2)} />
+            {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
+            <Tab style={TabsStyle} label="Offline Hotels" {...a11yProps(4)} /> */}
+        </Tabs>
+    </Box>
+    <TabPanel value={value} index={0}>
+        {/* Table  */}
+        <TableContainer >
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
@@ -279,6 +579,7 @@ function HotelTable() {
                                     <TableCell style={TextColor}>Hotel Name</TableCell>
                                     <TableCell style={TextColor}>City</TableCell>
                                     <TableCell style={TextColor}>Hotel Type</TableCell>
+                                    <TableCell  style={TextColor}>Approved</TableCell>
                                     <TableCell style={TextColor}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
@@ -291,76 +592,30 @@ function HotelTable() {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell style={TextColor} component="th" scope="row">
-                                            
+
                                             <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
-                                            
+
                                         </TableCell>
                                         <TableCell style={TextColor} >{row.hotelName}</TableCell>
                                         <TableCell style={TextColor} >{row.city}</TableCell>
+                                        
                                         <TableCell style={TextColor} >{row.hotelType}</TableCell>
+                                        <TableCell style={TextColor} >
+                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                    </TableCell>
                                         <TableCell >
-                                            <button className={classes.btn} onClick={handleClickOpen}>
+                                            <button className={classes.btn} onClick={() => {
+                                                                    handleClickOpen(row.phoneNo)
+                                                                }}>
                                                 < VisibilityIcon />
                                             </button>
                                             {/* Dialog  */}
-                                            <BootstrapDialog className={classes.dialogWidth}
-                                                onClose={handleClose}
-                                                aria-labelledby="customized-dialog-title"
-                                                open={open}
-                                            >
-                                                <BootstrapDialogTitle className={classes.dialogTitle} id="customized-dialog-title" onClose={handleClose}>
-                                                    User Data
-                                                </BootstrapDialogTitle>
-                                                <DialogContent >
-                                                    {/* Table  */}
-                                                    <TableContainer >
-                                                        <Table aria-label="simple table" >
-                                                        {/* {rows1.map((row) => ( */}
-                                                            <TableHead>
-                                                                <TableRow>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <div className={classes.CardStyle}>
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                Profile Image
-                                                                            </Typography>
-                                                                        </div>
-                                                                    </TableCell>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <Avatar alt="Image" className={classes.ProfileImage} variant="square" src={Img} />
-                                                                    </TableCell>
-
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-                                                                
-                                                                {loading1 && data1.map((row) => (
-                                                                    <TableRow
-                                                                        key={row.name}
-                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                                    >
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.name}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.data}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                             {/* ))} */}
-                                                        </Table>
-                                                    </TableContainer>
-
-                                                </DialogContent>
-
-                                            </BootstrapDialog>
+                                           
                                             <button className={classes.btn1}
                                                 onClick={() => {
-                                                    setOpen1(true);
+                                                    console.log(row.phoneNo)
+                                                    deleteData(row.phoneNo)
+                                                    // setOpen1(true);
 
                                                 }}
                                             > <BackspaceIcon /></button>
@@ -372,6 +627,153 @@ function HotelTable() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+    </TabPanel>
+    {/* Second Tab  */}
+    <TabPanel value={value} index={1}>
+    <Grid container spacing={2}>
+                                    <Grid item xs={12} md={12}>
+                                        <Box
+                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                        >
+                                            <Item sx={{ flexGrow: 1 }}>
+                                                <Typography variant='h6'>Approved Hotels</Typography>
+                                            </Item>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={12} md={12}>
+                                        {/* Approved dispachers table  */}
+                                        <TableContainer >
+                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell style={TextColor}>Image</TableCell>
+                                                        <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                        <TableCell style={TextColor}>City</TableCell>
+                                                        <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                        <TableCell style={TextColor}>Action</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                    {loading1 && data1.filter(data1 => data1.profileApproved == true).map((row) => (
+                                                        <TableRow
+                                                            key={row.name}
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} >{row.hotelName}</TableCell>
+                                                            <TableCell style={TextColor} >{row.city}</TableCell>
+                                                            <TableCell style={TextColor} >{row.hotelType}</TableCell>
+
+                                                            <TableCell >
+                                                                <button className={classes.btn} onClick={() => {
+                                                                    handleClickOpen(row.phoneNo)
+                                                                }}>
+                                                                    < VisibilityIcon />
+                                                                </button>
+                                                                {/* Dialog  */}
+
+                                                                <button className={classes.btn1}
+                                                                    onClick={() => {
+                                                                        console.log(row.phoneNo)
+                                                                        deleteData(row.phoneNo)
+                                                                        // setOpen1(true);
+
+                                                                    }}
+                                                                > <BackspaceIcon /></button>
+
+
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+
+                                    </Grid>
+                                </Grid>
+    </TabPanel>
+    {/* Third tab  */}
+    <TabPanel value={value} index={2}>
+    <Grid container spacing={2}>
+                                    <Grid item xs={12} md={12}>
+                                        <Box
+                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                        >
+                                            <Item sx={{ flexGrow: 1 }}>
+                                                <Typography variant='h6'>Unapproved Hotels</Typography>
+                                            </Item>
+                                        </Box>
+                                    </Grid>
+                                    <Grid item xs={12} md={12}>
+                                        {/* Approved dispachers table  */}
+                                        <TableContainer >
+                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                <TableHead>
+                                                    <TableRow>
+                                                        <TableCell style={TextColor}>Image</TableCell>
+                                                        <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                        <TableCell style={TextColor}>City</TableCell>
+                                                        <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                        <TableCell style={TextColor}>Action</TableCell>
+                                                    </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                    {loading1 && data1.filter(data1 => data1.profileApproved == false).map((row) => (
+                                                        <TableRow
+                                                            key={row.name}
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} >{row.hotelName}</TableCell>
+                                                            <TableCell style={TextColor} >{row.city}</TableCell>
+                                                            <TableCell style={TextColor} >{row.hotelType}</TableCell>
+
+                                                            <TableCell >
+                                                                <button className={classes.btn} onClick={() => {
+                                                                    handleClickOpen(row.phoneNo)
+                                                                }}>
+                                                                    < VisibilityIcon />
+                                                                </button>
+                                                                {/* Dialog  */}
+
+                                                                <button className={classes.btn1}
+                                                                    onClick={() => {
+                                                                        console.log(row.phoneNo)
+                                                                        deleteData(row.phoneNo)
+                                                                        // setOpen1(true);
+
+                                                                    }}
+                                                                > <BackspaceIcon /></button>
+
+
+                                                            </TableCell>
+                                                        </TableRow>
+                                                    ))}
+                                                </TableBody>
+                                            </Table>
+                                        </TableContainer>
+
+                                    </Grid>
+                                </Grid>
+    </TabPanel>
+    <TabPanel value={value} index={3}>113</TabPanel>
+    <TabPanel value={value} index={4}>114</TabPanel>
+    </Box>
+    </Grid>
+
+                    </Grid>
+                    
 
 
                 </Grid>

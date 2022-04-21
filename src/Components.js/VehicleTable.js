@@ -287,7 +287,7 @@ function VehicleTable() {
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
                                 <Item sx={{ flexGrow: 1 }}>
-                                    <Typography variant='h6'>Dispachers</Typography>
+                                    <Typography variant='h6'>Vehicles</Typography>
                                 </Item>
                                 <Item>
                                     {/* <button className={classes.btn}
@@ -295,11 +295,11 @@ function VehicleTable() {
                                     >Add
                                     </button> */}
                                     <Button variant="contained" color='success'  startIcon={<AddIcon />} onClick={handleClickOpen2}>
-                                        Guests
+                                        Vehicle
                                     </Button>
                                 </Item>
                                 <Dialog open={open2} onClose={handleClose2}>
-                                    <DialogTitle>Fill Hotel Data</DialogTitle>
+                                    <DialogTitle>Fill Vehicle Data</DialogTitle>
 
                                     <DialogContent>
                                         <DialogContentText>

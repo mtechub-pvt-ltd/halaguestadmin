@@ -1,0 +1,17 @@
+# POST https://hiiguest.com/create-customer HTTP/1.1
+# Content-Type: :application/json
+
+# {
+#     "hotel":{
+#                 "phoneNo":"CPhno",
+#                 "name":"Cname"
+#             },
+#             "image": "image",
+#             "phoneNo": "Phno",
+#             "name": "name",
+#             "email": "email",
+#             "city":"city" ,
+#             "description":"description"
+# }
+GET https://hiiguest.com/get-all-customers HTTP/1.1
+

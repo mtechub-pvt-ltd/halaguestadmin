@@ -6,13 +6,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@material-ui/core/Grid';
-import { Avatar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import { useNavigate } from 'react-router-dom'
-import AddIcon from '@mui/icons-material/Add';
 //dialog
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
@@ -20,17 +18,24 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
-import DialogActions from '@mui/material/DialogActions';
+import { Button } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
-import Img from './sir.jpg'
+import ImageUpload from '../Pages.js/ImageUpload'
+// Tabs 
+import Checkbox from '@mui/material/Checkbox';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 // Alert 
+import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
+import { useNavigate } from 'react-router-dom';
+
 // Axios 
 import axios from 'axios'
-import Swal from 'sweetalert2'
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -42,7 +47,7 @@ const useStyles = makeStyles({
         backgroundColor: 'transparent',
         border: ' none',
         color: 'white',
-        padding: '12px 16px',
+        // padding: '12px 16px',
         fontSize: ' 16px',
         cursor: 'pointer',
         borderRadius: '5px'
@@ -50,16 +55,16 @@ const useStyles = makeStyles({
         backgroundColor: 'transparent',
         border: ' none',
         color: '#fc9494',
-        padding: '12px 16px',
+        // padding: '12px 16px',
         fontSize: ' 16px',
-        marginLeft: '10px',
+        // marginLeft: '10px',
         cursor: 'pointer',
         borderRadius: '5px',
-    }, 
+    },
     closebtn: {
-        backgroundColor: 'transparent',
+        backgroundColor: '#83d8ae',
         border: ' none',
-        // color: 'white',
+        color: 'white',
         fontSize: ' 16px',
         cursor: 'pointer',
         borderRadius: '5px'
@@ -79,11 +84,72 @@ const useStyles = makeStyles({
     },
     dialogTitle: {
         marginTop: '30px',
+    }, inputStyle: {
+        width: '100%',
+        padding: '5px',
+        marginTop: '10px',
+        marginBottom: '5px',
+        borderRadius: '5px',
+        border: '1px solid ',
+        height: '20px'
+
+    }, TextStyle: {
+        color: 'black',
+        marginTop: '10px',
+        fontWeight: 'bold'
+    }, gridS: {
+        // padding:'20px'
+    }, btnSubmit: {
+        backgroundColor: '#36f195',
+        padding: '10px',
+        fontSize: '15px',
+        border: 'transparent',
+        borderRadius: '5px',
+        color: 'white',
+        marginLeft: '234px'
     }
 })
 const TextColor = {
     color: '#9a9cab',
 }
+// Tabs 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+const TabsStyle = {
+    color: 'white'
+
+}
+
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -152,19 +218,36 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function CustomerTable() {
+const imgStyle = {
+    width: '50px',
+}
+function CustomerTable() {
+    // Tabs 
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
 
-    const handleClickOpen = () => {
-        setOpen(true);
+    const navigate = useNavigate();
+
+    const handleClickOpen = (idData) => {
+        console.log(idData);
+        // setShow(false);
+        navigate('/profilecustomer',
+            {
+                state: {
+                    post_id: idData,
+                }
+            });
     };
     const handleClose = () => {
         setOpen(false);
     };
-    // Alert 
-    // const [open1, setOpen1] = React.useState(false);
+
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -184,66 +267,82 @@ export default function CustomerTable() {
         getAllData();
         getAllData1();
     }, []);
+    // Add 
+    const [openAdd, setOpenAdd] = React.useState(false);
 
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
+    const headers = {
+        'Content-Type': 'application/json'
+    }
+    const [image, setImage] = useState("");
+    const [Phno, setPhno] = useState("");
+    const [CPhno, setCPhno] = useState("");
+    const [Cname, setCname] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [city, setCity] = useState("");
+    const [description, setDescription] = useState("");
+
+
+    
+    const checkbox = (Did) => {
+        console.log(Did);
+
+        axios.put('https://hiiguest.com/approve-customer-profile', {
+            phoneNo: Did
+        }, { headers }).then(response => {
+            console.log(response);
+            console.log('Customer Approved')
+            // setShow(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    }
+    // Delete 
+    // Alert 
+    const [open1, setOpen1] = React.useState(false);
+    const deleteData = (phoneNo) => {
+        console.log('deleting phone no')
+        console.log(phoneNo);
+        axios.delete('https://hiiguest.com/delete-customer', {
+            data: {
+                phoneNo: phoneNo
+            }
+        }, { headers })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setOpen1(true);
+            }).catch(err => {
+                console.log(err)
+            })
+    }
     //Get Specific API Axios
     const [data1, setData1] = useState([]);
     const [loading1, setLoading1] = useState(false);
-    const getAllData1 = () => {
-        axios.get(`${url}get-all-customers`)
+    const getAllData1 = async () => {
+        await axios.get(`${url}get-all-customers`)
             .then((response) => {
-                const allData = response.data;
-                console.log(allData);
+                console.log('Approve data')
+                const allData1 = response.data;
+                console.log(allData1);
                 setData1(response.data);
                 setLoading1(true)
+                // }
             })
             .catch(error => console.error(`Error:${error}`));
 
     }
-    useEffect(() => {
-        getAllData1();
-    }, []);
-    // Delete Dialog 
-    const DeleteFunc = () => {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: "You won't be able to revert this!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                Swal.fire(
-                    'Deleted!',
-                    'Data has been deleted.',
-                    'success'
-                )
-            }
-        })
 
-    }
-    let navigate = useNavigate();
-    //  Form Dialog 
-    const [open2, setOpen2] = React.useState(false);
-
-    const handleClickOpen2 = () => {
-        setOpen2(true);
-    };
-
-    const handleClose2 = () => {
-        setOpen2(false);
-    };
-    //Customer Added alert
-    const [show, setShow] = React.useState(false);
-    //Customer Data Image upload 
-    const [file, setFile] = React.useState([])
-    const handlefile = (e) => {
-        //   console.log(e.target.files,'$$$$');
-        //   console.log(e.target.files[0],"$$$$");
-        let file = e.target.files[0]
-        this.setFile({ file: file })
-    }
     return (
         <div>
             <Grid container spacing={2}>
@@ -252,202 +351,252 @@ export default function CustomerTable() {
                     {/* heading */}
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
-                            
+                            <Collapse in={open1}>
+                                <Alert variant="filled" severity="error"
+                                    action={
+                                        <IconButton
+                                            aria-label="close"
+                                            color="inherit"
+                                            size="small"
+                                            onClick={() => {
+                                                setOpen1(false);
+                                            }}
+                                        >
+                                            <CloseIcon fontSize="inherit" />
+                                        </IconButton>
+                                    }
+                                    sx={{ mb: 2 }}
+                                >
+                                    Data Deleted Successfully
+                                </Alert>
+                            </Collapse>
                         </Grid>
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
                                 <Item sx={{ flexGrow: 1 }}>
-                                    <Typography variant='h6'>Recent Guests</Typography>
+                                    <Typography variant='h6'>Customers</Typography>
                                 </Item>
-                                <Item>
-                                    {/* <button className={classes.btn}
-                                        onClick={handleClickOpen2}
-                                    // {() => {
-                                    //     // navigate('/view')
+                              
 
-                                    // }}
-                                    > <AddIcon /></button> */}
-                                    <Button variant="contained" color='success'  startIcon={<AddIcon />} onClick={handleClickOpen2}>
-                                        Guests
-                                    </Button>
-                                    <Dialog open={open2} onClose={handleClose2}>
-                                        <DialogTitle>Fill Customer Data</DialogTitle>
+                            </Box>
+                        </Grid>
+                        {/* Tabs  */}
+                        <Grid item xs={12} md={12}>
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                        <Tab style={TabsStyle} label="View All Customers" {...a11yProps(0)} />
+                                        <Tab style={TabsStyle} label="Approved Customers" {...a11yProps(1)} />
+                                        <Tab style={TabsStyle} label="Unapproved Customers" {...a11yProps(2)} />
+                                    </Tabs>
+                                </Box>
+                                <TabPanel value={value} index={0}>
+                                    {/* Table  */}
+                                    <TableContainer >
+                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell style={TextColor}>Image</TableCell>
+                                                    <TableCell style={TextColor}>Customer Name</TableCell>
+                                                    <TableCell style={TextColor}>City</TableCell>
+                                                    <TableCell style={TextColor}>Phone Number</TableCell>
+                                                    <TableCell style={TextColor}>Approved</TableCell>
+                                                    <TableCell style={TextColor}>Action</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
 
-                                        <DialogContent>
-                                            <DialogContentText>
-                                                {show ? <Alert severity="success">Customer Added Successfully</Alert> : null}
-                                            </DialogContentText>
-                                            <input type="file" name="file" onChange={(e) => {
-                                                handlefile(e)
-                                            }} />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="ID"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="Name"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="Email"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="City"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="Phone Number"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                            <TextField
-                                                autoFocus
-                                                margin="dense"
-                                                id="name"
-                                                label="Description"
-                                                type="text"
-                                                fullWidth
-                                                variant="standard"
-                                            />
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button onClick={handleClose2}>Cancel</Button>
-                                            <Button onClick={() => {
-                                                setShow(true)
-                                            }}>Submit</Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </Item>
 
+                                                {loading && data.map((row) => (
+                                                    <TableRow
+                                                        key={row.name}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell style={TextColor} component="th" scope="row">
+
+                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+                                                        </TableCell>
+                                                        <TableCell style={TextColor} >{row.name}</TableCell>
+                                                        <TableCell style={TextColor} >{row.city}</TableCell>
+
+                                                        <TableCell style={TextColor} >{row.phoneNo}</TableCell>
+                                                        <TableCell style={TextColor} >
+                                                            <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                        </TableCell>
+                                                        <TableCell >
+                                                            <button className={classes.btn} onClick={() => {
+                                                                handleClickOpen(row.phoneNo)
+                                                            }}>
+                                                                < VisibilityIcon />
+                                                            </button>
+                                                            {/* Dialog  */}
+
+                                                            <button className={classes.btn1}
+                                                                onClick={() => {
+                                                                    console.log(row.phoneNo)
+                                                                    deleteData(row.phoneNo)
+                                                                    // setOpen1(true);
+
+                                                                }}
+                                                            > <BackspaceIcon /></button>
+
+
+                                                        </TableCell>
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+
+                                </TabPanel>
+                                {/* Second Tab  */}
+                                <TabPanel value={value} index={1}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Approved Customers</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* Approved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Name</TableCell>
+                                                            <TableCell style={TextColor}>City</TableCell>
+                                                            <TableCell style={TextColor}>Phone Number</TableCell>
+                                                            <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading1 && data1.filter(data1 => data1.profileApproved == true).map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.name}</TableCell>
+                                                                <TableCell style={TextColor} >{row.city}</TableCell>
+                                                                <TableCell style={TextColor} >{row.phoneNo}</TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
+                                    </Grid>
+                                </TabPanel>
+                                {/* Third tab  */}
+                                <TabPanel value={value} index={2}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Unapproved Hotels</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* UnApproved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Name</TableCell>
+                                                            <TableCell style={TextColor}>City</TableCell>
+                                                            <TableCell style={TextColor}>Phone Number</TableCell>
+                                                            <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading1 && data1.filter(data1 => data1.profileApproved == false).map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.name}</TableCell>
+                                                                <TableCell style={TextColor} >{row.city}</TableCell>
+                                                                <TableCell style={TextColor} >{row.phoneNo}</TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
+                                    </Grid>
+                                </TabPanel>
+                                <TabPanel value={value} index={3}>113</TabPanel>
+                                <TabPanel value={value} index={4}>114</TabPanel>
                             </Box>
                         </Grid>
 
                     </Grid>
-                    {/* Table  */}
-                    <TableContainer >
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={TextColor}>#</TableCell>
-                                    <TableCell style={TextColor}>Name</TableCell>
-                                    <TableCell style={TextColor}>Phone No</TableCell>
-                                    <TableCell style={TextColor}>Email</TableCell>
-                                    <TableCell style={TextColor}>Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {loading && data.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell style={TextColor} component="th" scope="row">
-                                            {row._id}
 
-                                        </TableCell>
-                                        <TableCell style={TextColor} >{row.name}</TableCell>
-                                        <TableCell style={TextColor} >{row.phoneNo}</TableCell>
-                                        <TableCell style={TextColor} >{row.email}</TableCell>
-                                        <TableCell >
-                                            <button className={classes.btn} onClick={handleClickOpen}>
-                                                < VisibilityIcon />
-                                            </button>
-                                            {/* Dialog  */}
-                                            <BootstrapDialog className={classes.dialogWidth}
-                                                onClose={handleClose}
-                                                aria-labelledby="customized-dialog-title"
-                                                open={open}
-                                            >
-                                                <BootstrapDialogTitle className={classes.dialogTitle} id="customized-dialog-title" onClose={handleClose}>
-                                                    User Data
-                                                </BootstrapDialogTitle>
-                                                <DialogContent >
-                                                    {/* Table  */}
-                                                    <TableContainer >
-                                                        <Table aria-label="simple table" >
-                                                            {/* {rows1.map((row) => ( */}
-                                                            <TableHead>
-                                                                <TableRow>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <div className={classes.CardStyle}>
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                Profile Image
-                                                                            </Typography>
-                                                                        </div>
-                                                                    </TableCell>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <Avatar alt="Image" className={classes.ProfileImage} variant="square" src={Img} />
-                                                                    </TableCell>
-
-                                                                </TableRow>
-                                                            </TableHead>
-                                                            <TableBody>
-
-                                                                {loading1 && data1.map((row) => (
-                                                                    <TableRow
-                                                                        key={row.name}
-                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                                    >
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.name}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.data}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                            {/* ))} */}
-                                                        </Table>
-                                                    </TableContainer>
-
-                                                </DialogContent>
-
-                                            </BootstrapDialog>
-                                            <button className={classes.btn1}
-                                                onClick={DeleteFunc}
-                                            // () => {
-                                            // setOpen1(true);}}
-                                            > <BackspaceIcon /></button>
-
-
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
 
 
                 </Grid>
@@ -458,3 +607,5 @@ export default function CustomerTable() {
         </div>
     )
 }
+
+export default CustomerTable

@@ -209,7 +209,7 @@ Item.propTypes = {
 };
 
 
-function AllDriversTable() {
+function Practise() {
     // Active status 
     const headers = {
         'Content-Type': 'application/json'
@@ -1225,4 +1225,4 @@ function AllDriversTable() {
     )
 }
 
-export default AllDriversTable
+export default Practise

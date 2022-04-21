@@ -178,9 +178,9 @@ function ProfileData() {
     //   Api 
     const [data, setData] = useState([]);
 
-    const getAllData = () => {
+    const getAllData = async() => {
         const phoneNo = state.post_id;
-        axios.post('https://hiiguest.com/get-driver', {
+        await axios.post('https://hiiguest.com/get-driver', {
             phoneNo: phoneNo
         }, { headers }).then(response => {
             console.log('response')
@@ -200,10 +200,10 @@ function ProfileData() {
         getAllData();
     }, [])
 
-    const checkbox = (Did) => {
+    const checkbox = async(Did) => {
         console.log(Did);
 
-        axios.put('https://hiiguest.com/approve-driver-profile', {
+       await axios.put('https://hiiguest.com/approve-driver-profile', {
             phoneNo: Did
         }, { headers }).then(response => {
             console.log(response);
@@ -217,27 +217,27 @@ function ProfileData() {
 
     }
     // Dialog 
-    const [open, setOpen] = React.useState(false);
+    const [openDiag, setOpenDiag] = React.useState(false);
     const [scroll, setScroll] = React.useState('paper');
 
-    const handleClickOpen = (scrollType) => () => {
-        setOpen(true);
+    const handleClickOpenScr = (scrollType) => () => {
+        setOpenDiag(true);
         setScroll(scrollType);
     };
 
     const handleClose = () => {
-        setOpen(false);
+        setOpenDiag(false);
     };
 
     const descriptionElementRef = React.useRef(null);
     React.useEffect(() => {
-        if (open) {
+        if (openDiag) {
             const { current: descriptionElement } = descriptionElementRef;
             if (descriptionElement !== null) {
                 descriptionElement.focus();
             }
         }
-    }, [open]);
+    }, [openDiag]);
     // Document print 
     let componentRef = useRef(null);
 
@@ -323,12 +323,12 @@ function ProfileData() {
                                                                 />
                                                             </TableCell>
                                                             <TableCell >
-                                                                <button className={classes.btn} onClick={handleClickOpen('body')}>
+                                                                <button className={classes.btn} onClick={handleClickOpenScr('body')}>
                                                                     < VisibilityIcon />
                                                                 </button>
                                                                 {/* Dialog  */}
                                                                 <Dialog
-                                                                    open={open}
+                                                                    open={openDiag}
                                                                     onClose={handleClose}
                                                                     scroll={scroll}
                                                                     aria-labelledby="scroll-dialog-title"
@@ -378,7 +378,7 @@ function ProfileData() {
 
                                                                 <button className={classes.btn1}
                                                                     onClick={() => {
-                                                                        // setOpen1(true);
+                                                                        // setOpenDiag1(true);
 
                                                                     }}
                                                                 > <BackspaceIcon /></button>
@@ -527,12 +527,12 @@ function ProfileData() {
                                                                 />
                                                             </TableCell>
                                                             <TableCell >
-                                                                <button className={classes.btn} onClick={handleClickOpen('body')}>
+                                                                <button className={classes.btn} onClick={handleClickOpenScr('body')}>
                                                                     < VisibilityIcon />
                                                                 </button>
                                                                 {/* Dialog  */}
                                                                 <Dialog
-                                                                    open={open}
+                                                                    open={openDiag}
                                                                     onClose={handleClose}
                                                                     scroll={scroll}
                                                                     aria-labelledby="scroll-dialog-title"
@@ -582,7 +582,7 @@ function ProfileData() {
 
                                                                 <button className={classes.btn1}
                                                                     onClick={() => {
-                                                                        // setOpen1(true);
+                                                                        // setOpenDiag1(true);
 
                                                                     }}
                                                                 > <BackspaceIcon /></button>

@@ -83,10 +83,10 @@ function Login() {
     const headers = {
         'Content-Type': 'application/json'
     }
-    const submitHandler = (e) => {
+    const submitHandler = async(e) => {
         e.preventDefault()
         // POst Request 
-        axios.put('https://hiiguest.com/login-admin-profile', {
+        await axios.put('https://hiiguest.com/login-admin-profile', {
             email: email,
             password: password
         }, { headers }).then(response => {
@@ -119,12 +119,14 @@ function Login() {
                     console.log('I was closed by the timer')
                 }
             })
-            navigate('/home',
-                {
-                    state: {
-                        session: session1,
-                    }
-                });
+            navigate('/home'
+            // ,
+            //     {
+            //         state: {
+            //             session: session1,
+            //         }
+            //     }
+                );
             //   navigate('/home');
 
 

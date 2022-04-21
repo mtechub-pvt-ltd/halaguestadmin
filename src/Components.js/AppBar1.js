@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React,{useState} from 'react'
+import image from './Images/image.svg'
 import MenuIcon from '@mui/icons-material/Menu';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -35,10 +36,14 @@ import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ProfileData from './ProfileData';
+import { Avatar } from '@mui/material';
 
 
 const drawerWidth = 240;
-
+const logoStyle = {
+    width: '100%',
+    height: '100%',
+}
 const useStyles = makeStyles({
     BackGround: {
         backgroundColor: '#181821',
@@ -176,7 +181,7 @@ function AppBar1() {
             >
                 <DrawerHeader className={classes.head}>
                     <div className={classes.Header} onClick={() => {
-                        setShow(true);
+                        setShow(false);
                         setShow1(false);
                         setShow2(false)
                         setShow3(false);
@@ -184,7 +189,11 @@ function AppBar1() {
                         setShow5(false);
                         setShow6(false);
                         setShow7(false);
-                    }}>Logo</div>
+                    }}>
+                        <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+                        {/* <img */}
+
+                    </div>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
                     </IconButton>
@@ -194,7 +203,7 @@ function AppBar1() {
 
                 <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(false);
+                            setShow(true);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
@@ -225,7 +234,7 @@ function AppBar1() {
                             <ListItemIcon>
                                 <DriveEtaIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
+                            <ListItemText primary="Vehicles" />
                         </ListItemButton>
                     </ListItem>
 
@@ -321,7 +330,7 @@ function AppBar1() {
                             <ListItemIcon>
                                 <BusinessIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Companies" />
+                            <ListItemText primary="Dispachers" />
                         </ListItemButton>
                     </ListItem>
 
