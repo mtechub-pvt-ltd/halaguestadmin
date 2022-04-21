@@ -10,6 +10,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import driver from './driver.png'
 import hotel from './Images/hotel.png'
 import guest from './Images/guests.png'
+import InsertChartIcon from '@mui/icons-material/InsertChart';
 import dispachers from './Images/dispacher.png'
 import { Avatar } from '@mui/material';
 import axios from 'axios';
@@ -74,6 +75,17 @@ const useStyles = makeStyles({
     }
 })
  const styleBtn = {
+    border: ' none',
+    // color: 'white',
+    // padding: '12px 16px',
+    width:'70px',
+    height:'70px',
+    fontSize: ' 32px',
+    cursor: 'pointer',
+    borderRadius: '24px',
+
+}
+const styleBtn1 = {
     border: ' none',
     // color: 'white',
     // padding: '12px 16px',
@@ -199,7 +211,7 @@ function GridOrders() {
                         </Item>
                         
                         <Item>
-                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn} src={hotel}/>
+                        <Avatar alt="Remy Sharp" variant="square" style={styleBtn1} ><InsertChartIcon/></Avatar>
 
                         </Item>
 

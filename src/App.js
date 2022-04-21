@@ -1,5 +1,5 @@
 import './App.css';
-import  React,{useEffect, useState} from 'react'
+import  React from 'react'
 import Login from './Pages.js/Login';
 import {
   BrowserRouter as Router,

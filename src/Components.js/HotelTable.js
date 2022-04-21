@@ -720,6 +720,8 @@ function HotelTable() {
                                                         <TableCell style={TextColor}>Hotel Name</TableCell>
                                                         <TableCell style={TextColor}>City</TableCell>
                                                         <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                        <TableCell style={TextColor}>Approved</TableCell>
+                                                        
                                                         <TableCell style={TextColor}>Action</TableCell>
                                                     </TableRow>
                                                 </TableHead>
@@ -738,6 +740,9 @@ function HotelTable() {
                                                             <TableCell style={TextColor} >{row.hotelName}</TableCell>
                                                             <TableCell style={TextColor} >{row.city}</TableCell>
                                                             <TableCell style={TextColor} >{row.hotelType}</TableCell>
+                                                            <TableCell style={TextColor} >
+                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                    </TableCell>
 
                                                             <TableCell >
                                                                 <button className={classes.btn} onClick={() => {

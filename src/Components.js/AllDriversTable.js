@@ -1022,6 +1022,8 @@ function AllDriversTable() {
                                                         <TableCell style={TextColor}>Email</TableCell>
                                                         <TableCell style={TextColor}>Phone Number</TableCell>
                                                         <TableCell style={TextColor}>Vehicle Company</TableCell>
+                                                        <TableCell style={TextColor}>Approved</TableCell>
+
                                                         <TableCell style={TextColor}>Action</TableCell>
                                                     </TableRow>
                                                 </TableHead>
@@ -1039,6 +1041,9 @@ function AllDriversTable() {
                                                             <TableCell style={TextColor} >{row.email}</TableCell>
                                                             <TableCell style={TextColor} >{row.phoneNo}</TableCell>
                                                             <TableCell style={TextColor} >{row.ownerCompany.name}</TableCell>
+                                                            <TableCell style={TextColor} >
+                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                    </TableCell>
 
                                                             <TableCell >
                                                                 <button className={classes.btn} onClick={() => {

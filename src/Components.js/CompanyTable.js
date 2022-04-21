@@ -782,6 +782,7 @@ function CompanyTable() {
                                                         <TableCell style={TextColor}>Company Name</TableCell>
                                                         <TableCell style={TextColor}>Email</TableCell>
                                                         <TableCell style={TextColor}>Description</TableCell>
+                                                        <TableCell style={TextColor}>Approved</TableCell>
                                                         <TableCell style={TextColor}>Action</TableCell>
                                                     </TableRow>
                                                 </TableHead>
@@ -800,6 +801,9 @@ function CompanyTable() {
                                                             <TableCell style={TextColor} >{row.companyName}</TableCell>
                                                             <TableCell style={TextColor} >{row.email}</TableCell>
                                                             <TableCell style={TextColor} >{row.description}</TableCell>
+                                                            <TableCell style={TextColor} >
+                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                    </TableCell>
 
                                                             <TableCell >
                                                                 <button className={classes.btn} onClick={() => {

@@ -63,6 +63,11 @@ import { Avatar } from '@material-ui/core';
 import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
+import image from './Images/image.svg'
+const logoStyle = {
+    width: '100%',
+    height: '100%',
+}
 
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -182,11 +187,6 @@ const DialogStyle = {
     // width:'100%'
     height: '400px',
     width: '500px',
-}
-const logoStyle = {
-    width: '31%',
-    height: '100%',
-    marginBottom: '20px'
 }
 // Tabs 
 function TabPanel(props) {
@@ -575,7 +575,10 @@ function ProfileDriver() {
                         setShow6(false);
                         setShow7(false);
                         setShow8(false);
-                    }}>Logo</div>
+                    }}>
+                            <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+
+                    </div>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
                     </IconButton>
@@ -585,7 +588,7 @@ function ProfileDriver() {
 
                 <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(false);
+                            setShow(true);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
@@ -594,7 +597,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            
                         }} >
                             <ListItemIcon>
                                 <DashboardIcon className={classes.iconColor} />
@@ -614,13 +616,12 @@ function ProfileDriver() {
                             setShow6(true);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
 
                         }}>
                             <ListItemIcon>
                                 <DriveEtaIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
+                            <ListItemText primary="Vehicles" />
                         </ListItemButton>
                     </ListItem>
 
@@ -629,6 +630,7 @@ function ProfileDriver() {
                    
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
+                            // navigate('/home')
                             setShow(false);
                             setShow1(false);
                             setShow2(false)
@@ -638,7 +640,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
                             
                         }} >
                             <ListItemIcon>
@@ -658,7 +659,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
                         }}>
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
@@ -678,7 +678,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -698,7 +697,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
 
                         }}>
                             <ListItemIcon>
@@ -721,13 +719,12 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
 
                         }}>
                             <ListItemIcon>
                                 <BusinessIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Companies" />
+                            <ListItemText primary="Dispachers" />
                         </ListItemButton>
                     </ListItem>
 
@@ -742,7 +739,6 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
                         }}>
                             <ListItemIcon>
                                 <StorefrontIcon className={classes.iconColor} />

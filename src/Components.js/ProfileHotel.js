@@ -20,7 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import List from '@mui/material/List';
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import DashboardUser from '../Pages.js/DashboardUser';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompanyTable from './CompanyTable';
@@ -31,10 +31,8 @@ import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ProfileData from './ProfileData';
 
 import React, { useState, useEffect } from 'react'
-import { Container, Paper } from '@mui/material';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -45,27 +43,17 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@material-ui/core/styles'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import axios from 'axios'
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Avatar } from '@material-ui/core';
-import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
 
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 function Item(props) {
     const { sx, ...other } = props;
@@ -177,17 +165,6 @@ const useStyles = makeStyles({
         color: '#9a9cab',
     }
 })
-// Dialog 
-const DialogStyle = {
-    // width:'100%'
-    height: '400px',
-    width: '500px',
-}
-const logoStyle = {
-    width: '31%',
-    height: '100%',
-    marginBottom: '20px'
-}
 // Tabs 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -215,16 +192,7 @@ TabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-const TabsStyle = {
-    color: 'white'
 
-}
 
 
 const drawerWidth = 240;
@@ -297,6 +265,9 @@ function ProfileHotel() {
             setLoading(false)
 
         }, 3000)
+        getAllData();
+        getTrans();
+        getOrders();
     }, [])
 
 
@@ -329,12 +300,7 @@ function ProfileHotel() {
     const headers = {
         'Content-Type': 'application/json'
     }
-    // Tabs 
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
     //   Api 
     const [data, setData] = useState([]);
 
@@ -356,40 +322,8 @@ function ProfileHotel() {
 
 
     }
-    useEffect(() => {
-        getAllData();
-        getTrans();
-        getOrders();
-    }, [])
-
-    const checkbox = async(Did) => {
-        console.log(Did);
-
-       await axios.put('https://hiiguest.com/approve-driver-profile', {
-            phoneNo: Did
-        }, { headers }).then(response => {
-            console.log(response);
-            console.log('working fine')
-            // setShow(true);
-        })
-            .catch(err => {
-                console.log(err)
-            })
-
-
-    }
     // Dialog 
     const [openDiag, setOpenDiag] = React.useState(false);
-    const [scroll, setScroll] = React.useState('paper');
-
-    const handleClickOpenScr = (scrollType) => () => {
-        setOpenDiag(true);
-        setScroll(scrollType);
-    };
-
-    const handleClose = () => {
-        setOpenDiag(false);
-    };
 
     const descriptionElementRef = React.useRef(null);
     React.useEffect(() => {
