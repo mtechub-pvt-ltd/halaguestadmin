@@ -37,6 +37,8 @@ import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
 import ProfileData from './ProfileData';
 import { Avatar } from '@mui/material';
+import CustomerTable from './CustomerTable';
+import TransactionTable from './TransactionTable'
 
 
 const drawerWidth = 240;
@@ -145,6 +147,9 @@ function AppBar1() {
     const [show5, setShow5] = React.useState(false);
     const [show6, setShow6] = React.useState(false);
     const [show7, setShow7] = React.useState(false);
+    const [show8, setShow8] = React.useState(false);
+    const [show9, setShow9] = React.useState(false);
+
     return (
         <>
             {/* AppBar  */}
@@ -189,6 +194,8 @@ function AppBar1() {
                         setShow5(false);
                         setShow6(false);
                         setShow7(false);
+                        setShow8(false);
+                        setShow9(false);
                     }}>
                         <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
                         {/* <img */}
@@ -211,6 +218,8 @@ function AppBar1() {
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <DashboardIcon className={classes.iconColor} />
@@ -222,19 +231,22 @@ function AppBar1() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(false);
+                            setShow1(true);
                             setShow2(false);
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(true);
+                            setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <DriveEtaIcon className={classes.iconColor} />
+                            <BusinessIcon className={classes.iconColor} />
+
                             </ListItemIcon>
-                            <ListItemText primary="Vehicles" />
+                            <ListItemText primary="Dispachers" />
                         </ListItemButton>
                     </ListItem>
 
@@ -245,12 +257,14 @@ function AppBar1() {
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
-                            setShow2(false)
+                            setShow2(true)
                             setShow3(false);
-                            setShow4(true);
+                            setShow4(false);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -268,6 +282,8 @@ function AppBar1() {
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
@@ -278,14 +294,16 @@ function AppBar1() {
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(true);
+                            setShow(false);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
-                            setShow4(false);
+                            setShow4(true);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -298,12 +316,14 @@ function AppBar1() {
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
-                            setShow2(true);
+                            setShow2(false);
                             setShow3(false);
                             setShow4(false);
-                            setShow5(false);
+                            setShow5(true);
                             setShow6(false);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
@@ -318,19 +338,21 @@ function AppBar1() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(true);
+                            setShow1(false);
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(false);
+                            setShow6(true);
                             setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <BusinessIcon className={classes.iconColor} />
+                            <DriveEtaIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
+                            <ListItemText primary="Vehicles" />
                         </ListItemButton>
                     </ListItem>
 
@@ -341,9 +363,11 @@ function AppBar1() {
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
-                            setShow5(true);
+                            setShow5(false);
                             setShow6(false);
-                            setShow7(false);
+                            setShow7(true);
+                            setShow8(false);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <StorefrontIcon className={classes.iconColor} />
@@ -351,6 +375,26 @@ function AppBar1() {
                             <ListItemText primary="Hotel Types" />
                         </ListItemButton>
                     </ListItem>
+
+                    {/* <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                            setShow8(false);
+                            setShow9(true);
+                        }}>
+                            <ListItemIcon>
+                                <StorefrontIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Transactions" />
+                        </ListItemButton>
+                    </ListItem> */}
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
@@ -370,7 +414,9 @@ function AppBar1() {
                             setShow4(false);
                             setShow5(false);
                             setShow6(false);
-                            setShow7(true);
+                            setShow7(false);
+                            setShow8(true);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <SettingsIcon className={classes.iconColor} />
@@ -411,12 +457,14 @@ function AppBar1() {
             {/* <ProfileData/> */}
                 {show ? <DashboardUser /> : null}
                 {show1 ? <CompanyTable /> : null}
-                {show2 ? <OrderTable /> : null}
+                {show2 ? <HotelTable /> : null}
                 {show3 ? <AllDriversTable /> : null}
-                {show4 ? <HotelTable /> : null}
-                {show5 ? <HotelTypesTable /> : null}
+                {show4 ? < CustomerTable/> : null}
+                {show5 ? < OrderTable/> : null}
                 {show6 ? <VehicleTable /> : null}
-                {show7 ? <Settings /> : null}
+                {show7 ? <HotelTypesTable /> : null}
+                {show8 ? <Settings /> : null}
+                {show9 ? <TransactionTable /> : null}
 
 
             </Main>

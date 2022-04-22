@@ -17,6 +17,8 @@ import HotelIcon from '@mui/icons-material/Hotel';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
+import CustomerTable from './CustomerTable';
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import List from '@mui/material/List';
@@ -52,6 +54,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useRef } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
+import image from './Images/image.svg'
+import { Avatar } from '@material-ui/core';
+
+
+const logoStyle = {
+    width: '100%',
+    height: '100%',
+}
+
 
 
 
@@ -294,7 +305,8 @@ function ProfileHotel() {
     const [show5, setShow5] = React.useState(false);
     const [show6, setShow6] = React.useState(false);
     const [show7, setShow7] = React.useState(false);
-    const [show8, setShow8] = React.useState(true);
+    const [show8, setShow8] = React.useState(false);
+    const [show9, setShow9] = React.useState(true);
 
     const { state } = useLocation();
     const headers = {
@@ -434,7 +446,7 @@ function ProfileHotel() {
             >
                 <DrawerHeader className={classes.head}>
                     <div className={classes.Header} onClick={() => {
-                        setShow(true);
+                        setShow(false);
                         setShow1(false);
                         setShow2(false)
                         setShow3(false);
@@ -443,7 +455,12 @@ function ProfileHotel() {
                         setShow6(false);
                         setShow7(false);
                         setShow8(false);
-                    }}>Logo</div>
+                        setShow9(false);
+                    }}>
+                        <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+                        {/* <img */}
+
+                    </div>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
                     </IconButton>
@@ -453,7 +470,7 @@ function ProfileHotel() {
 
                 <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(false);
+                            setShow(true);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
@@ -462,7 +479,7 @@ function ProfileHotel() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <DashboardIcon className={classes.iconColor} />
@@ -474,19 +491,20 @@ function ProfileHotel() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(false);
+                            setShow1(true);
                             setShow2(false);
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(true);
+                            setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <DriveEtaIcon className={classes.iconColor} />
+                            <BusinessIcon className={classes.iconColor} />
+
                             </ListItemIcon>
                             <ListItemText primary="Dispachers" />
                         </ListItemButton>
@@ -499,15 +517,14 @@ function ProfileHotel() {
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
-                            setShow2(false)
+                            setShow2(true)
                             setShow3(false);
-                            setShow4(true);
+                            setShow4(false);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
-                            
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -526,7 +543,7 @@ function ProfileHotel() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
@@ -537,16 +554,16 @@ function ProfileHotel() {
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(true);
+                            setShow(false);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
-                            setShow4(false);
+                            setShow4(true);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -559,14 +576,14 @@ function ProfileHotel() {
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
-                            setShow2(true);
+                            setShow2(false);
                             setShow3(false);
                             setShow4(false);
-                            setShow5(false);
+                            setShow5(true);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
@@ -581,21 +598,21 @@ function ProfileHotel() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(true);
+                            setShow1(false);
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(false);
+                            setShow6(true);
                             setShow7(false);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <BusinessIcon className={classes.iconColor} />
+                            <DriveEtaIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Companies" />
+                            <ListItemText primary="Vehicles" />
                         </ListItemButton>
                     </ListItem>
 
@@ -606,11 +623,11 @@ function ProfileHotel() {
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
-                            setShow5(true);
+                            setShow5(false);
                             setShow6(false);
-                            setShow7(false);
+                            setShow7(true);
                             setShow8(false);
-                            navigate('/home')
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <StorefrontIcon className={classes.iconColor} />
@@ -637,8 +654,9 @@ function ProfileHotel() {
                             setShow4(false);
                             setShow5(false);
                             setShow6(false);
-                            setShow7(true);
-                            setShow8(false);
+                            setShow7(false);
+                            setShow8(true);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <SettingsIcon className={classes.iconColor} />
@@ -677,15 +695,16 @@ function ProfileHotel() {
             </Drawer>
             <Main open={open} style={MarginTop} className={classes.BackGround}>
             {/* <ProfileData/> */}
-                {show ? <DashboardUser /> : null}
+            {show ? <DashboardUser /> : null}
                 {show1 ? <CompanyTable /> : null}
-                {show2 ? <OrderTable /> : null}
+                {show2 ? <HotelTable /> : null}
                 {show3 ? <AllDriversTable /> : null}
-                {show4 ? <HotelTable /> : null}
-                {show5 ? <HotelTypesTable /> : null}
+                {show4 ? < CustomerTable/> : null}
+                {show5 ? < OrderTable/> : null}
                 {show6 ? <VehicleTable /> : null}
-                {show7 ? <Settings /> : null}
-                {show8 ?   
+                {show7 ? <HotelTypesTable /> : null}
+                {show8 ? <Settings /> : null}
+                {show9 ?   
 
 <>
 {/* {loading ?

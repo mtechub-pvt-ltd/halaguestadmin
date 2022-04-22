@@ -151,34 +151,6 @@ const TabsStyle = {
 
 }
 
-
-//end
-// function createData(id, name, email, gender) {
-//     return { id, name, email, gender };
-// }
-
-// const rows = [
-//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-// ];
-// Dialog data 
-// function createProfile(name, data) {
-//     return { name, data };
-// }
-
-// const rows1 = [
-//     createProfile('User Id', 1),
-//     createProfile('User Name', 'Usama'),
-//     createProfile('Full Name', 'Muhammad Usama'),
-//     createProfile('Gender', 'Male'),
-//     createProfile('Date of Birth', '--'),
-//     createProfile('Country', '--'),
-//     createProfile('Email', '--'),
-//     createProfile('Bio', '--'),
-//     createProfile('Genre', '--'),
-// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -295,6 +267,7 @@ function HotelTable() {
     useEffect(() => {
         getAllData();
         getAllData1();
+        getAllData2();
     }, []);
     // Add 
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -375,11 +348,11 @@ function HotelTable() {
                 console.log(err)
             })
     }
-     //Get Specific API Axios
+     //Get Specific API Axios Approved Hotel
      const [data1, setData1] = useState([]);
      const [loading1, setLoading1] = useState(false);
      const getAllData1 = async () => {
-         await axios.get(`${url}get-all-hotels`)
+         await axios.get(`${url}get-approved-hotels`)
              .then((response) => {
                  console.log('Approve data')
                  const allData1 = response.data;
@@ -391,6 +364,23 @@ function HotelTable() {
              .catch(error => console.error(`Error:${error}`));
  
      }
+      //Get Specific API Axios Unapproved Hotel
+      const [data2, setData2] = useState([]);
+      const [loading2, setLoading2] = useState(false);
+      const getAllData2 = async () => {
+          await axios.get(`${url}get-unapproved-hotels`)
+              .then((response) => {
+                  console.log('UnApprove data')
+                  const allData1 = response.data;
+                  console.log(allData1);
+                  setData2(response.data);
+                  setLoading2(true)
+                  // }
+              })
+              .catch(error => console.error(`Error:${error}`));
+  
+      }
+  
  
     return (
         <div>
@@ -656,7 +646,7 @@ function HotelTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.profileApproved == true).map((row) => (
+                                                    {loading1 && data1.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -727,7 +717,7 @@ function HotelTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.profileApproved == false).map((row) => (
+                                                    {loading2 && data2.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

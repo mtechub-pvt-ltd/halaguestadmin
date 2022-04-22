@@ -20,7 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import List from '@mui/material/List';
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import DashboardUser from '../Pages.js/DashboardUser';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompanyTable from './CompanyTable';
@@ -31,11 +31,8 @@ import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ProfileData from './ProfileData';
-
 
 import React, { useState, useEffect } from 'react'
-import { Container, Paper } from '@mui/material';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -46,26 +43,18 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@material-ui/core/styles'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import axios from 'axios'
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
-import CustomerTable from './CustomerTable';
 import image from './Images/image.svg'
 import { Avatar } from '@material-ui/core';
+import CustomerTable from './CustomerTable';
 
 
 const logoStyle = {
@@ -74,7 +63,7 @@ const logoStyle = {
 }
 
 
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
+
 
 function Item(props) {
     const { sx, ...other } = props;
@@ -186,15 +175,6 @@ const useStyles = makeStyles({
         color: '#9a9cab',
     }
 })
-const imgStyle = {
-    width: '50px',
-}
-// Dialog 
-const DialogStyle = {
-    // width:'100%'
-    height: '400px',
-    width: '500px',
-}
 // Tabs 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -222,16 +202,7 @@ TabPanel.propTypes = {
     value: PropTypes.number.isRequired,
 };
 
-function a11yProps(index) {
-    return {
-        id: `simple-tab-${index}`,
-        'aria-controls': `simple-tabpanel-${index}`,
-    };
-}
-const TabsStyle = {
-    color: 'white'
 
-}
 
 
 const drawerWidth = 240;
@@ -293,7 +264,10 @@ const override = {
     //   borderColor: 'red',
 }
 const color = "white"
-function ProfileCompany() {
+const imgStyle = {
+    width: '50px',
+}
+function ProfileVehicle() {
     const [loading, setLoading] = useState("");
     useEffect(() => {
         setLoading(true)
@@ -301,6 +275,7 @@ function ProfileCompany() {
             setLoading(false)
 
         }, 3000)
+        getAllData();
     }, [])
 
 
@@ -335,19 +310,16 @@ function ProfileCompany() {
     const headers = {
         'Content-Type': 'application/json'
     }
-    // Tabs 
-    const [value, setValue] = React.useState(0);
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
     //   Api 
     const [data, setData] = useState([]);
 
     const getAllData = async() => {
-        const phoneNo = state.post_id;
-        await axios.post('https://hiiguest.com/get-company', {
-            phoneNo: phoneNo
+        // const id = state.post_id;
+        await axios.get('https://hiiguest.com/get-vehicle', {
+            params: {
+                _id:state.post_id
+              }
         }, { headers }).then(response => {
             console.log('response')
             console.log(response);
@@ -362,140 +334,7 @@ function ProfileCompany() {
 
 
     }
-      //  Payment Details Api 
-      const [data1, setData1] = useState([]);
-
-      const getPaymentData = async() => {
-          const phoneNo = state.post_id;
-          await axios.post('https://hiiguest.com/get-company', {
-              phoneNo: phoneNo
-          }, { headers }).then(response => {
-              console.log('response Payment')
-              console.log(response.data.paymentDetails);
-              setData1(response.data.paymentDetails);
-              console.log(data1);
-  
-              // setShow(true);
-          })
-              .catch(err => {
-                  console.log(err)
-              })
-  
-  
-      }
-      // Documents Api 
-      const [data2, setData2] = useState([]);
-
-      const getDocumentData = async() => {
-          const phoneNo = state.post_id;
-          await axios.post('https://hiiguest.com/get-company', {
-              phoneNo: phoneNo
-          }, { headers }).then(response => {
-              console.log('response Documents')
-              console.log(response.data.documents);
-              setData2(response.data.documents);
-              console.log(data2);
-  
-              // setShow(true);
-          })
-              .catch(err => {
-                  console.log(err)
-              })
-  
-  
-      }
-    useEffect(() => {
-        getAllData();
-        getTrans();
-        getOrders();
-        getPaymentData();
-        getDocumentData();
-    }, [])
-
-    // Dialog 
-    const [openDiag, setOpenDiag] = React.useState(false);
-    const [scroll, setScroll] = React.useState('paper');
-
-    const handleClickOpenScr = (scrollType) => () => {
-        setOpenDiag(true);
-        setScroll(scrollType);
-    };
-
-    const handleClose = () => {
-        setOpenDiag(false);
-    };
-
-    const descriptionElementRef = React.useRef(null);
-    React.useEffect(() => {
-        if (openDiag) {
-            const { current: descriptionElement } = descriptionElementRef;
-            if (descriptionElement !== null) {
-                descriptionElement.focus();
-            }
-        }
-    }, [openDiag]);
-    // Document print 
-    let componentRef = useRef(null);
-    // Transaction Dialog 
-     // Add 
-     const [openTrans, setOpenTrans] = React.useState(false);
-
-     const handleClickOpenTrans = () => {
-        setOpenTrans(true);
-     };
- 
-     const handleCloseTrans = () => {
-        setOpenTrans(false);
-     };
-     // Order Dialog 
-     // Add 
-     const [openAdd, setOpenAdd] = React.useState(false);
-
-     const handleClickOpenAdd = () => {
-         setOpenAdd(true);
-     };
- 
-     const handleCloseAdd = () => {
-         setOpenAdd(false);
-     };
-    //  Orders Api 
-    const [ordersdata, setOrdersData] = useState([]);
-    const [ordersloading, setOrdersLoading] = useState(false);
-    const getTrans = async () => {
-        await axios.get(`https://hiiguest.com/get-company-orders`,{
-            params: {
-                phoneNo:state.post_id
-              }
-        })
-            .then((response) => {
-                console.log('Orders')
-                const allData = response.data;
-                
-                console.log(allData);
-                setOrdersData(response.data);
-                setOrdersLoading(true)
-            })
-            .catch(error => console.error(`Error:${error}`));
-
-    }
-     //  Transaction Api 
-     const [transdata, setTransData] = useState([]);
-     const [transloading, setTransLoading] = useState(false);
-     const getOrders = async () => {
-        await axios.get('https://hiiguest.com/get-company-history', {
-            params: {
-              phoneNo:state.post_id
-            }
-          })
-             .then((response) => {
-                 console.log('History')
-                 const allData = response.data;
-                 console.log(allData);
-                 setTransData(response.data);
-                 setTransLoading(true);
-             })
-             .catch(error => console.error(`Error:${error}`));
-     }
+   
 
     return (
         <>
@@ -791,8 +630,8 @@ function ProfileCompany() {
                 {show5 ? < OrderTable/> : null}
                 {show6 ? <VehicleTable /> : null}
                 {show7 ? <HotelTypesTable /> : null}
-                {show8 ? <Settings /> : null} 
-                {show9 ?
+                {show8 ? <Settings /> : null}
+                {show9 ?   
 
 <>
 {/* {loading ?
@@ -809,145 +648,9 @@ function ProfileCompany() {
                         sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                     >
                         <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Dispacher Profile</Typography>
+                            <Typography variant='h6'>Vehicle Profile</Typography>
                         </Item>
-                        <Item>
-                                    {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success'
-                                     onClick={handleClickOpenTrans} 
-                                     >
-                                    Transaction
-                                    </Button>
-                                    {/* Dialog */}
-                                    <Dialog className={classes.DialogWidth} open={openTrans} onClose={handleCloseTrans}>
-                                        <DialogTitle>Transaction Details</DialogTitle>
-                                        <DialogContent>
-                                            {/* Call Api Transactions */}
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12} md={12}>
-
-                                                <TableContainer >
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={TextColor}>Transaction No</TableCell>
-                                                <TableCell style={TextColor}>Time</TableCell>
-                                                <TableCell style={TextColor}>Price</TableCell>
-                                                
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-
-                                             {transloading && transdata.map((row) => ( 
-                                                <TableRow
-                                                    key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {row.transactionNo}
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} >
-                                                        {row.time}
-                                                        </TableCell>
-                                                    <TableCell style={TextColor} >{row.price}</TableCell>
-                                                   
-                                                    
-                                                </TableRow>
-                                             ))} 
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-
-
-
-                                                    {/* End  */}
-                                                </Grid>
-                                                
-                                            </Grid>
-                                            
-
-
-                                        </DialogContent>
-                                        
-                                    </Dialog>
-                                    {/* Dialog End  */}
-                        </Item>
-                        <Item>
-                                    {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success'
-                                    onClick={handleClickOpenAdd}
-                                    //  onClick={handleClickOpenAdd} 
-                                     >
-                                    Orders
-                                    </Button>
-                                    {/* Dialog */}
-                                    <Dialog className={classes.DialogWidth} open={openAdd} onClose={handleCloseAdd}>
-                                        <DialogTitle>Order Details</DialogTitle>
-                                        <DialogContent>
-                                            {/* Call Api Transaction */}
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12} md={12}>
-
-                                                <TableContainer >
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={TextColor}>Order No</TableCell>
-                                                <TableCell style={TextColor}>Image</TableCell>
-                                                <TableCell style={TextColor}>Name</TableCell>
-                                                <TableCell style={TextColor}>Phone Number</TableCell>
-                                                <TableCell style={TextColor}>Email</TableCell>
-                                                <TableCell style={TextColor}>City</TableCell>
-                                                <TableCell style={TextColor}>Hotel type</TableCell>
-                                                <TableCell style={TextColor}>Job Title</TableCell>
-                                                <TableCell style={TextColor}>Vehicle Name</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-
-                                             {ordersloading && ordersdata.map((row) => ( 
-                                                <TableRow
-                                                    key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {row.orderNo}
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} >
-                                            <img style={imgStyle} src={`https://hiiguest.com/${row.orderBy.image}`} />
-
-                                                        {/* {row.orderBy.image} */}
-                                                        </TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.name}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.phoneNo}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.email}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.city}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.hotelType}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.jobTitle}</TableCell>
-                                                    <TableCell style={TextColor} >{row.selectedVehicle.name}</TableCell>
-                                                    
-                                                </TableRow>
-                                             ))} 
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
-
-
-
-                                                    {/* End  */}
-                                                </Grid>
-                                                
-                                            </Grid>
-                                            
-
-
-                                        </DialogContent>
-                                        
-                                    </Dialog>
-                                    {/* Dialog End  */}
-                        </Item>
+                      
 
                     </Box>
                 </Grid>
@@ -957,16 +660,45 @@ function ProfileCompany() {
                     <TableContainer >
                                         <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                                             <TableBody>
+                                            <TableRow
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell style={TextColor} component="th" scope="row">
+                                                        Vehicle Image
+
+                                                    </TableCell>
+                                                    <TableCell style={TextColor} component="th" scope="row">
+                                                        {/* {data.hotelName} */}
+                                                        {/* Image  */}
+                                            <img style={imgStyle} src={`https://hiiguest.com/${data.image}`} />
+
+
+                                                    </TableCell>
+                                                    
+                                                </TableRow>
 
                                                 <TableRow
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell style={TextColor} component="th" scope="row">
-                                                       Company Name
+                                                        Vehicle Name
 
                                                     </TableCell>
                                                     <TableCell style={TextColor} component="th" scope="row">
-                                                        {data.companyName}
+                                                        {data.name}
+
+                                                    </TableCell>
+                                                    
+                                                </TableRow>
+                                                <TableRow
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell style={TextColor} component="th" scope="row">
+                                                        Seats
+
+                                                    </TableCell>
+                                                    <TableCell style={TextColor} component="th" scope="row">
+                                                        {data.seats}
 
                                                     </TableCell>
                                                     
@@ -976,63 +708,19 @@ function ProfileCompany() {
                                                     sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                                 >
                                                     <TableCell style={TextColor} component="th" scope="row">
-                                                        Email
+                                                        Price
 
                                                     </TableCell>
                                                     <TableCell style={TextColor} component="th" scope="row">
-                                                        {data.email}
+                                                        {data.price}
 
                                                     </TableCell>
                                                     
                                                 </TableRow>
                                                 {/* Row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Phone Number
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.phoneNo}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* // ))} */}
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                       Gender
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.gender}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Description
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.description}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                  {/* Row  */}
+                                                
                                                  
-                                                 
-                                                {/* Row  */}
-                                               
+                                                
                                                 
                                             </TableBody>
                                         </Table>
@@ -1040,143 +728,8 @@ function ProfileCompany() {
 
 
                 </Grid>
-                <Grid item xs={12} md={12}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Payment Details</Typography>
-                        </Item>
-
-                    </Box>
-                </Grid>
-                {/* TABLE Grid  */}
-                <Grid item xs={12} md={12}>
-                    {/* Table container  */}
-                    <TableContainer >
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                            <TableBody>
-
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Bank Name
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {data1.bankName}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Second row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Account Number
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.accountNumber}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Account Holder Name
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.accountHolderName}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* // ))} */}
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                      Swift Code
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.swiftCode}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                     ibanNo
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.ibanNo}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-
-
-                </Grid>
-                {/* Documents */}
-                <Grid item xs={12} md={12}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Documents</Typography>
-                        </Item>
-
-                    </Box>
-                </Grid>
-                {/* TABLE Grid  */}
-                <Grid item xs={12} md={12}>
-                    {/* Table container  */}
-                    <TableContainer >
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                            <TableBody>
-
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Company Licence
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                            <img style={imgStyle} src={`https://hiiguest.com/${data2.companyLicense}`} />
-                                                       
-                                                        {/* {data2.companyLicense} */}
-
-                                                    </TableCell>
-                                                   
-                                                    
-                                                </TableRow>
-                                              
-                                              
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
-
-
-                </Grid>
-                {/* Seciong Grid 
-                 */}
+                
+            
               
 
             </Grid>
@@ -1197,4 +750,4 @@ function ProfileCompany() {
     )
 }
 
-export default ProfileCompany
+export default ProfileVehicle

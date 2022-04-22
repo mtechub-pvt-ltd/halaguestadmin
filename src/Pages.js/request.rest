@@ -13,5 +13,7 @@
 #             "city":"city" ,
 #             "description":"description"
 # }
-GET https://hiiguest.com/get-all-customers HTTP/1.1
+GET  https://hiiguest.com/get-hotel-types HTTP/1.1
+
+
 

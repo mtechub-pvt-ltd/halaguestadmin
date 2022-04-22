@@ -19,6 +19,8 @@ import Print from './Pages.js/Print'
 import ProfileHotel from './Components.js/ProfileHotel';
 import ProfileCompany from './Components.js/ProfileCompany'
 import ProfileCustomer from './Components.js/ProfileCustomer';
+import ProfileVehicle from './Components.js/ProfileVehicle';
+import ProfileOrders from './Components.js/ProfileOrders'
 
 const useStyles = makeStyles({
   root1: {
@@ -66,6 +68,12 @@ function App() {
           </Routes>
           <Routes>
             <Route exact path="/profilecustomer" element={<ProfileCustomer />}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/profilevehicle" element={<ProfileVehicle />}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/profileorders" element={<ProfileOrders />}></Route>
           </Routes>
           <Routes>
             <Route exact path="/formpost" element={<FormPost/>}></Route>

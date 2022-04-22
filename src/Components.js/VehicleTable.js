@@ -11,24 +11,32 @@ import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
-import Button from '@mui/material/Button';
-import AddIcon from '@mui/icons-material/Add';
-
 //dialog
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
+import { Button } from '@mui/material';
+import DialogContentText from '@mui/material/DialogContentText';
+import ImageUpload from '../Pages.js/ImageUpload'
+// Tabs 
+import Checkbox from '@mui/material/Checkbox';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+
 import Img from './sir.jpg'
 // Alert 
 import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
+import { useNavigate } from 'react-router-dom';
+
 // Axios 
 import axios from 'axios'
+
+const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -37,20 +45,20 @@ const useStyles = makeStyles({
         marginTop: '45px',
         padding: '30px',
     }, btn: {
-        backgroundColor: '#83d8ae',
+        backgroundColor: 'transparent',
         border: ' none',
         color: 'white',
-        padding: '12px 16px',
+        // padding: '12px 16px',
         fontSize: ' 16px',
         cursor: 'pointer',
         borderRadius: '5px'
     }, btn1: {
-        backgroundColor: '#fc9494',
+        backgroundColor: 'transparent',
         border: ' none',
-        color: 'white',
-        padding: '12px 16px',
+        color: '#fc9494',
+        // padding: '12px 16px',
         fontSize: ' 16px',
-        marginLeft: '10px',
+        // marginLeft: '10px',
         cursor: 'pointer',
         borderRadius: '5px',
     },
@@ -77,21 +85,100 @@ const useStyles = makeStyles({
     },
     dialogTitle: {
         marginTop: '30px',
+    }, inputStyle: {
+        width: '100%',
+        padding: '5px',
+        marginTop: '10px',
+        marginBottom: '5px',
+        borderRadius: '5px',
+        border: '1px solid ',
+        height: '20px'
+
+    }, TextStyle: {
+        color: 'black',
+        marginTop: '10px',
+        fontWeight: 'bold'
+    }, gridS: {
+        // padding:'20px'
+    }, btnSubmit: {
+        backgroundColor: '#36f195',
+        padding: '10px',
+        fontSize: '15px',
+        border: 'transparent',
+        borderRadius: '5px',
+        color: 'white',
+        marginLeft: '234px'
     }
 })
 const TextColor = {
     color: '#9a9cab',
 }
-const divStyle = {
-    padding: '10px',
+// Tabs 
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
+const TabsStyle = {
+    color: 'white'
 
 }
-const inputS = {
-    padding: '10px',
-    marginBottom: '10px',
-    borderRadius: '13px'
-}
 
+
+//end
+// function createData(id, name, email, gender) {
+//     return { id, name, email, gender };
+// }
+
+// const rows = [
+//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+// ];
+// Dialog data 
+// function createProfile(name, data) {
+//     return { name, data };
+// }
+
+// const rows1 = [
+//     createProfile('User Id', 1),
+//     createProfile('User Name', 'Usama'),
+//     createProfile('Full Name', 'Muhammad Usama'),
+//     createProfile('Gender', 'Male'),
+//     createProfile('Date of Birth', '--'),
+//     createProfile('Country', '--'),
+//     createProfile('Email', '--'),
+//     createProfile('Bio', '--'),
+//     createProfile('Genre', '--'),
+// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -164,57 +251,32 @@ const imgStyle = {
     width: '50px',
 }
 function VehicleTable() {
+     // Tabs 
+     const [value, setValue] = React.useState(0);
+
+     const handleChange = (event, newValue) => {
+         setValue(newValue);
+     };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
-    const [id, setId] = React.useState(false);
+
+    const navigate = useNavigate();
 
     const handleClickOpen = (idData) => {
-        setOpen(true);
         console.log(idData);
-        // Call API TO GET BY ID 
-        // setId(idData);
-
+        // setShow(false);
+        navigate('/profilevehicle',
+            {
+                state: {
+                    post_id: idData,
+                }
+            });
     };
-
     const handleClose = () => {
         setOpen(false);
     };
-    // Add Vehicle 
-    const [open2, setOpen2] = React.useState(false);
-
-    const handleClickOpen2 = () => {
-        setOpen2(true);
-    };
-
-    const handleClose2 = () => {
-        setOpen2(false);
-    };
-    const [show, setShow] = React.useState(false);
-    const [name, setName] = useState("");
-    const [seats, setSeats] = useState("");
-    const [price, setPrice] = useState("");
-    const headers = {
-        'Content-Type': 'application/json'
-    }
-    const submitHandler = (e) => {
-        e.preventDefault()
-        // POst Request 
-        axios.post('https://hiiguest.com/create-vehicle', {
-            name: name,
-            seats: seats,
-            price: price
-        }, { headers }).then(response => {
-            console.log(response)
-            // window.alert('Vehicle Creted Successfully')
-            setShow(true);
-        })
-            .catch(err => {
-                console.log(err)
-            })
-    }
-    // Alert 
-    const [open1, setOpen1] = React.useState(false);
+  
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -223,7 +285,7 @@ function VehicleTable() {
         axios.get(`${url}get-all-vehicles`)
             .then((response) => {
                 const allData = response.data;
-                // console.log(allData);
+                console.log(allData);
                 setData(response.data);
                 setLoading(true)
             })
@@ -234,26 +296,80 @@ function VehicleTable() {
         getAllData();
         getAllData1();
     }, []);
+    // Add 
+    const [openAdd, setOpenAdd] = React.useState(false);
 
-    //Get Specific API Axios
-    const [data1, setData1] = useState([]);
-    const [loading1, setLoading1] = useState(false);
-    const getAllData1 = () => {
-        axios.get(`${url}get-all-companies`)
-            .then((response) => {
-                const allData = response.data;
-                console.log(allData);
-                setData1(response.data);
-                setLoading1(true)
-            })
-            .catch(error => console.error(`Error:${error}`));
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
 
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
+    const headers = {
+        'Content-Type': 'application/json'
     }
-    //  useEffect(() => {
-    //      getAllData1();
-    //  }, []);
+    const [image, setImage] = useState("");
+    const [Vname, setVname] = useState("");
+    const [seats, setSeats] = useState("");
+    const [price, setPrice] = useState("");
 
+
+    const submitHandler = (e) => {
+        e.preventDefault()
+        // POst Request 
+        axios.post('https://hiiguest.com/create-vehicle', {
+            image: image,
+            name: Vname,
+            seats: seats,
+            price: price,
+            
+
+        }, { headers }).then(response => {
+            console.log(response)
+            window.alert('Created Vehicle Successfully')
+        })
+            .catch(err => {
+                console.log(err)
+            })
+    }
    
+     // Delete 
+       // Alert 
+    const [open1, setOpen1] = React.useState(false);
+     const deleteData = (id) => {
+        console.log('deleting phone no')
+        console.log(id);
+        axios.delete('https://hiiguest.com/delete-vehicle', {
+            data: {
+                _id: id
+            }
+        }, { headers })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setOpen1(true);
+            }).catch(err => {
+                console.log(err)
+            })
+    }
+     //Get Specific API Axios
+     const [data1, setData1] = useState([]);
+     const [loading1, setLoading1] = useState(false);
+     const getAllData1 = async () => {
+         await axios.get(`${url}get-all-hotels`)
+             .then((response) => {
+                 console.log('Approve data')
+                 const allData1 = response.data;
+                 console.log(allData1);
+                 setData1(response.data);
+                 setLoading1(true)
+                 // }
+             })
+             .catch(error => console.error(`Error:${error}`));
+ 
+     }
+ 
     return (
         <div>
             <Grid container spacing={2}>
@@ -289,145 +405,145 @@ function VehicleTable() {
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Vehicles</Typography>
                                 </Item>
+                                {/* Add Hotel  */}
                                 <Item>
-                                    {/* <button className={classes.btn}
-                                        onClick={handleClickOpen2}
-                                    >Add
-                                    </button> */}
-                                    <Button variant="contained" color='success'  startIcon={<AddIcon />} onClick={handleClickOpen2}>
-                                        Vehicle
+                                    {/* startIcon={<AddIcon />} */}
+                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                        + Vehicle
                                     </Button>
-                                </Item>
-                                <Dialog open={open2} onClose={handleClose2}>
-                                    <DialogTitle>Fill Vehicle Data</DialogTitle>
+                                    {/* Dialog */}
+                                    <Dialog open={openAdd} onClose={handleCloseAdd}>
+                                        <DialogTitle>Add Hotel</DialogTitle>
+                                        <DialogContent>
+                                            <DialogContentText>
+                                                Fill All Fields to add new Vehicle
+                                            </DialogContentText>
+                                            {/* Form  */}
 
-                                    <DialogContent>
-                                        <DialogContentText>
-                                            {show ? <Alert severity="success">Vehicle Created Successfully</Alert> : null}
-                                        </DialogContentText>
-                                        <div style={divStyle}>
                                             <form onSubmit={submitHandler}>
-                                                <div>
+                                                <Grid container spacing={2} className={classes.gridS}>
+                                                <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Add Image
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        {/* <input type="text" name="image" className={classes.inputStyle} value={image} placeholder="image"
+                        onChange={(e) => setImage(e.target.value) 
+                        } /> */}
+                                                        <ImageUpload />
+                                                    </Grid>
+                                                
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Vehicle Name :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={Vname} placeholder="Enter Vehicle Name"
+                                                            onChange={
+                                                                (e) => setVname(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                             Seats :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={seats} placeholder="Enter Seats"
+                                                            onChange={
+                                                                (e) => setSeats(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
 
-                                                    <input type="text" style={inputS} name="name" value={name} placeholder="Name"
-                                                        onChange={
-                                                            (e) => setName(e.target.value)
-                                                        } />
+                                                           Price:
+                                                        </div>
+                                                    </Grid>
 
-
-                                                </div>
-                                                <div>
-                                                    <input type="text" style={inputS} name="seats" value={seats} placeholder="Seats"
-                                                        onChange={(e) => setSeats(e.target.value)
-                                                        } />
-                                                </div>
-                                                <div>
-                                                    <input type="text" style={inputS} name="price" value={price} placeholder="Price"
-                                                        onChange={(e) => setPrice(e.target.value)
-                                                        } />
-                                                </div>
-                                                <button className={classes.btn} type='submit'>Submit</button>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="Name" className={classes.inputStyle} value={price} placeholder="Enter Price"
+                                                            onChange={(e) => setPrice(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                   
+                                                    <Grid item xs={6} md={6} >
+                                                        <button className={classes.btnSubmit} type='submit'>Submit</button>
+                                                    </Grid>
+                                                    
+                                                </Grid>
                                             </form>
-                                        </div>
 
-                                    </DialogContent>
-                                </Dialog>
+                                            {/* End form  */}
+                                        </DialogContent>
+                                        {/* <DialogActions>
+                                            <Button onClick={handleCloseAdd}>Cancel</Button>
+                                            <Button onClick={handleCloseAdd}>Subscribe</Button>
+                                        </DialogActions> */}
+                                    </Dialog>
+                                    {/* Dialog End  */}
+                                </Item>
 
                             </Box>
                         </Grid>
+                        {/* Tabs  */}
+                        <Grid item xs={12} md={12}>
 
-                    </Grid>
-                    {/* Table  */}
-                    <TableContainer >
+<Box sx={{ width: '100%' }}>
+    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+            <Tab style={TabsStyle} label="View All Vehicles" {...a11yProps(0)} />
+        </Tabs>
+    </Box>
+    <TabPanel value={value} index={0}>
+        {/* Table  */}
+        <TableContainer >
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={TextColor}>Vehicle Image</TableCell>
-                                    <TableCell style={TextColor}>Name</TableCell>
+                                    <TableCell style={TextColor}>Image</TableCell>
+                                    <TableCell style={TextColor}> Name</TableCell>
                                     <TableCell style={TextColor}>Seats</TableCell>
                                     <TableCell style={TextColor}>Price</TableCell>
                                     <TableCell style={TextColor}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
+
+
                                 {loading && data.map((row) => (
                                     <TableRow
                                         key={row.name}
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell style={TextColor} component="th" scope="row">
+
                                             <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
                                         </TableCell>
                                         <TableCell style={TextColor} >{row.name}</TableCell>
                                         <TableCell style={TextColor} >{row.seats}</TableCell>
+                                        
                                         <TableCell style={TextColor} >{row.price}</TableCell>
+                                       
                                         <TableCell >
-                                            {/* onClick={handleClickOpen(row.orderNo)}  */}
                                             <button className={classes.btn} onClick={() => {
-                                                handleClickOpen(row.orderNo)
-                                            }}>
+                                                                    handleClickOpen(row._id)
+                                                                }}>
                                                 < VisibilityIcon />
                                             </button>
                                             {/* Dialog  */}
-                                            <BootstrapDialog className={classes.dialogWidth}
-                                                onClose={handleClose}
-                                                aria-labelledby="customized-dialog-title"
-                                                open={open}
-                                            >
-                                                <BootstrapDialogTitle className={classes.dialogTitle} id="customized-dialog-title" onClose={handleClose}>
-                                                    Order Details
-                                                </BootstrapDialogTitle>
-                                                <DialogContent >
-                                                    {/* Table  */}
-                                                    <TableContainer >
-                                                        <Table aria-label="simple table" >
-                                                            {/* {rows1.map((row) => ( */}
-                                                            {/* <TableHead>
-                                                                <TableRow>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <div className={classes.CardStyle}>
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                Profile Image
-                                                                            </Typography>
-                                                                        </div>
-                                                                    </TableCell>
-                                                                    <TableCell className={classes.TextColor1}>
-                                                                        <Avatar alt="Image" className={classes.ProfileImage} variant="square" src={Img} />
-                                                                    </TableCell>
-
-                                                                </TableRow>
-                                                            </TableHead> */}
-                                                            <TableBody>
-
-                                                                {loading1 && data1.map((row) => (
-                                                                    <TableRow
-                                                                        key={row.name}
-                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                                    >
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.name}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                        <TableCell className={classes.TextColor1} component="th" scope="row">
-                                                                            <Typography sx={{ fontSize: 15 }} color="text.secondary" gutterBottom>
-                                                                                {row.data}
-                                                                            </Typography>
-                                                                        </TableCell>
-                                                                    </TableRow>
-                                                                ))}
-                                                            </TableBody>
-                                                            {/* ))} */}
-                                                        </Table>
-                                                    </TableContainer>
-
-                                                </DialogContent>
-
-                                            </BootstrapDialog>
+                                           
                                             <button className={classes.btn1}
                                                 onClick={() => {
-                                                    setOpen1(true);
+                                                    console.log(row._id)
+                                                    deleteData(row._id)
+                                                    // setOpen1(true);
 
                                                 }}
                                             > <BackspaceIcon /></button>
@@ -439,6 +555,15 @@ function VehicleTable() {
                             </TableBody>
                         </Table>
                     </TableContainer>
+
+    </TabPanel>
+   
+    
+    </Box>
+    </Grid>
+
+                    </Grid>
+                    
 
 
                 </Grid>

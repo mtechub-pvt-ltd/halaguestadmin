@@ -51,6 +51,8 @@ function Settings() {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
+    const [open2, setOpen2] = React.useState(false);
+
     //Get API Axios Update-km-per hour
     const [data, setData] = useState([]);
     const url = 'https://hiiguest.com/';
@@ -86,7 +88,21 @@ function Settings() {
                 console.log(err)
             })
     }
-
+    // const [dataRide, setDataRide] = useState([]);
+    // const submitHandlerRide = (e) => {
+    //     e.preventDefault()
+    //     // POst Request 
+    //     axios.post('https://hiiguest.com/change-ride-radius', {
+    //         orderRadius: dataRide
+    //     }, { headers }).then(response => {
+    //         console.log(data);
+    //         window.alert('data Ride Updated successfully')
+    //         setOpen2(true);
+    //     })
+    //         .catch(err => {
+    //             console.log(err)
+    //         })
+    // }
 
     // Commision 
 
@@ -204,7 +220,11 @@ function Settings() {
 
                                         <Grid item xs={12} md={12}>
 
-                                            <input className={classes.InputStyle} name="first" type="text" placeholder="Enter Value"></input>
+                                        <input className={classes.InputStyle} name="first" type="text" 
+                                                // onChange={
+                                                //     (e) => setDataRide(e.target.value)
+                                                // }
+                                                placeholder="Enter Value" />
                                         </Grid>
                                         <Grid item xs={12} md={12}>
                                             <Grid container spacing={2}>

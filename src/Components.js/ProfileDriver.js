@@ -15,6 +15,8 @@ import DraftsIcon from '@mui/icons-material/Drafts';
 import DirectionsBusIcon from '@mui/icons-material/DirectionsBus';
 import HotelIcon from '@mui/icons-material/Hotel';
 import DriveEtaIcon from '@mui/icons-material/DriveEta';
+import CustomerTable from './CustomerTable';
+
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -323,7 +325,8 @@ function ProfileDriver() {
     const [show5, setShow5] = React.useState(false);
     const [show6, setShow6] = React.useState(false);
     const [show7, setShow7] = React.useState(false);
-    const [show8, setShow8] = React.useState(true);
+    const [show8, setShow8] = React.useState(false);
+    const [show9, setShow9] = React.useState(true);
 
     const { state } = useLocation();
     const headers = {
@@ -566,7 +569,7 @@ function ProfileDriver() {
             >
                 <DrawerHeader className={classes.head}>
                     <div className={classes.Header} onClick={() => {
-                        setShow(true);
+                        setShow(false);
                         setShow1(false);
                         setShow2(false)
                         setShow3(false);
@@ -575,8 +578,10 @@ function ProfileDriver() {
                         setShow6(false);
                         setShow7(false);
                         setShow8(false);
+                        setShow9(false);
                     }}>
-                            <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+                        <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+                        {/* <img */}
 
                     </div>
                     <IconButton onClick={handleDrawerClose}>
@@ -597,6 +602,7 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <DashboardIcon className={classes.iconColor} />
@@ -608,20 +614,22 @@ function ProfileDriver() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(false);
+                            setShow1(true);
                             setShow2(false);
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(true);
+                            setShow6(false);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <DriveEtaIcon className={classes.iconColor} />
+                            <BusinessIcon className={classes.iconColor} />
+
                             </ListItemIcon>
-                            <ListItemText primary="Vehicles" />
+                            <ListItemText primary="Dispachers" />
                         </ListItemButton>
                     </ListItem>
 
@@ -630,17 +638,16 @@ function ProfileDriver() {
                    
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            // navigate('/home')
                             setShow(false);
                             setShow1(false);
-                            setShow2(false)
+                            setShow2(true)
                             setShow3(false);
-                            setShow4(true);
+                            setShow4(false);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
-                            
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -659,6 +666,7 @@ function ProfileDriver() {
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
@@ -669,15 +677,16 @@ function ProfileDriver() {
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
-                            setShow(true);
+                            setShow(false);
                             setShow1(false);
                             setShow2(false)
                             setShow3(false);
-                            setShow4(false);
+                            setShow4(true);
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -690,13 +699,14 @@ function ProfileDriver() {
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
-                            setShow2(true);
+                            setShow2(false);
                             setShow3(false);
                             setShow4(false);
-                            setShow5(false);
+                            setShow5(true);
                             setShow6(false);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
@@ -711,20 +721,21 @@ function ProfileDriver() {
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
-                            setShow1(true);
+                            setShow1(false);
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
                             setShow5(false);
-                            setShow6(false);
+                            setShow6(true);
                             setShow7(false);
                             setShow8(false);
+                            setShow9(false);
 
                         }}>
                             <ListItemIcon>
-                                <BusinessIcon className={classes.iconColor} />
+                            <DriveEtaIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
+                            <ListItemText primary="Vehicles" />
                         </ListItemButton>
                     </ListItem>
 
@@ -735,10 +746,11 @@ function ProfileDriver() {
                             setShow2(false)
                             setShow3(false);
                             setShow4(false);
-                            setShow5(true);
+                            setShow5(false);
                             setShow6(false);
-                            setShow7(false);
+                            setShow7(true);
                             setShow8(false);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <StorefrontIcon className={classes.iconColor} />
@@ -765,8 +777,9 @@ function ProfileDriver() {
                             setShow4(false);
                             setShow5(false);
                             setShow6(false);
-                            setShow7(true);
-                            setShow8(false);
+                            setShow7(false);
+                            setShow8(true);
+                            setShow9(false);
                         }}>
                             <ListItemIcon>
                                 <SettingsIcon className={classes.iconColor} />
@@ -805,15 +818,16 @@ function ProfileDriver() {
             </Drawer>
             <Main open={open} style={MarginTop} className={classes.BackGround}>
             {/* <ProfileData/> */}
-                {show ? <DashboardUser /> : null}
+            {show ? <DashboardUser /> : null}
                 {show1 ? <CompanyTable /> : null}
-                {show2 ? <OrderTable /> : null}
+                {show2 ? <HotelTable /> : null}
                 {show3 ? <AllDriversTable /> : null}
-                {show4 ? <HotelTable /> : null}
-                {show5 ? <HotelTypesTable /> : null}
+                {show4 ? < CustomerTable/> : null}
+                {show5 ? < OrderTable/> : null}
                 {show6 ? <VehicleTable /> : null}
-                {show7 ? <Settings /> : null}
-                {show8 ?   
+                {show7 ? <HotelTypesTable /> : null}
+                {show8 ? <Settings /> : null}
+                {show9 ?   
 
 <>
 {/* {loading ?

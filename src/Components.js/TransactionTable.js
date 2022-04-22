@@ -151,6 +151,34 @@ const TabsStyle = {
 
 }
 
+
+//end
+// function createData(id, name, email, gender) {
+//     return { id, name, email, gender };
+// }
+
+// const rows = [
+//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
+// ];
+// Dialog data 
+// function createProfile(name, data) {
+//     return { name, data };
+// }
+
+// const rows1 = [
+//     createProfile('User Id', 1),
+//     createProfile('User Name', 'Usama'),
+//     createProfile('Full Name', 'Muhammad Usama'),
+//     createProfile('Gender', 'Male'),
+//     createProfile('Date of Birth', '--'),
+//     createProfile('Country', '--'),
+//     createProfile('Email', '--'),
+//     createProfile('Bio', '--'),
+//     createProfile('Genre', '--'),
+// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -222,7 +250,7 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-function HotelTypesTable() {
+function TransactionTable() {
      // Tabs 
      const [value, setValue] = React.useState(0);
 
@@ -232,15 +260,13 @@ function HotelTypesTable() {
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
-    const [open1, setOpen1] = React.useState(false);
-
 
     const navigate = useNavigate();
 
     const handleClickOpen = (idData) => {
         console.log(idData);
         // setShow(false);
-        navigate('/profilehotel',
+        navigate('/profilevehicle',
             {
                 state: {
                     post_id: idData,
@@ -256,7 +282,7 @@ function HotelTypesTable() {
     const [loading, setLoading] = useState(false);
     const url = 'https://hiiguest.com/';
     const getAllData = () => {
-        axios.get(`${url}get-hotel-types`)
+        axios.get(`${url}get-all-vehicles`)
             .then((response) => {
                 const allData = response.data;
                 console.log(allData);
@@ -268,6 +294,7 @@ function HotelTypesTable() {
     }
     useEffect(() => {
         getAllData();
+        getAllData1();
     }, []);
     // Add 
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -282,29 +309,66 @@ function HotelTypesTable() {
     const headers = {
         'Content-Type': 'application/json'
     }
-
-    const [name, setName] = useState("");
+    const [image, setImage] = useState("");
+    const [Vname, setVname] = useState("");
+    const [seats, setSeats] = useState("");
     const [price, setPrice] = useState("");
-
- 
 
 
     const submitHandler = (e) => {
         e.preventDefault()
         // POst Request 
-        axios.post('https://hiiguest.com/create-hotel-type', {
-           
-            name: name,
-           price:price
+        axios.post('https://hiiguest.com/create-vehicle', {
+            image: image,
+            name: Vname,
+            seats: seats,
+            price: price,
+            
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Created Hotel Type Successfully')
+            window.alert('Created Vehicle Successfully')
         })
             .catch(err => {
                 console.log(err)
             })
     }
+   
+     // Delete 
+       // Alert 
+    const [open1, setOpen1] = React.useState(false);
+     const deleteData = (id) => {
+        console.log('deleting phone no')
+        console.log(id);
+        axios.delete('https://hiiguest.com/delete-vehicle', {
+            data: {
+                _id: id
+            }
+        }, { headers })
+            .then(res => {
+                console.log(res);
+                console.log(res.data);
+                setOpen1(true);
+            }).catch(err => {
+                console.log(err)
+            })
+    }
+     //Get Specific API Axios
+     const [data1, setData1] = useState([]);
+     const [loading1, setLoading1] = useState(false);
+     const getAllData1 = async () => {
+         await axios.get(`${url}get-all-hotels`)
+             .then((response) => {
+                 console.log('Approve data')
+                 const allData1 = response.data;
+                 console.log(allData1);
+                 setData1(response.data);
+                 setLoading1(true)
+                 // }
+             })
+             .catch(error => console.error(`Error:${error}`));
+ 
+     }
  
     return (
         <div>
@@ -339,45 +403,65 @@ function HotelTypesTable() {
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
                                 <Item sx={{ flexGrow: 1 }}>
-                                    <Typography variant='h6'>Hotels Type</Typography>
+                                    <Typography variant='h6'>Vehicles</Typography>
                                 </Item>
                                 {/* Add Hotel  */}
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
                                     <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
-                                        + Hotel Type
+                                        + Vehicle
                                     </Button>
                                     {/* Dialog */}
                                     <Dialog open={openAdd} onClose={handleCloseAdd}>
                                         <DialogTitle>Add Hotel</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText>
-                                                Fill All Fields to add new Hotel Type
+                                                Fill All Fields to add new Vehicle
                                             </DialogContentText>
                                             {/* Form  */}
 
                                             <form onSubmit={submitHandler}>
                                                 <Grid container spacing={2} className={classes.gridS}>
-                                                
-                                                
-                                                    
-                                                    <Grid item xs={6} md={6}>
+                                                <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-
-                                                            Name:
+                                                            Add Image
                                                         </div>
                                                     </Grid>
-
                                                     <Grid item xs={6} md={6}>
-                                                        <input type="text" name="Name" className={classes.inputStyle} value={name} placeholder="Enter Name"
-                                                            onChange={(e) => setName(e.target.value)
+                                                        {/* <input type="text" name="image" className={classes.inputStyle} value={image} placeholder="image"
+                        onChange={(e) => setImage(e.target.value) 
+                        } /> */}
+                                                        <ImageUpload />
+                                                    </Grid>
+                                                
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                            Vehicle Name :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={Vname} placeholder="Enter Vehicle Name"
+                                                            onChange={
+                                                                (e) => setVname(e.target.value)
+                                                            } 
+                                                            />
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <div className={classes.TextStyle}>
+                                                             Seats :
+                                                        </div>
+                                                    </Grid>
+                                                    <Grid item xs={6} md={6}>
+                                                        <input type="text" name="name" className={classes.inputStyle} value={seats} placeholder="Enter Seats"
+                                                            onChange={
+                                                                (e) => setSeats(e.target.value)
                                                             } 
                                                             />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
 
-                                                            Price:
+                                                           Price:
                                                         </div>
                                                     </Grid>
 
@@ -387,7 +471,7 @@ function HotelTypesTable() {
                                                             } 
                                                             />
                                                     </Grid>
-                                                    
+                                                   
                                                     <Grid item xs={6} md={6} >
                                                         <button className={classes.btnSubmit} type='submit'>Submit</button>
                                                     </Grid>
@@ -413,9 +497,7 @@ function HotelTypesTable() {
 <Box sx={{ width: '100%' }}>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab style={TabsStyle} label="View All Hotel Type" {...a11yProps(0)} />
-            {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
-            <Tab style={TabsStyle} label="Offline Hotels" {...a11yProps(4)} /> */}
+            <Tab style={TabsStyle} label="View All Vehicles" {...a11yProps(0)} />
         </Tabs>
     </Box>
     <TabPanel value={value} index={0}>
@@ -424,10 +506,11 @@ function HotelTypesTable() {
                         <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                             <TableHead>
                                 <TableRow>
-                                    <TableCell style={TextColor}>Hotel Id</TableCell>
-                                    <TableCell style={TextColor}>Name</TableCell>
+                                    <TableCell style={TextColor}>Image</TableCell>
+                                    <TableCell style={TextColor}> Name</TableCell>
+                                    <TableCell style={TextColor}>Seats</TableCell>
                                     <TableCell style={TextColor}>Price</TableCell>
-                                    
+                                    <TableCell style={TextColor}>Action</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -439,13 +522,34 @@ function HotelTypesTable() {
                                         sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                                     >
                                         <TableCell style={TextColor} component="th" scope="row">
-{row._id}
+
+                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
                                         </TableCell>
                                         <TableCell style={TextColor} >{row.name}</TableCell>
+                                        <TableCell style={TextColor} >{row.seats}</TableCell>
+                                        
                                         <TableCell style={TextColor} >{row.price}</TableCell>
-                                        
-                                        
+                                       
+                                        <TableCell >
+                                            <button className={classes.btn} onClick={() => {
+                                                                    handleClickOpen(row._id)
+                                                                }}>
+                                                < VisibilityIcon />
+                                            </button>
+                                            {/* Dialog  */}
+                                           
+                                            <button className={classes.btn1}
+                                                onClick={() => {
+                                                    console.log(row._id)
+                                                    deleteData(row._id)
+                                                    // setOpen1(true);
+
+                                                }}
+                                            > <BackspaceIcon /></button>
+
+
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
@@ -453,9 +557,8 @@ function HotelTypesTable() {
                     </TableContainer>
 
     </TabPanel>
- 
-    {/* Third tab  */}
    
+    
     </Box>
     </Grid>
 
@@ -472,4 +575,4 @@ function HotelTypesTable() {
     )
 }
 
-export default HotelTypesTable
+export default TransactionTable

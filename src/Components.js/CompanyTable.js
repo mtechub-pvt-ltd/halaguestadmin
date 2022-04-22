@@ -267,6 +267,7 @@ function CompanyTable() {
     useEffect(() => {
         getAllData();
         getAllData1();
+        getAllData2();
     }, []);
     // Add 
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -364,11 +365,11 @@ function CompanyTable() {
                 console.log(err)
             })
     }
-     //Get Specific API Axios
+     //Get API Axios Approved
      const [data1, setData1] = useState([]);
      const [loading1, setLoading1] = useState(false);
      const getAllData1 = async () => {
-         await axios.get(`${url}get-all-companies`)
+         await axios.get(`${url}get-approved-companies`)
              .then((response) => {
                  console.log('Approve data')
                  const allData1 = response.data;
@@ -380,6 +381,22 @@ function CompanyTable() {
              .catch(error => console.error(`Error:${error}`));
  
      }
+        //Get API Axios Unapproved
+        const [data2, setData2] = useState([]);
+        const [loading2, setLoading2] = useState(false);
+        const getAllData2 = async () => {
+            await axios.get(`${url}get-unapproved-companies`)
+                .then((response) => {
+                    console.log('UnApprove data')
+                    const allData1 = response.data;
+                    console.log(allData1);
+                    setData2(response.data);
+                    setLoading2(true)
+                    // }
+                })
+                .catch(error => console.error(`Error:${error}`));
+    
+        }
  
     return (
         <div>
@@ -608,10 +625,7 @@ function CompanyTable() {
 
                                             {/* End form  */}
                                         </DialogContent>
-                                        {/* <DialogActions>
-                                            <Button onClick={handleCloseAdd}>Cancel</Button>
-                                            <Button onClick={handleCloseAdd}>Subscribe</Button>
-                                        </DialogActions> */}
+                                   
                                     </Dialog>
                                     {/* Dialog End  */}
                                 </Item>
@@ -627,8 +641,6 @@ function CompanyTable() {
             <Tab style={TabsStyle} label="View All Dispachers" {...a11yProps(0)} />
             <Tab style={TabsStyle} label="Approved Dispachers" {...a11yProps(1)} />
             <Tab style={TabsStyle} label="Unapproved Dispachers" {...a11yProps(2)} />
-            {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
-            <Tab style={TabsStyle} label="Offline Hotels" {...a11yProps(4)} /> */}
         </Tabs>
     </Box>
     <TabPanel value={value} index={0}>
@@ -699,7 +711,7 @@ function CompanyTable() {
                                             sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                                         >
                                             <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Approved Hotels</Typography>
+                                                <Typography variant='h6'>Approved Dispachers</Typography>
                                             </Item>
                                         </Box>
                                     </Grid>
@@ -718,7 +730,7 @@ function CompanyTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.profileApproved == true).map((row) => (
+                                                    {loading1 && data1.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -768,12 +780,12 @@ function CompanyTable() {
                                             sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                                         >
                                             <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Unapproved Hotels</Typography>
+                                                <Typography variant='h6'>Unapproved Dispachers</Typography>
                                             </Item>
                                         </Box>
                                     </Grid>
                                     <Grid item xs={12} md={12}>
-                                        {/* Approved dispachers table  */}
+                                        {/* UnApproved dispachers table  */}
                                         <TableContainer >
                                             <Table sx={{ minWidth: 650 }} aria-label="simple table" >
                                                 <TableHead>
@@ -788,7 +800,7 @@ function CompanyTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.profileApproved == false).map((row) => (
+                                                    {loading2 && data2.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

@@ -277,10 +277,12 @@ function AllDriversTable() {
     useEffect(() => {
         getAllData();
         getAllData1();
+        getAllData2();
+        getAllData3()
         // getAllDataUpdate();
     }, []);
 
-    //Get Specific API Axios
+    //Get Specific API Axios with filter
     const [data1, setData1] = useState([]);
     const [loading1, setLoading1] = useState(false);
     const getAllData1 = async () => {
@@ -296,6 +298,38 @@ function AllDriversTable() {
             .catch(error => console.error(`Error:${error}`));
 
     }
+       //Get Specific API Axios Online
+       const [data2, setData2] = useState([]);
+       const [loading2, setLoading2] = useState(false);
+       const getAllData2 = async () => {
+           await axios.get(`${url}get-online-drivers`)
+               .then((response) => {
+                   console.log('Online Drivers')
+                   const allData2 = response.data;
+                   console.log(allData2);
+                   setData2(response.data);
+                   setLoading2(true)
+                   // }
+               })
+               .catch(error => console.error(`Error:${error}`));
+   
+       }
+         //Get Specific API Axios Offline
+         const [data3, setData3] = useState([]);
+         const [loading3, setLoading3] = useState(false);
+         const getAllData3 = async () => {
+             await axios.get(`${url}get-offline-drivers`)
+                 .then((response) => {
+                     console.log('Offline Drivers')
+                     const allData3 = response.data;
+                     console.log(allData3);
+                     setData3(response.data);
+                     setLoading3(true)
+                     // }
+                 })
+                 .catch(error => console.error(`Error:${error}`));
+     
+         }
 
     // Add 
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -1099,7 +1133,7 @@ function AllDriversTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.activeStatus == true).map((row) => (
+                                                    {loading2 && data2.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -1166,7 +1200,7 @@ function AllDriversTable() {
                                                 </TableHead>
                                                 <TableBody>
                                                     {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.filter(data1 => data1.activeStatus == false).map((row) => (
+                                                    {loading3 && data3.map((row) => (
                                                         <TableRow
                                                             key={row.name}
                                                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
