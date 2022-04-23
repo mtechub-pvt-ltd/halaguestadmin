@@ -32,6 +32,8 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 // Axios 
 import axios from 'axios'
@@ -222,13 +224,13 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-function CompanyTable() {
-     // Tabs 
-     const [value, setValue] = React.useState(0);
+const CompanyTable=(props) =>{
+    // Tabs 
+    const [value, setValue] = React.useState(0);
 
-     const handleChange = (event, newValue) => {
-         setValue(newValue);
-     };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
@@ -242,13 +244,14 @@ function CompanyTable() {
             {
                 state: {
                     post_id: idData,
+                    data:props.data
                 }
             });
     };
     const handleClose = () => {
         setOpen(false);
     };
-  
+
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -295,10 +298,11 @@ function CompanyTable() {
     const [accountHolderName, setaccountHolderName] = useState("");
     const [swiftCode, setswiftCode] = useState("");
     const [ibanNo, setibanNo] = useState("");
-    const [companyLicense,getcompanyLicense]= useState("");
+    const [companyLicense, getcompanyLicense] = useState("");
 
 
     const submitHandler = (e) => {
+        setprofileApproved(false);
         e.preventDefault()
         // POst Request 
         axios.post('https://hiiguest.com/create-company', {
@@ -309,22 +313,44 @@ function CompanyTable() {
             email: email,
             gender: gender,
             description: description,
-            profileApproved:profileApproved,
-            paymentDetails:{
-                bankName:bankName ,
-                accountNumber:accountNumber,
-                accountHolderName:accountHolderName,
-                swiftCode:swiftCode,
-                ibanNo:ibanNo
+            profileApproved: profileApproved,
+            paymentDetails: {
+                bankName: bankName,
+                accountNumber: accountNumber,
+                accountHolderName: accountHolderName,
+                swiftCode: swiftCode,
+                ibanNo: ibanNo
 
             },
-            documents:{
-                companyLicense:companyLicense
+            documents: {
+                companyLicense: companyLicense
             }
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Created Company Successfully')
+            // window.alert('Created Company Successfully')
+            setOpenAdd(false);
+            let timerInterval
+            Swal.fire({
+                title: 'Created Company Successfully',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+            })
         })
             .catch(err => {
                 console.log(err)
@@ -346,10 +372,8 @@ function CompanyTable() {
 
 
     }
-     // Delete 
-       // Alert 
-    const [open1, setOpen1] = React.useState(false);
-     const deleteData = (phoneNo) => {
+    // Delete 
+    const deleteData = (phoneNo) => {
         console.log('deleting phone no')
         console.log(phoneNo);
         axios.delete('https://hiiguest.com/delete-company', {
@@ -360,44 +384,86 @@ function CompanyTable() {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                setOpen1(true);
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling: {
+                        backgroundColor: '#4CAF50', /* Green */
+                        border: 'none',
+                        color: 'white',
+                        padding: '15px 32px',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        fontSize: '16px'
+                    }
+                })
+
+                swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        swalWithBootstrapButtons.fire(
+                            'Deleted!',
+                            'Comapny has been deleted.',
+                            'success'
+                        )
+                        // window.location.reload(false);
+                    } else if (
+                        result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Company is safe :)',
+                            'error'
+                        )
+                    }
+                })
             }).catch(err => {
                 console.log(err)
             })
     }
-     //Get API Axios Approved
-     const [data1, setData1] = useState([]);
-     const [loading1, setLoading1] = useState(false);
-     const getAllData1 = async () => {
-         await axios.get(`${url}get-approved-companies`)
-             .then((response) => {
-                 console.log('Approve data')
-                 const allData1 = response.data;
-                 console.log(allData1);
-                 setData1(response.data);
-                 setLoading1(true)
-                 // }
-             })
-             .catch(error => console.error(`Error:${error}`));
- 
-     }
-        //Get API Axios Unapproved
-        const [data2, setData2] = useState([]);
-        const [loading2, setLoading2] = useState(false);
-        const getAllData2 = async () => {
-            await axios.get(`${url}get-unapproved-companies`)
-                .then((response) => {
-                    console.log('UnApprove data')
-                    const allData1 = response.data;
-                    console.log(allData1);
-                    setData2(response.data);
-                    setLoading2(true)
-                    // }
-                })
-                .catch(error => console.error(`Error:${error}`));
-    
-        }
- 
+    //Get API Axios Approved
+    const [data1, setData1] = useState([]);
+    const [loading1, setLoading1] = useState(false);
+    const getAllData1 = async () => {
+        await axios.get(`${url}get-approved-companies`)
+            .then((response) => {
+                console.log('Approve data')
+                const allData1 = response.data;
+                console.log(allData1);
+                setData1(response.data);
+                setLoading1(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+    //Get API Axios Unapproved
+    const [data2, setData2] = useState([]);
+    const [loading2, setLoading2] = useState(false);
+    const getAllData2 = async () => {
+        await axios.get(`${url}get-unapproved-companies`)
+            .then((response) => {
+                console.log('UnApprove data')
+                const allData1 = response.data;
+                console.log(allData1);
+                setData2(response.data);
+                setLoading2(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+
     return (
         <div>
             <Grid container spacing={2}>
@@ -405,27 +471,7 @@ function CompanyTable() {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
-                        </Grid>
+
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
@@ -435,7 +481,6 @@ function CompanyTable() {
                                 </Item>
                                 {/* Add Hotel  */}
                                 <Item>
-                                    {/* startIcon={<AddIcon />} */}
                                     <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
                                         + Dispacher
                                     </Button>
@@ -450,7 +495,7 @@ function CompanyTable() {
 
                                             <form onSubmit={submitHandler}>
                                                 <Grid container spacing={2} className={classes.gridS}>
-                                                <Grid item xs={6} md={6}>
+                                                    <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
                                                             Add Image
                                                         </div>
@@ -461,30 +506,30 @@ function CompanyTable() {
                         } /> */}
                                                         <ImageUpload />
                                                     </Grid>
-                                                
+
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                             Phone Number :
+                                                            Phone Number :
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="name" className={classes.inputStyle} value={Phno} placeholder="Enter Phone Number"
                                                             onChange={
                                                                 (e) => setPhno(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                             Company Name :
+                                                            Company Name :
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
-                                                        <input type="text" name="name" className={classes.inputStyle} value={companyName} placeholder="Enter Hotel Name"
+                                                        <input type="text" name="name" className={classes.inputStyle} value={companyName} placeholder="Enter Company Name"
                                                             onChange={
                                                                 (e) => setcompanyName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -496,8 +541,8 @@ function CompanyTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="Name" className={classes.inputStyle} value={name} placeholder="Enter Name"
                                                             onChange={(e) => setName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -507,8 +552,8 @@ function CompanyTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="email" className={classes.inputStyle} value={email} placeholder="Enter Email"
                                                             onChange={(e) => setEmail(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -518,30 +563,19 @@ function CompanyTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="gender" className={classes.inputStyle} value={gender} placeholder="Enter gender"
                                                             onChange={(e) => setgender(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           Description
+                                                            Description
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="description" className={classes.inputStyle} value={description} placeholder="Enter Description"
                                                             onChange={(e) => setdescription(e.target.value)
-                                                            } 
-                                                            />
-                                                    </Grid>
-                                                    <Grid item xs={6} md={6}>
-                                                        <div className={classes.TextStyle}>
-                                                           Profile Approved
-                                                        </div>
-                                                    </Grid>
-                                                    <Grid item xs={6} md={6}>
-                                                        <input type="text" name="description" className={classes.inputStyle} value={profileApproved} placeholder="Enter Description"
-                                                            onChange={(e) => setprofileApproved(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={12} md={12}>
                                                         <div className={classes.TextStyle}>
@@ -550,59 +584,59 @@ function CompanyTable() {
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           Bank Name
+                                                            Bank Name
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="description" className={classes.inputStyle} value={bankName} placeholder="Enter Bank Name"
                                                             onChange={(e) => setbankName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           Account Number
+                                                            Account Number
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
-                                                        <input type="text" name="description" className={classes.inputStyle} value={accountNumber} placeholder="Enter Bank Name"
+                                                        <input type="text" name="description" className={classes.inputStyle} value={accountNumber} placeholder="Enter Account Number"
                                                             onChange={(e) => setaccountNumber(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
-                                                    
+
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           Account Holder Name
+                                                            Account Holder Name
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="description" className={classes.inputStyle} value={accountHolderName} placeholder="Enter Account Holder Name"
                                                             onChange={(e) => setaccountHolderName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           Swift Code
+                                                            Swift Code
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="description" className={classes.inputStyle} value={swiftCode} placeholder="Enter Swift Code"
                                                             onChange={(e) => setswiftCode(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                           IbanNo
+                                                            IbanNo
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="ibanNo" className={classes.inputStyle} value={ibanNo} placeholder="Enter ibanNo"
                                                             onChange={(e) => setibanNo(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -615,17 +649,17 @@ function CompanyTable() {
                         } /> */}
                                                         <ImageUpload />
                                                     </Grid>
-                                                    
+
                                                     <Grid item xs={6} md={6} >
                                                         <button className={classes.btnSubmit} type='submit'>Submit</button>
                                                     </Grid>
-                                                    
+
                                                 </Grid>
                                             </form>
 
                                             {/* End form  */}
                                         </DialogContent>
-                                   
+
                                     </Dialog>
                                     {/* Dialog End  */}
                                 </Item>
@@ -635,223 +669,223 @@ function CompanyTable() {
                         {/* Tabs  */}
                         <Grid item xs={12} md={12}>
 
-<Box sx={{ width: '100%' }}>
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab style={TabsStyle} label="View All Dispachers" {...a11yProps(0)} />
-            <Tab style={TabsStyle} label="Approved Dispachers" {...a11yProps(1)} />
-            <Tab style={TabsStyle} label="Unapproved Dispachers" {...a11yProps(2)} />
-        </Tabs>
-    </Box>
-    <TabPanel value={value} index={0}>
-        {/* Table  */}
-        <TableContainer >
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={TextColor}>Image</TableCell>
-                                    <TableCell style={TextColor}>Hotel Name</TableCell>
-                                    <TableCell style={TextColor}>gender</TableCell>
-                                    <TableCell style={TextColor}>Hotel Type</TableCell>
-                                    <TableCell  style={TextColor}>Approved</TableCell>
-                                    <TableCell style={TextColor}>Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                        <Tab style={TabsStyle} label="View All Dispachers" {...a11yProps(0)} />
+                                        <Tab style={TabsStyle} label="Approved Dispachers" {...a11yProps(1)} />
+                                        <Tab style={TabsStyle} label="Unapproved Dispachers" {...a11yProps(2)} />
+                                    </Tabs>
+                                </Box>
+                                <TabPanel value={value} index={0}>
+                                    {/* Table  */}
+                                    <TableContainer >
+                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell style={TextColor}>Image</TableCell>
+                                                    <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                    <TableCell style={TextColor}>gender</TableCell>
+                                                    <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                    <TableCell style={TextColor}>Approved</TableCell>
+                                                    <TableCell style={TextColor}>Action</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
 
 
-                                {loading && data.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell style={TextColor} component="th" scope="row">
+                                                {loading && data.map((row) => (
+                                                    <TableRow
+                                                        key={row.name}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell style={TextColor} component="th" scope="row">
 
-                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
-
-                                        </TableCell>
-                                        <TableCell style={TextColor} >{row.companyName}</TableCell>
-                                        <TableCell style={TextColor} >{row.gender}</TableCell>
-                                        
-                                        <TableCell style={TextColor} >{row.description}</TableCell>
-                                        <TableCell style={TextColor} >
-                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
-                                                    </TableCell>
-                                        <TableCell >
-                                            <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                < VisibilityIcon />
-                                            </button>
-                                            {/* Dialog  */}
-                                           
-                                            <button className={classes.btn1}
-                                                onClick={() => {
-                                                    console.log(row.phoneNo)
-                                                    deleteData(row.phoneNo)
-                                                    // setOpen1(true);
-
-                                                }}
-                                            > <BackspaceIcon /></button>
-
-
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-    </TabPanel>
-    {/* Second Tab  */}
-    <TabPanel value={value} index={1}>
-    <Grid container spacing={2}>
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                                        >
-                                            <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Approved Dispachers</Typography>
-                                            </Item>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} md={12}>
-                                        {/* Approved dispachers table  */}
-                                        <TableContainer >
-                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell style={TextColor}>Image</TableCell>
-                                                        <TableCell style={TextColor}>Company Name</TableCell>
-                                                        <TableCell style={TextColor}>Email</TableCell>
-                                                        <TableCell style={TextColor}>Description</TableCell>
-                                                        <TableCell style={TextColor}>Action</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.map((row) => (
-                                                        <TableRow
-                                                            key={row.name}
-                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        >
-                                                            <TableCell style={TextColor} component="th" scope="row">
                                                             <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
+                                                        </TableCell>
+                                                        <TableCell style={TextColor} >{row.companyName}</TableCell>
+                                                        <TableCell style={TextColor} >{row.gender}</TableCell>
 
-                                                            </TableCell>
-                                                            <TableCell style={TextColor} >{row.companyName}</TableCell>
-                                                            <TableCell style={TextColor} >{row.email}</TableCell>
-                                                            <TableCell style={TextColor} >{row.description}</TableCell>
+                                                        <TableCell style={TextColor} >{row.description}</TableCell>
+                                                        <TableCell style={TextColor} >
+                                                            <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                        </TableCell>
+                                                        <TableCell >
+                                                            <button className={classes.btn} onClick={() => {
+                                                                handleClickOpen(row.phoneNo)
+                                                            }}>
+                                                                < VisibilityIcon />
+                                                            </button>
+                                                            {/* Dialog  */}
 
-                                                            <TableCell >
-                                                                <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                                    < VisibilityIcon />
-                                                                </button>
-                                                                {/* Dialog  */}
+                                                            <button className={classes.btn1}
+                                                                onClick={() => {
+                                                                    console.log(row.phoneNo)
+                                                                    deleteData(row.phoneNo)
+                                                                    // setOpen1(true);
 
-                                                                <button className={classes.btn1}
-                                                                    onClick={() => {
-                                                                        console.log(row.phoneNo)
-                                                                        deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
-
-                                                                    }}
-                                                                > <BackspaceIcon /></button>
+                                                                }}
+                                                            > <BackspaceIcon /></button>
 
 
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-
-                                    </Grid>
-                                </Grid>
-    </TabPanel>
-    {/* Third tab  */}
-    <TabPanel value={value} index={2}>
-    <Grid container spacing={2}>
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                                        >
-                                            <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Unapproved Dispachers</Typography>
-                                            </Item>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} md={12}>
-                                        {/* UnApproved dispachers table  */}
-                                        <TableContainer >
-                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell style={TextColor}>Image</TableCell>
-                                                        <TableCell style={TextColor}>Company Name</TableCell>
-                                                        <TableCell style={TextColor}>Email</TableCell>
-                                                        <TableCell style={TextColor}>Description</TableCell>
-                                                        <TableCell style={TextColor}>Approved</TableCell>
-                                                        <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableCell>
                                                     </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading2 && data2.map((row) => (
-                                                        <TableRow
-                                                            key={row.name}
-                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        >
-                                                            <TableCell style={TextColor} component="th" scope="row">
-                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
 
-
-                                                            </TableCell>
-                                                            <TableCell style={TextColor} >{row.companyName}</TableCell>
-                                                            <TableCell style={TextColor} >{row.email}</TableCell>
-                                                            <TableCell style={TextColor} >{row.description}</TableCell>
-                                                            <TableCell style={TextColor} >
-                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
-                                                    </TableCell>
-
-                                                            <TableCell >
-                                                                <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                                    < VisibilityIcon />
-                                                                </button>
-                                                                {/* Dialog  */}
-
-                                                                <button className={classes.btn1}
-                                                                    onClick={() => {
-                                                                        console.log(row.phoneNo)
-                                                                        deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
-
-                                                                    }}
-                                                                > <BackspaceIcon /></button>
-
-
-                                                            </TableCell>
+                                </TabPanel>
+                                {/* Second Tab  */}
+                                <TabPanel value={value} index={1}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Approved Dispachers</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* Approved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Company Name</TableCell>
+                                                            <TableCell style={TextColor}>Email</TableCell>
+                                                            <TableCell style={TextColor}>Description</TableCell>
+                                                            <TableCell style={TextColor}>Action</TableCell>
                                                         </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading1 && data1.map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.companyName}</TableCell>
+                                                                <TableCell style={TextColor} >{row.email}</TableCell>
+                                                                <TableCell style={TextColor} >{row.description}</TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-    </TabPanel>
-    <TabPanel value={value} index={3}>113</TabPanel>
-    <TabPanel value={value} index={4}>114</TabPanel>
-    </Box>
-    </Grid>
+                                </TabPanel>
+                                {/* Third tab  */}
+                                <TabPanel value={value} index={2}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Unapproved Dispachers</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* UnApproved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Company Name</TableCell>
+                                                            <TableCell style={TextColor}>Email</TableCell>
+                                                            <TableCell style={TextColor}>Description</TableCell>
+                                                            <TableCell style={TextColor}>Approved</TableCell>
+                                                            <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading2 && data2.map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.companyName}</TableCell>
+                                                                <TableCell style={TextColor} >{row.email}</TableCell>
+                                                                <TableCell style={TextColor} >{row.description}</TableCell>
+                                                                <TableCell style={TextColor} >
+                                                                    <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                                </TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
+                                    </Grid>
+                                </TabPanel>
+                                <TabPanel value={value} index={3}>113</TabPanel>
+                                <TabPanel value={value} index={4}>114</TabPanel>
+                            </Box>
+                        </Grid>
 
                     </Grid>
-                    
+
 
 
                 </Grid>

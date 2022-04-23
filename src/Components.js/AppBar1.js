@@ -123,7 +123,9 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
         }),
     }),
 );
-function AppBar1() {
+const AppBar1=(props)=> {
+    console.log('appbar session')
+    console.log(props.data);
    
     const classes = useStyles();
     const theme = useTheme();
@@ -455,15 +457,15 @@ function AppBar1() {
             </Drawer>
             <Main open={open} style={MarginTop} className={classes.BackGround}>
             {/* <ProfileData/> */}
-                {show ? <DashboardUser /> : null}
-                {show1 ? <CompanyTable /> : null}
-                {show2 ? <HotelTable /> : null}
-                {show3 ? <AllDriversTable /> : null}
-                {show4 ? < CustomerTable/> : null}
-                {show5 ? < OrderTable/> : null}
-                {show6 ? <VehicleTable /> : null}
+                {show ? <DashboardUser data={props.data}/> : null}
+                {show1 ? <CompanyTable data={props.data}/> : null}
+                {show2 ? <HotelTable data={props.data}/> : null}
+                {show3 ? <AllDriversTable data={props.data}/> : null}
+                {show4 ? < CustomerTable data={props.data}/> : null}
+                {show5 ? < OrderTable data={props.data}/> : null}
+                {show6 ? <VehicleTable data={props.data}/> : null}
                 {show7 ? <HotelTypesTable /> : null}
-                {show8 ? <Settings /> : null}
+                {show8 ? <Settings data={props.data} /> : null}
                 {show9 ? <TransactionTable /> : null}
 
 

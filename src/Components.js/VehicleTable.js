@@ -32,6 +32,8 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 // Axios 
 import axios from 'axios'
@@ -250,7 +252,9 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-function VehicleTable() {
+const VehicleTable=(props) => {
+    console.log('vehicle prop');
+    console.log(props.data)
      // Tabs 
      const [value, setValue] = React.useState(0);
 
@@ -270,6 +274,7 @@ function VehicleTable() {
             {
                 state: {
                     post_id: idData,
+                    data:props.data
                 }
             });
     };
@@ -327,7 +332,29 @@ function VehicleTable() {
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Created Vehicle Successfully')
+            // window.alert('Created Vehicle Successfully')
+            setOpenAdd(false);
+            let timerInterval
+            Swal.fire({
+                title: 'Created Vehicle Successfully',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+            })
         })
             .catch(err => {
                 console.log(err)
@@ -348,7 +375,50 @@ function VehicleTable() {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                setOpen1(true);
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                      confirmButton: 'btn btn-success',
+                      cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling:{
+                        backgroundColor: '#4CAF50', /* Green */
+                    border: 'none',
+                    color: 'white',
+                    padding: '15px 32px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px'}
+                  })
+                  
+                  swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        'Vehicle has been deleted.',
+                        'success'
+                      )
+            // window.location.reload(false);
+                    } else if (
+                      /* Read more about handling dismissals below */
+                      result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                      swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Hotel is safe :)',
+                        'error'
+                      )
+                    }
+                  })
+                // setOpen1(true);
             }).catch(err => {
                 console.log(err)
             })
@@ -377,27 +447,7 @@ function VehicleTable() {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
-                        </Grid>
+                        
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
@@ -413,7 +463,7 @@ function VehicleTable() {
                                     </Button>
                                     {/* Dialog */}
                                     <Dialog open={openAdd} onClose={handleCloseAdd}>
-                                        <DialogTitle>Add Hotel</DialogTitle>
+                                        <DialogTitle>Add Vehicle</DialogTitle>
                                         <DialogContent>
                                             <DialogContentText>
                                                 Fill All Fields to add new Vehicle

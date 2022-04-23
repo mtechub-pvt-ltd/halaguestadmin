@@ -32,6 +32,8 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 // Axios 
 import axios from 'axios'
@@ -110,6 +112,7 @@ const useStyles = makeStyles({
         marginLeft: '234px'
     }
 })
+
 const TextColor = {
     color: '#9a9cab',
 }
@@ -222,13 +225,13 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-function HotelTable() {
-     // Tabs 
-     const [value, setValue] = React.useState(0);
+const HotelTable=(props) =>{
+    // Tabs 
+    const [value, setValue] = React.useState(0);
 
-     const handleChange = (event, newValue) => {
-         setValue(newValue);
-     };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
@@ -242,13 +245,14 @@ function HotelTable() {
             {
                 state: {
                     post_id: idData,
+                    data:props.data
                 }
             });
     };
     const handleClose = () => {
         setOpen(false);
     };
-  
+
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -307,7 +311,31 @@ function HotelTable() {
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Created Hotel Successfully')
+            // window.alert('Created Hotel Successfully')
+            // window.location.reload(false);
+             setOpenAdd(false);
+            let timerInterval
+            Swal.fire({
+                title: 'Created Hotel Successfully',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+            })
+
         })
             .catch(err => {
                 console.log(err)
@@ -329,10 +357,10 @@ function HotelTable() {
 
 
     }
-     // Delete 
-       // Alert 
+    // Delete 
+    // Alert 
     const [open1, setOpen1] = React.useState(false);
-     const deleteData = (phoneNo) => {
+    const deleteData = (phoneNo) => {
         console.log('deleting phone no')
         console.log(phoneNo);
         axios.delete('https://hiiguest.com/delete-hotel', {
@@ -343,45 +371,88 @@ function HotelTable() {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                setOpen1(true);
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                      confirmButton: 'btn btn-success',
+                      cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling:{
+                        backgroundColor: '#4CAF50', /* Green */
+                    border: 'none',
+                    color: 'white',
+                    padding: '15px 32px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px'}
+                  })
+                  
+                  swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        'Hotel has been deleted.',
+                        'success'
+                      )
+            // window.location.reload(false);
+                    } else if (
+                      /* Read more about handling dismissals below */
+                      result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                      swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Hotel is safe :)',
+                        'error'
+                      )
+                    }
+                  })
+                // setOpen1(true);
             }).catch(err => {
                 console.log(err)
             })
     }
-     //Get Specific API Axios Approved Hotel
-     const [data1, setData1] = useState([]);
-     const [loading1, setLoading1] = useState(false);
-     const getAllData1 = async () => {
-         await axios.get(`${url}get-approved-hotels`)
-             .then((response) => {
-                 console.log('Approve data')
-                 const allData1 = response.data;
-                 console.log(allData1);
-                 setData1(response.data);
-                 setLoading1(true)
-                 // }
-             })
-             .catch(error => console.error(`Error:${error}`));
- 
-     }
-      //Get Specific API Axios Unapproved Hotel
-      const [data2, setData2] = useState([]);
-      const [loading2, setLoading2] = useState(false);
-      const getAllData2 = async () => {
-          await axios.get(`${url}get-unapproved-hotels`)
-              .then((response) => {
-                  console.log('UnApprove data')
-                  const allData1 = response.data;
-                  console.log(allData1);
-                  setData2(response.data);
-                  setLoading2(true)
-                  // }
-              })
-              .catch(error => console.error(`Error:${error}`));
-  
-      }
-  
- 
+    //Get Specific API Axios Approved Hotel
+    const [data1, setData1] = useState([]);
+    const [loading1, setLoading1] = useState(false);
+    const getAllData1 = async () => {
+        await axios.get(`${url}get-approved-hotels`)
+            .then((response) => {
+                console.log('Approve data')
+                const allData1 = response.data;
+                console.log(allData1);
+                setData1(response.data);
+                setLoading1(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+    //Get Specific API Axios Unapproved Hotel
+    const [data2, setData2] = useState([]);
+    const [loading2, setLoading2] = useState(false);
+    const getAllData2 = async () => {
+        await axios.get(`${url}get-unapproved-hotels`)
+            .then((response) => {
+                console.log('UnApprove data')
+                const allData1 = response.data;
+                console.log(allData1);
+                setData2(response.data);
+                setLoading2(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+
+
     return (
         <div>
             <Grid container spacing={2}>
@@ -389,27 +460,7 @@ function HotelTable() {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
-                        </Grid>
+                       
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
@@ -434,7 +485,7 @@ function HotelTable() {
 
                                             <form onSubmit={submitHandler}>
                                                 <Grid container spacing={2} className={classes.gridS}>
-                                                <Grid item xs={6} md={6}>
+                                                    <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
                                                             Add Image
                                                         </div>
@@ -445,30 +496,30 @@ function HotelTable() {
                         } /> */}
                                                         <ImageUpload />
                                                     </Grid>
-                                                
+
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                             Phone Number :
+                                                            Phone Number :
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="name" className={classes.inputStyle} value={Phno} placeholder="Enter Phone Number"
                                                             onChange={
                                                                 (e) => setPhno(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
-                                                             Hotel Name :
+                                                            Hotel Name :
                                                         </div>
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="name" className={classes.inputStyle} value={hotelName} placeholder="Enter Hotel Name"
                                                             onChange={
                                                                 (e) => sethotelName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -480,8 +531,8 @@ function HotelTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="Name" className={classes.inputStyle} value={name} placeholder="Enter Name"
                                                             onChange={(e) => setName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -491,8 +542,8 @@ function HotelTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="email" className={classes.inputStyle} value={email} placeholder="Enter Email"
                                                             onChange={(e) => setEmail(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -502,8 +553,8 @@ function HotelTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="city" className={classes.inputStyle} value={city} placeholder="Enter City"
                                                             onChange={(e) => setCity(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -513,8 +564,8 @@ function HotelTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="hoteltype" className={classes.inputStyle} value={hoteltype} placeholder="Enter Hotel Type"
                                                             onChange={(e) => setHotelType(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -524,13 +575,13 @@ function HotelTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="jobTitle" className={classes.inputStyle} value={jobTitle} placeholder="Enter Job Title"
                                                             onChange={(e) => setJobTitle(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6} >
                                                         <button className={classes.btnSubmit} type='submit'>Submit</button>
                                                     </Grid>
-                                                    
+
                                                 </Grid>
                                             </form>
 
@@ -549,226 +600,226 @@ function HotelTable() {
                         {/* Tabs  */}
                         <Grid item xs={12} md={12}>
 
-<Box sx={{ width: '100%' }}>
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab style={TabsStyle} label="View All Hotels" {...a11yProps(0)} />
-            <Tab style={TabsStyle} label="Approved Hotels" {...a11yProps(1)} />
-            <Tab style={TabsStyle} label="Unapproved Hotels" {...a11yProps(2)} />
-            {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                        <Tab style={TabsStyle} label="View All Hotels" {...a11yProps(0)} />
+                                        <Tab style={TabsStyle} label="Approved Hotels" {...a11yProps(1)} />
+                                        <Tab style={TabsStyle} label="Unapproved Hotels" {...a11yProps(2)} />
+                                        {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
             <Tab style={TabsStyle} label="Offline Hotels" {...a11yProps(4)} /> */}
-        </Tabs>
-    </Box>
-    <TabPanel value={value} index={0}>
-        {/* Table  */}
-        <TableContainer >
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={TextColor}>Image</TableCell>
-                                    <TableCell style={TextColor}>Hotel Name</TableCell>
-                                    <TableCell style={TextColor}>City</TableCell>
-                                    <TableCell style={TextColor}>Hotel Type</TableCell>
-                                    <TableCell  style={TextColor}>Approved</TableCell>
-                                    <TableCell style={TextColor}>Action</TableCell>
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                                    </Tabs>
+                                </Box>
+                                <TabPanel value={value} index={0}>
+                                    {/* Table  */}
+                                    <TableContainer >
+                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell style={TextColor}>Image</TableCell>
+                                                    <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                    <TableCell style={TextColor}>City</TableCell>
+                                                    <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                    <TableCell style={TextColor}>Approved</TableCell>
+                                                    <TableCell style={TextColor}>Action</TableCell>
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
 
 
-                                {loading && data.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell style={TextColor} component="th" scope="row">
+                                                {loading && data.map((row) => (
+                                                    <TableRow
+                                                        key={row.name}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell style={TextColor} component="th" scope="row">
 
-                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
-
-                                        </TableCell>
-                                        <TableCell style={TextColor} >{row.hotelName}</TableCell>
-                                        <TableCell style={TextColor} >{row.city}</TableCell>
-                                        
-                                        <TableCell style={TextColor} >{row.hotelType}</TableCell>
-                                        <TableCell style={TextColor} >
-                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
-                                                    </TableCell>
-                                        <TableCell >
-                                            <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                < VisibilityIcon />
-                                            </button>
-                                            {/* Dialog  */}
-                                           
-                                            <button className={classes.btn1}
-                                                onClick={() => {
-                                                    console.log(row.phoneNo)
-                                                    deleteData(row.phoneNo)
-                                                    // setOpen1(true);
-
-                                                }}
-                                            > <BackspaceIcon /></button>
-
-
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
-
-    </TabPanel>
-    {/* Second Tab  */}
-    <TabPanel value={value} index={1}>
-    <Grid container spacing={2}>
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                                        >
-                                            <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Approved Hotels</Typography>
-                                            </Item>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} md={12}>
-                                        {/* Approved dispachers table  */}
-                                        <TableContainer >
-                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell style={TextColor}>Image</TableCell>
-                                                        <TableCell style={TextColor}>Hotel Name</TableCell>
-                                                        <TableCell style={TextColor}>City</TableCell>
-                                                        <TableCell style={TextColor}>Hotel Type</TableCell>
-                                                        <TableCell style={TextColor}>Action</TableCell>
-                                                    </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading1 && data1.map((row) => (
-                                                        <TableRow
-                                                            key={row.name}
-                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        >
-                                                            <TableCell style={TextColor} component="th" scope="row">
                                                             <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
+                                                        </TableCell>
+                                                        <TableCell style={TextColor} >{row.hotelName}</TableCell>
+                                                        <TableCell style={TextColor} >{row.city}</TableCell>
 
-                                                            </TableCell>
-                                                            <TableCell style={TextColor} >{row.hotelName}</TableCell>
-                                                            <TableCell style={TextColor} >{row.city}</TableCell>
-                                                            <TableCell style={TextColor} >{row.hotelType}</TableCell>
+                                                        <TableCell style={TextColor} >{row.hotelType}</TableCell>
+                                                        <TableCell style={TextColor} >
+                                                            <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                        </TableCell>
+                                                        <TableCell >
+                                                            <button className={classes.btn} onClick={() => {
+                                                                handleClickOpen(row.phoneNo)
+                                                            }}>
+                                                                < VisibilityIcon />
+                                                            </button>
+                                                            {/* Dialog  */}
 
-                                                            <TableCell >
-                                                                <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                                    < VisibilityIcon />
-                                                                </button>
-                                                                {/* Dialog  */}
+                                                            <button className={classes.btn1}
+                                                                onClick={() => {
+                                                                    console.log(row.phoneNo)
+                                                                    deleteData(row.phoneNo)
+                                                                    // setOpen1(true);
 
-                                                                <button className={classes.btn1}
-                                                                    onClick={() => {
-                                                                        console.log(row.phoneNo)
-                                                                        deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
-
-                                                                    }}
-                                                                > <BackspaceIcon /></button>
+                                                                }}
+                                                            > <BackspaceIcon /></button>
 
 
-                                                            </TableCell>
-                                                        </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
-
-                                    </Grid>
-                                </Grid>
-    </TabPanel>
-    {/* Third tab  */}
-    <TabPanel value={value} index={2}>
-    <Grid container spacing={2}>
-                                    <Grid item xs={12} md={12}>
-                                        <Box
-                                            sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                                        >
-                                            <Item sx={{ flexGrow: 1 }}>
-                                                <Typography variant='h6'>Unapproved Hotels</Typography>
-                                            </Item>
-                                        </Box>
-                                    </Grid>
-                                    <Grid item xs={12} md={12}>
-                                        {/* Approved dispachers table  */}
-                                        <TableContainer >
-                                            <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                                <TableHead>
-                                                    <TableRow>
-                                                        <TableCell style={TextColor}>Image</TableCell>
-                                                        <TableCell style={TextColor}>Hotel Name</TableCell>
-                                                        <TableCell style={TextColor}>City</TableCell>
-                                                        <TableCell style={TextColor}>Hotel Type</TableCell>
-                                                        <TableCell style={TextColor}>Approved</TableCell>
-                                                        
-                                                        <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableCell>
                                                     </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                    {/* filter(data1=> data1.profileApproved=="true"). */}
-                                                    {loading2 && data2.map((row) => (
-                                                        <TableRow
-                                                            key={row.name}
-                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                        >
-                                                            <TableCell style={TextColor} component="th" scope="row">
-                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
 
-
-                                                            </TableCell>
-                                                            <TableCell style={TextColor} >{row.hotelName}</TableCell>
-                                                            <TableCell style={TextColor} >{row.city}</TableCell>
-                                                            <TableCell style={TextColor} >{row.hotelType}</TableCell>
-                                                            <TableCell style={TextColor} >
-                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
-                                                    </TableCell>
-
-                                                            <TableCell >
-                                                                <button className={classes.btn} onClick={() => {
-                                                                    handleClickOpen(row.phoneNo)
-                                                                }}>
-                                                                    < VisibilityIcon />
-                                                                </button>
-                                                                {/* Dialog  */}
-
-                                                                <button className={classes.btn1}
-                                                                    onClick={() => {
-                                                                        console.log(row.phoneNo)
-                                                                        deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
-
-                                                                    }}
-                                                                > <BackspaceIcon /></button>
-
-
-                                                            </TableCell>
+                                </TabPanel>
+                                {/* Second Tab  */}
+                                <TabPanel value={value} index={1}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Approved Hotels</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* Approved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                            <TableCell style={TextColor}>City</TableCell>
+                                                            <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                            <TableCell style={TextColor}>Action</TableCell>
                                                         </TableRow>
-                                                    ))}
-                                                </TableBody>
-                                            </Table>
-                                        </TableContainer>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading1 && data1.map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
 
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.hotelName}</TableCell>
+                                                                <TableCell style={TextColor} >{row.city}</TableCell>
+                                                                <TableCell style={TextColor} >{row.hotelType}</TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
                                     </Grid>
-                                </Grid>
-    </TabPanel>
-    <TabPanel value={value} index={3}>113</TabPanel>
-    <TabPanel value={value} index={4}>114</TabPanel>
-    </Box>
-    </Grid>
+                                </TabPanel>
+                                {/* Third tab  */}
+                                <TabPanel value={value} index={2}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Unapproved Hotels</Typography>
+                                                </Item>
+                                            </Box>
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            {/* Approved dispachers table  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableHead>
+                                                        <TableRow>
+                                                            <TableCell style={TextColor}>Image</TableCell>
+                                                            <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                            <TableCell style={TextColor}>City</TableCell>
+                                                            <TableCell style={TextColor}>Hotel Type</TableCell>
+                                                            <TableCell style={TextColor}>Approved</TableCell>
+
+                                                            <TableCell style={TextColor}>Action</TableCell>
+                                                        </TableRow>
+                                                    </TableHead>
+                                                    <TableBody>
+                                                        {/* filter(data1=> data1.profileApproved=="true"). */}
+                                                        {loading2 && data2.map((row) => (
+                                                            <TableRow
+                                                                key={row.name}
+                                                                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                            >
+                                                                <TableCell style={TextColor} component="th" scope="row">
+                                                                    <img style={imgStyle} src={`https://hiiguest.com/${row.image}`} />
+
+
+                                                                </TableCell>
+                                                                <TableCell style={TextColor} >{row.hotelName}</TableCell>
+                                                                <TableCell style={TextColor} >{row.city}</TableCell>
+                                                                <TableCell style={TextColor} >{row.hotelType}</TableCell>
+                                                                <TableCell style={TextColor} >
+                                                                    <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                                </TableCell>
+
+                                                                <TableCell >
+                                                                    <button className={classes.btn} onClick={() => {
+                                                                        handleClickOpen(row.phoneNo)
+                                                                    }}>
+                                                                        < VisibilityIcon />
+                                                                    </button>
+                                                                    {/* Dialog  */}
+
+                                                                    <button className={classes.btn1}
+                                                                        onClick={() => {
+                                                                            console.log(row.phoneNo)
+                                                                            deleteData(row.phoneNo)
+                                                                            // setOpen1(true);
+
+                                                                        }}
+                                                                    > <BackspaceIcon /></button>
+
+
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+                                        </Grid>
+                                    </Grid>
+                                </TabPanel>
+                                <TabPanel value={value} index={3}>113</TabPanel>
+                                <TabPanel value={value} index={4}>114</TabPanel>
+                            </Box>
+                        </Grid>
 
                     </Grid>
-                    
+
 
 
                 </Grid>

@@ -8,6 +8,8 @@ import TableRow from '@mui/material/TableRow';
 import Grid from '@material-ui/core/Grid';
 import { Avatar, Typography } from '@mui/material';
 import Box from '@mui/material/Box';
+import Swal from 'sweetalert2'
+
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
@@ -299,7 +301,29 @@ function HotelTypesTable() {
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Created Hotel Type Successfully')
+            setOpenAdd(false)
+            // window.alert('Created Hotel Type Successfully')
+            let timerInterval
+            Swal.fire({
+                title: 'Created Hotel Type Successfully',
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: () => {
+                    Swal.showLoading()
+                    const b = Swal.getHtmlContainer().querySelector('b')
+                    timerInterval = setInterval(() => {
+                        b.textContent = Swal.getTimerLeft()
+                    }, 100)
+                },
+                willClose: () => {
+                    clearInterval(timerInterval)
+                }
+            }).then((result) => {
+                /* Read more about handling dismissals below */
+                if (result.dismiss === Swal.DismissReason.timer) {
+                    console.log('I was closed by the timer')
+                }
+            })
         })
             .catch(err => {
                 console.log(err)

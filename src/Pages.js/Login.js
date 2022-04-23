@@ -73,7 +73,7 @@ function Login() {
     }, [])
 
     // Session 
-    // const [user, setUser] = useState("");
+    const [user, setUser] = useState("");
     const [session, setSession] = useState("");
 
     //    Get 
@@ -93,7 +93,7 @@ function Login() {
             console.log(response)
             const session1 = response.data.session;
 
-            // setSession(response.data.session);
+            setSession(response.data.session);
             // console.log(response.data.session);
             console.log(session1);
 
@@ -120,12 +120,12 @@ function Login() {
                 }
             })
             navigate('/home'
-            // ,
-            //     {
-            //         state: {
-            //             session: session1,
-            //         }
-            //     }
+            ,
+                {
+                    state: {
+                        email: email,
+                    }
+                }
                 );
             //   navigate('/home');
 

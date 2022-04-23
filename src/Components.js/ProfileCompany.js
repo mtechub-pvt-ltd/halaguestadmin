@@ -158,7 +158,7 @@ const useStyles = makeStyles({
     },
     dialogTitle: {
         marginTop: '30px',
-    },BackGround: {
+    }, BackGround: {
         backgroundColor: '#181821',
         color: 'white',
         borderBottom: ' 1px solid #262635',
@@ -237,7 +237,7 @@ const TabsStyle = {
 const drawerWidth = 240;
 
 // const useStyles = makeStyles({
-    
+
 
 // })
 const DrawerHeader = styled('div')(({ theme }) => ({
@@ -304,7 +304,7 @@ function ProfileCompany() {
     }, [])
 
 
-   
+
     const classes = useStyles();
     const theme = useTheme();
 
@@ -344,7 +344,7 @@ function ProfileCompany() {
     //   Api 
     const [data, setData] = useState([]);
 
-    const getAllData = async() => {
+    const getAllData = async () => {
         const phoneNo = state.post_id;
         await axios.post('https://hiiguest.com/get-company', {
             phoneNo: phoneNo
@@ -362,48 +362,48 @@ function ProfileCompany() {
 
 
     }
-      //  Payment Details Api 
-      const [data1, setData1] = useState([]);
+    //  Payment Details Api 
+    const [data1, setData1] = useState([]);
 
-      const getPaymentData = async() => {
-          const phoneNo = state.post_id;
-          await axios.post('https://hiiguest.com/get-company', {
-              phoneNo: phoneNo
-          }, { headers }).then(response => {
-              console.log('response Payment')
-              console.log(response.data.paymentDetails);
-              setData1(response.data.paymentDetails);
-              console.log(data1);
-  
-              // setShow(true);
-          })
-              .catch(err => {
-                  console.log(err)
-              })
-  
-  
-      }
-      // Documents Api 
-      const [data2, setData2] = useState([]);
+    const getPaymentData = async () => {
+        const phoneNo = state.post_id;
+        await axios.post('https://hiiguest.com/get-company', {
+            phoneNo: phoneNo
+        }, { headers }).then(response => {
+            console.log('response Payment')
+            console.log(response.data.paymentDetails);
+            setData1(response.data.paymentDetails);
+            console.log(data1);
 
-      const getDocumentData = async() => {
-          const phoneNo = state.post_id;
-          await axios.post('https://hiiguest.com/get-company', {
-              phoneNo: phoneNo
-          }, { headers }).then(response => {
-              console.log('response Documents')
-              console.log(response.data.documents);
-              setData2(response.data.documents);
-              console.log(data2);
-  
-              // setShow(true);
-          })
-              .catch(err => {
-                  console.log(err)
-              })
-  
-  
-      }
+            // setShow(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    }
+    // Documents Api 
+    const [data2, setData2] = useState([]);
+
+    const getDocumentData = async () => {
+        const phoneNo = state.post_id;
+        await axios.post('https://hiiguest.com/get-company', {
+            phoneNo: phoneNo
+        }, { headers }).then(response => {
+            console.log('response Documents')
+            console.log(response.data.documents);
+            setData2(response.data.documents);
+            console.log(data2);
+
+            // setShow(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+
+
+    }
     useEffect(() => {
         getAllData();
         getTrans();
@@ -437,40 +437,40 @@ function ProfileCompany() {
     // Document print 
     let componentRef = useRef(null);
     // Transaction Dialog 
-     // Add 
-     const [openTrans, setOpenTrans] = React.useState(false);
+    // Add 
+    const [openTrans, setOpenTrans] = React.useState(false);
 
-     const handleClickOpenTrans = () => {
+    const handleClickOpenTrans = () => {
         setOpenTrans(true);
-     };
- 
-     const handleCloseTrans = () => {
-        setOpenTrans(false);
-     };
-     // Order Dialog 
-     // Add 
-     const [openAdd, setOpenAdd] = React.useState(false);
+    };
 
-     const handleClickOpenAdd = () => {
-         setOpenAdd(true);
-     };
- 
-     const handleCloseAdd = () => {
-         setOpenAdd(false);
-     };
+    const handleCloseTrans = () => {
+        setOpenTrans(false);
+    };
+    // Order Dialog 
+    // Add 
+    const [openAdd, setOpenAdd] = React.useState(false);
+
+    const handleClickOpenAdd = () => {
+        setOpenAdd(true);
+    };
+
+    const handleCloseAdd = () => {
+        setOpenAdd(false);
+    };
     //  Orders Api 
     const [ordersdata, setOrdersData] = useState([]);
     const [ordersloading, setOrdersLoading] = useState(false);
     const getTrans = async () => {
-        await axios.get(`https://hiiguest.com/get-company-orders`,{
+        await axios.get(`https://hiiguest.com/get-company-orders`, {
             params: {
-                phoneNo:state.post_id
-              }
+                phoneNo: state.post_id
+            }
         })
             .then((response) => {
                 console.log('Orders')
                 const allData = response.data;
-                
+
                 console.log(allData);
                 setOrdersData(response.data);
                 setOrdersLoading(true)
@@ -478,263 +478,62 @@ function ProfileCompany() {
             .catch(error => console.error(`Error:${error}`));
 
     }
-     //  Transaction Api 
-     const [transdata, setTransData] = useState([]);
-     const [transloading, setTransLoading] = useState(false);
-     const getOrders = async () => {
+    //  Transaction Api 
+    const [transdata, setTransData] = useState([]);
+    const [transloading, setTransLoading] = useState(false);
+    const getOrders = async () => {
         await axios.get('https://hiiguest.com/get-company-history', {
             params: {
-              phoneNo:state.post_id
+                phoneNo: state.post_id
             }
-          })
-             .then((response) => {
-                 console.log('History')
-                 const allData = response.data;
-                 console.log(allData);
-                 setTransData(response.data);
-                 setTransLoading(true);
-             })
-             .catch(error => console.error(`Error:${error}`));
-     }
+        })
+            .then((response) => {
+                console.log('History')
+                const allData = response.data;
+                console.log(allData);
+                setTransData(response.data);
+                setTransLoading(true);
+            })
+            .catch(error => console.error(`Error:${error}`));
+    }
 
     return (
         <>
             <Box sx={{ display: 'flex' }} >
-            {/* AppBar  */}
-            <AppBar position="fixed" open={open}>
-                <Toolbar className={classes.BackGround}>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
-                    >
-                        <MenuIcon className={classes.iconColor} />
-                    </IconButton>
-                    <Typography variant="h6" noWrap component="div">
-                        Dashboard
-                    </Typography>
+                {/* AppBar  */}
+                <AppBar position="fixed" open={open}>
+                    <Toolbar className={classes.BackGround}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="open drawer"
+                            onClick={handleDrawerOpen}
+                            edge="start"
+                            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+                        >
+                            <MenuIcon className={classes.iconColor} />
+                        </IconButton>
+                        <Typography variant="h6" noWrap component="div">
+                            Dashboard
+                        </Typography>
 
-                </Toolbar>
-            </AppBar>
+                    </Toolbar>
+                </AppBar>
 
-            <Drawer
-                sx={{
-                    width: drawerWidth,
-                    flexShrink: 0,
-                    '& .MuiDrawer-paper': {
+                <Drawer
+                    sx={{
                         width: drawerWidth,
-                        boxSizing: 'border-box',
-                    },
-                }}
-                variant="persistent"
-                anchor="left"
-                open={open}
-            >
-                <DrawerHeader className={classes.head}>
-                    <div className={classes.Header} onClick={() => {
-                        setShow(false);
-                        setShow1(false);
-                        setShow2(false)
-                        setShow3(false);
-                        setShow4(false);
-                        setShow5(false);
-                        setShow6(false);
-                        setShow7(false);
-                        setShow8(false);
-                        setShow9(false);
-                    }}>
-                        <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
-                        {/* <img */}
-
-                    </div>
-                    <IconButton onClick={handleDrawerClose}>
-                        {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
-                    </IconButton>
-                </DrawerHeader>
-
-                <List className={classes.listStyle}>
-
-                <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(true);
-                            setShow1(false);
-                            setShow2(false)
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-                        }} >
-                            <ListItemIcon>
-                                <DashboardIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Dashboard" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(true);
-                            setShow2(false);
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-
-                        }}>
-                            <ListItemIcon>
-                            <BusinessIcon className={classes.iconColor} />
-
-                            </ListItemIcon>
-                            <ListItemText primary="Dispachers" />
-                        </ListItemButton>
-                    </ListItem>
-
-
-                    
-                   
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(true)
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-                        }} >
-                            <ListItemIcon>
-                                <HotelIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Hotels" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false)
-                            setShow3(true);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-                        }}>
-                            <ListItemIcon>
-                                <DirectionsBusIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Drivers" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false)
-                            setShow3(false);
-                            setShow4(true);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-                        }} >
-                            <ListItemIcon>
-                                <HotelIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Guests" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false);
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(true);
-                            setShow6(false);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-
-                        }}>
-                            <ListItemIcon>
-                                <ShoppingCartIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Orders" />
-                        </ListItemButton>
-                    </ListItem>
-
-                  
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false)
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(true);
-                            setShow7(false);
-                            setShow8(false);
-                            setShow9(false);
-
-                        }}>
-                            <ListItemIcon>
-                            <DriveEtaIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Vehicles" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                            setShow(false);
-                            setShow1(false);
-                            setShow2(false)
-                            setShow3(false);
-                            setShow4(false);
-                            setShow5(false);
-                            setShow6(false);
-                            setShow7(true);
-                            setShow8(false);
-                            setShow9(false);
-                        }}>
-                            <ListItemIcon>
-                                <StorefrontIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Hotel Types" />
-                        </ListItemButton>
-                    </ListItem>
-
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                        }}>
-                            <ListItemIcon>
-                                <AccountCircleIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Users" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
+                        flexShrink: 0,
+                        '& .MuiDrawer-paper': {
+                            width: drawerWidth,
+                            boxSizing: 'border-box',
+                        },
+                    }}
+                    variant="persistent"
+                    anchor="left"
+                    open={open}
+                >
+                    <DrawerHeader className={classes.head}>
+                        <div className={classes.Header} onClick={() => {
                             setShow(false);
                             setShow1(false);
                             setShow2(false)
@@ -743,34 +542,235 @@ function ProfileCompany() {
                             setShow5(false);
                             setShow6(false);
                             setShow7(false);
-                            setShow8(true);
+                            setShow8(false);
                             setShow9(false);
                         }}>
-                            <ListItemIcon>
-                                <SettingsIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Settings" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton onClick={() => {
-                        }}>
-                            <ListItemIcon>
-                                <AttachMoneyIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Earnings" />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding className={classes.ListStyle1}>
-                        <ListItemButton >
-                            <ListItemIcon>
-                                <DraftsIcon className={classes.iconColor} />
-                            </ListItemIcon>
-                            <ListItemText primary="Logout" />
-                        </ListItemButton>
-                    </ListItem>
-{/* Logout  */}
-                    {/* <ListItem disablePadding className={classes.ListStyle1}>
+                            <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
+                            {/* <img */}
+
+                        </div>
+                        <IconButton onClick={handleDrawerClose}>
+                            {theme.direction === 'ltr' ? <ChevronLeftIcon className={classes.iconColor} /> : <ChevronRightIcon className={classes.iconColor} />}
+                        </IconButton>
+                    </DrawerHeader>
+
+                    <List className={classes.listStyle}>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(true);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+                            }} >
+                                <ListItemIcon>
+                                    <DashboardIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Dashboard" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(true);
+                                setShow2(false);
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+
+                            }}>
+                                <ListItemIcon>
+                                    <BusinessIcon className={classes.iconColor} />
+
+                                </ListItemIcon>
+                                <ListItemText primary="Dispachers" />
+                            </ListItemButton>
+                        </ListItem>
+
+
+
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(true)
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+                            }} >
+                                <ListItemIcon>
+                                    <HotelIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Hotels" />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(true);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+                            }}>
+                                <ListItemIcon>
+                                    <DirectionsBusIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Drivers" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(false);
+                                setShow4(true);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+                            }} >
+                                <ListItemIcon>
+                                    <HotelIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Guests" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false);
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(true);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+
+                            }}>
+                                <ListItemIcon>
+                                    <ShoppingCartIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Orders" />
+                            </ListItemButton>
+                        </ListItem>
+
+
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(true);
+                                setShow7(false);
+                                setShow8(false);
+                                setShow9(false);
+
+                            }}>
+                                <ListItemIcon>
+                                    <DriveEtaIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Vehicles" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(true);
+                                setShow8(false);
+                                setShow9(false);
+                            }}>
+                                <ListItemIcon>
+                                    <StorefrontIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Hotel Types" />
+                            </ListItemButton>
+                        </ListItem>
+
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                            }}>
+                                <ListItemIcon>
+                                    <AccountCircleIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Users" />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                                setShow(false);
+                                setShow1(false);
+                                setShow2(false)
+                                setShow3(false);
+                                setShow4(false);
+                                setShow5(false);
+                                setShow6(false);
+                                setShow7(false);
+                                setShow8(true);
+                                setShow9(false);
+                            }}>
+                                <ListItemIcon>
+                                    <SettingsIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Settings" />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton onClick={() => {
+                            }}>
+                                <ListItemIcon>
+                                    <AttachMoneyIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Earnings" />
+                            </ListItemButton>
+                        </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                            <ListItemButton >
+                                <ListItemIcon>
+                                    <DraftsIcon className={classes.iconColor} />
+                                </ListItemIcon>
+                                <ListItemText primary="Logout" />
+                            </ListItemButton>
+                        </ListItem>
+                        {/* Logout  */}
+                        {/* <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton >
                             <ListItemIcon>
                                 <DraftsIcon className={classes.iconColor} />
@@ -778,420 +778,420 @@ function ProfileCompany() {
                             <Link to="/logout">Logout</Link>
                         </ListItemButton>
                     </ListItem> */}
-                </List>
+                    </List>
 
-            </Drawer>
-            <Main open={open} style={MarginTop} className={classes.BackGround}>
-            {/* <ProfileData/> */}
-            {show ? <DashboardUser /> : null}
-                {show1 ? <CompanyTable /> : null}
-                {show2 ? <HotelTable /> : null}
-                {show3 ? <AllDriversTable /> : null}
-                {show4 ? < CustomerTable/> : null}
-                {show5 ? < OrderTable/> : null}
-                {show6 ? <VehicleTable /> : null}
-                {show7 ? <HotelTypesTable /> : null}
-                {show8 ? <Settings /> : null} 
-                {show9 ?
+                </Drawer>
+                <Main open={open} style={MarginTop} className={classes.BackGround}>
+                    {/* <ProfileData/> */}
+                    {show ? <DashboardUser /> : null}
+                    {show1 ? <CompanyTable data={state.data}/> : null}
+                    {show2 ? <HotelTable data={state.data}/> : null}
+                    {show3 ? <AllDriversTable data={state.data}/> : null}
+                    {show4 ? < CustomerTable data={state.data}/> : null}
+                    {show5 ? < OrderTable data={state.data}/> : null}
+                    {show6 ? <VehicleTable data={state.data}/> : null}
+                    {show7 ? <HotelTypesTable /> : null}
+                    {show8 ? <Settings data={state.data}/> : null}
+                    {show9 ?
 
-<>
-{/* {loading ?
+                        <>
+                            {/* {loading ?
                 <ClipLoader color={color} loading={loading} css={override} size={30} /> */}
-                
-{/* AppBAr  */}
-<ClipLoader color={color} loading={loading} css={override} size={30} />
-    {console.log(state.post_id)}
-    <Grid container spacing={2}>
-        <Grid item xs={12} md={12} className={classes.GridStyle}>
-            <Grid container spacing={2}>
-                <Grid item xs={12} md={12}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Dispacher Profile</Typography>
-                        </Item>
-                        <Item>
-                                    {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success'
-                                     onClick={handleClickOpenTrans} 
-                                     >
-                                    Transaction
-                                    </Button>
-                                    {/* Dialog */}
-                                    <Dialog className={classes.DialogWidth} open={openTrans} onClose={handleCloseTrans}>
-                                        <DialogTitle>Transaction Details</DialogTitle>
-                                        <DialogContent>
-                                            {/* Call Api Transactions */}
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12} md={12}>
 
-                                                <TableContainer >
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={TextColor}>Transaction No</TableCell>
-                                                <TableCell style={TextColor}>Time</TableCell>
-                                                <TableCell style={TextColor}>Price</TableCell>
-                                                
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
+                            {/* AppBAr  */}
+                            <ClipLoader color={color} loading={loading} css={override} size={30} />
+                            {console.log(state.post_id)}
+                            <Grid container spacing={2}>
+                                <Grid item xs={12} md={12} className={classes.GridStyle}>
+                                    <Grid container spacing={2}>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Dispacher Profile</Typography>
+                                                </Item>
+                                                <Item>
+                                                    {/* startIcon={<AddIcon />} */}
+                                                    <Button variant="contained" color='success'
+                                                        onClick={handleClickOpenTrans}
+                                                    >
+                                                        Transaction
+                                                    </Button>
+                                                    {/* Dialog */}
+                                                    <Dialog className={classes.DialogWidth} open={openTrans} onClose={handleCloseTrans}>
+                                                        <DialogTitle>Transaction Details</DialogTitle>
+                                                        <DialogContent>
+                                                            {/* Call Api Transactions */}
+                                                            <Grid container spacing={2}>
+                                                                <Grid item xs={12} md={12}>
 
-                                             {transloading && transdata.map((row) => ( 
-                                                <TableRow
-                                                    key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {row.transactionNo}
+                                                                    <TableContainer >
+                                                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                                            <TableHead>
+                                                                                <TableRow>
+                                                                                    <TableCell style={TextColor}>Transaction No</TableCell>
+                                                                                    <TableCell style={TextColor}>Time</TableCell>
+                                                                                    <TableCell style={TextColor}>Price</TableCell>
 
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} >
-                                                        {row.time}
-                                                        </TableCell>
-                                                    <TableCell style={TextColor} >{row.price}</TableCell>
-                                                   
-                                                    
-                                                </TableRow>
-                                             ))} 
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                                                                </TableRow>
+                                                                            </TableHead>
+                                                                            <TableBody>
+
+                                                                                {transloading && transdata.map((row) => (
+                                                                                    <TableRow
+                                                                                        key={row.name}
+                                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                                                    >
+                                                                                        <TableCell style={TextColor} component="th" scope="row">
+                                                                                            {row.transactionNo}
+
+                                                                                        </TableCell>
+                                                                                        <TableCell style={TextColor} >
+                                                                                            {row.time}
+                                                                                        </TableCell>
+                                                                                        <TableCell style={TextColor} >{row.price}</TableCell>
 
 
-
-                                                    {/* End  */}
-                                                </Grid>
-                                                
-                                            </Grid>
-                                            
-
-
-                                        </DialogContent>
-                                        
-                                    </Dialog>
-                                    {/* Dialog End  */}
-                        </Item>
-                        <Item>
-                                    {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success'
-                                    onClick={handleClickOpenAdd}
-                                    //  onClick={handleClickOpenAdd} 
-                                     >
-                                    Orders
-                                    </Button>
-                                    {/* Dialog */}
-                                    <Dialog className={classes.DialogWidth} open={openAdd} onClose={handleCloseAdd}>
-                                        <DialogTitle>Order Details</DialogTitle>
-                                        <DialogContent>
-                                            {/* Call Api Transaction */}
-                                            <Grid container spacing={2}>
-                                                <Grid item xs={12} md={12}>
-
-                                                <TableContainer >
-                                    <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                        <TableHead>
-                                            <TableRow>
-                                                <TableCell style={TextColor}>Order No</TableCell>
-                                                <TableCell style={TextColor}>Image</TableCell>
-                                                <TableCell style={TextColor}>Name</TableCell>
-                                                <TableCell style={TextColor}>Phone Number</TableCell>
-                                                <TableCell style={TextColor}>Email</TableCell>
-                                                <TableCell style={TextColor}>City</TableCell>
-                                                <TableCell style={TextColor}>Hotel type</TableCell>
-                                                <TableCell style={TextColor}>Job Title</TableCell>
-                                                <TableCell style={TextColor}>Vehicle Name</TableCell>
-                                            </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-
-                                             {ordersloading && ordersdata.map((row) => ( 
-                                                <TableRow
-                                                    key={row.name}
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {row.orderNo}
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} >
-                                            <img style={imgStyle} src={`https://hiiguest.com/${row.orderBy.image}`} />
-
-                                                        {/* {row.orderBy.image} */}
-                                                        </TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.name}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.phoneNo}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.email}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.city}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.hotelType}</TableCell>
-                                                    <TableCell style={TextColor} >{row.orderBy.jobTitle}</TableCell>
-                                                    <TableCell style={TextColor} >{row.selectedVehicle.name}</TableCell>
-                                                    
-                                                </TableRow>
-                                             ))} 
-                                        </TableBody>
-                                    </Table>
-                                </TableContainer>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </TableContainer>
 
 
 
-                                                    {/* End  */}
-                                                </Grid>
-                                                
-                                            </Grid>
-                                            
+                                                                    {/* End  */}
+                                                                </Grid>
+
+                                                            </Grid>
 
 
-                                        </DialogContent>
-                                        
-                                    </Dialog>
-                                    {/* Dialog End  */}
-                        </Item>
 
-                    </Box>
-                </Grid>
-                {/* TABLE Grid  */}
-                <Grid item xs={12} md={12}>
-                    {/* Table container  */}
-                    <TableContainer >
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                            <TableBody>
+                                                        </DialogContent>
 
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                       Company Name
+                                                    </Dialog>
+                                                    {/* Dialog End  */}
+                                                </Item>
+                                                <Item>
+                                                    {/* startIcon={<AddIcon />} */}
+                                                    <Button variant="contained" color='success'
+                                                        onClick={handleClickOpenAdd}
+                                                    //  onClick={handleClickOpenAdd} 
+                                                    >
+                                                        Orders
+                                                    </Button>
+                                                    {/* Dialog */}
+                                                    <Dialog className={classes.DialogWidth} open={openAdd} onClose={handleCloseAdd}>
+                                                        <DialogTitle>Order Details</DialogTitle>
+                                                        <DialogContent>
+                                                            {/* Call Api Transaction */}
+                                                            <Grid container spacing={2}>
+                                                                <Grid item xs={12} md={12}>
 
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {data.companyName}
+                                                                    <TableContainer >
+                                                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                                            <TableHead>
+                                                                                <TableRow>
+                                                                                    <TableCell style={TextColor}>Order No</TableCell>
+                                                                                    <TableCell style={TextColor}>Image</TableCell>
+                                                                                    <TableCell style={TextColor}>Name</TableCell>
+                                                                                    <TableCell style={TextColor}>Phone Number</TableCell>
+                                                                                    <TableCell style={TextColor}>Email</TableCell>
+                                                                                    <TableCell style={TextColor}>City</TableCell>
+                                                                                    <TableCell style={TextColor}>Hotel type</TableCell>
+                                                                                    <TableCell style={TextColor}>Job Title</TableCell>
+                                                                                    <TableCell style={TextColor}>Vehicle Name</TableCell>
+                                                                                </TableRow>
+                                                                            </TableHead>
+                                                                            <TableBody>
 
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Second row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Email
+                                                                                {ordersloading && ordersdata.map((row) => (
+                                                                                    <TableRow
+                                                                                        key={row.name}
+                                                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                                                    >
+                                                                                        <TableCell style={TextColor} component="th" scope="row">
+                                                                                            {row.orderNo}
 
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {data.email}
+                                                                                        </TableCell>
+                                                                                        <TableCell style={TextColor} >
+                                                                                            <img style={imgStyle} src={`https://hiiguest.com/${row.orderBy.image}`} />
 
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Phone Number
+                                                                                            {/* {row.orderBy.image} */}
+                                                                                        </TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.name}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.phoneNo}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.email}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.city}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.hotelType}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.orderBy.jobTitle}</TableCell>
+                                                                                        <TableCell style={TextColor} >{row.selectedVehicle.name}</TableCell>
 
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.phoneNo}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* // ))} */}
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                       Gender
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.gender}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Description
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data.description}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                  {/* Row  */}
-                                                 
-                                                 
-                                                {/* Row  */}
-                                               
-                                                
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
+                                                                                    </TableRow>
+                                                                                ))}
+                                                                            </TableBody>
+                                                                        </Table>
+                                                                    </TableContainer>
 
 
-                </Grid>
-                <Grid item xs={12} md={12}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Payment Details</Typography>
-                        </Item>
 
-                    </Box>
-                </Grid>
-                {/* TABLE Grid  */}
-                <Grid item xs={12} md={12}>
-                    {/* Table container  */}
-                    <TableContainer >
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                            <TableBody>
+                                                                    {/* End  */}
+                                                                </Grid>
 
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Bank Name
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        {data1.bankName}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Second row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Account Number
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.accountNumber}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* Row  */}
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Account Holder Name
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.accountHolderName}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                {/* // ))} */}
-                                                 {/* Row  */}
-                                                 <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                      Swift Code
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.swiftCode}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                     ibanNo
-
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                    {data1.ibanNo}
-
-                                                    </TableCell>
-                                                    
-                                                </TableRow>
-                                                
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
+                                                            </Grid>
 
 
-                </Grid>
-                {/* Documents */}
-                <Grid item xs={12} md={12}>
-                    <Box
-                        sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
-                    >
-                        <Item sx={{ flexGrow: 1 }}>
-                            <Typography variant='h6'>Documents</Typography>
-                        </Item>
 
-                    </Box>
-                </Grid>
-                {/* TABLE Grid  */}
-                <Grid item xs={12} md={12}>
-                    {/* Table container  */}
-                    <TableContainer >
-                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                                            <TableBody>
+                                                        </DialogContent>
 
-                                                <TableRow
-                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                                >
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                                        Company Licence
+                                                    </Dialog>
+                                                    {/* Dialog End  */}
+                                                </Item>
 
-                                                    </TableCell>
-                                                    <TableCell style={TextColor} component="th" scope="row">
-                                            <img style={imgStyle} src={`https://hiiguest.com/${data2.companyLicense}`} />
-                                                       
-                                                        {/* {data2.companyLicense} */}
+                                            </Box>
+                                        </Grid>
+                                        {/* TABLE Grid  */}
+                                        <Grid item xs={12} md={12}>
+                                            {/* Table container  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableBody>
 
-                                                    </TableCell>
-                                                   
-                                                    
-                                                </TableRow>
-                                              
-                                              
-                                            </TableBody>
-                                        </Table>
-                                    </TableContainer>
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Company Name
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data.companyName}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Second row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Email
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data.email}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Phone Number
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data.phoneNo}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* // ))} */}
+                                                        {/* Row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Gender
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data.gender}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Description
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data.description}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Row  */}
 
 
-                </Grid>
-                {/* Seciong Grid 
+                                                        {/* Row  */}
+
+
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+
+                                        </Grid>
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Payment Details</Typography>
+                                                </Item>
+
+                                            </Box>
+                                        </Grid>
+                                        {/* Payment Details Grid  */}
+                                        <Grid item xs={12} md={12}>
+                                            {/* Table container  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableBody>
+
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Bank Name
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data1.bankName}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Second row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Account Number
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data1.accountNumber}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* Row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Account Holder Name
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data1.accountHolderName}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        {/* // ))} */}
+                                                        {/* Row  */}
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Swift Code
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data1.swiftCode}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                ibanNo
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                {data1.ibanNo}
+
+                                                            </TableCell>
+
+                                                        </TableRow>
+
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+
+                                        </Grid>
+                                        {/* Documents */}
+                                        <Grid item xs={12} md={12}>
+                                            <Box
+                                                sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
+                                            >
+                                                <Item sx={{ flexGrow: 1 }}>
+                                                    <Typography variant='h6'>Documents</Typography>
+                                                </Item>
+
+                                            </Box>
+                                        </Grid>
+                                        {/* TABLE Grid  */}
+                                        <Grid item xs={12} md={12}>
+                                            {/* Table container  */}
+                                            <TableContainer >
+                                                <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                                    <TableBody>
+
+                                                        <TableRow
+                                                            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                        >
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                Company Licence
+
+                                                            </TableCell>
+                                                            <TableCell style={TextColor} component="th" scope="row">
+                                                                <img style={imgStyle} src={`https://hiiguest.com/${data2.companyLicense}`} />
+
+                                                                {/* {data2.companyLicense} */}
+
+                                                            </TableCell>
+
+
+                                                        </TableRow>
+
+
+                                                    </TableBody>
+                                                </Table>
+                                            </TableContainer>
+
+
+                                        </Grid>
+                                        {/* Seciong Grid 
                  */}
-              
-
-            </Grid>
-        </Grid>
 
 
-    </Grid>
-
-                
-</>
-
-                 : null}
+                                    </Grid>
+                                </Grid>
 
 
-            </Main>
+                            </Grid>
+
+
+                        </>
+
+                        : null}
+
+
+                </Main>
             </Box>
         </>
     )

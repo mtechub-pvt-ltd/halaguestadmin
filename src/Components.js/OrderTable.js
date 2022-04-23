@@ -32,6 +32,8 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2'
+
 
 // Axios 
 import axios from 'axios'
@@ -151,34 +153,6 @@ const TabsStyle = {
 
 }
 
-
-//end
-// function createData(id, name, email, gender) {
-//     return { id, name, email, gender };
-// }
-
-// const rows = [
-//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-// ];
-// Dialog data 
-// function createProfile(name, data) {
-//     return { name, data };
-// }
-
-// const rows1 = [
-//     createProfile('User Id', 1),
-//     createProfile('User Name', 'Usama'),
-//     createProfile('Full Name', 'Muhammad Usama'),
-//     createProfile('Gender', 'Male'),
-//     createProfile('Date of Birth', '--'),
-//     createProfile('Country', '--'),
-//     createProfile('Email', '--'),
-//     createProfile('Bio', '--'),
-//     createProfile('Genre', '--'),
-// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -250,7 +224,7 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-function OrderTable() {
+const OrderTable =(props) => {
     // Tabs 
     const [value, setValue] = React.useState(0);
 
@@ -270,6 +244,7 @@ function OrderTable() {
             {
                 state: {
                     post_id: idData,
+                    data:props.data
                 }
             });
     };
@@ -320,7 +295,50 @@ function OrderTable() {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
-                setOpen1(true);
+                const swalWithBootstrapButtons = Swal.mixin({
+                    customClass: {
+                      confirmButton: 'btn btn-success',
+                      cancelButton: 'btn btn-danger'
+                    },
+                    buttonsStyling:{
+                        backgroundColor: '#4CAF50', /* Green */
+                    border: 'none',
+                    color: 'white',
+                    padding: '15px 32px',
+                    textAlign: 'center',
+                    textDecoration: 'none',
+                    display: 'inline-block',
+                    fontSize: '16px'}
+                  })
+                  
+                  swalWithBootstrapButtons.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, delete it!',
+                    cancelButtonText: 'No, cancel!',
+                    reverseButtons: true
+                  }).then((result) => {
+                    if (result.isConfirmed) {
+                      swalWithBootstrapButtons.fire(
+                        'Deleted!',
+                        'Order has been deleted.',
+                        'success'
+                      )
+            // window.location.reload(false);
+                    } else if (
+                      /* Read more about handling dismissals below */
+                      result.dismiss === Swal.DismissReason.cancel
+                    ) {
+                      swalWithBootstrapButtons.fire(
+                        'Cancelled',
+                        'Hotel is safe :)',
+                        'error'
+                      )
+                    }
+                  })
+                // setOpen1(true);
             }).catch(err => {
                 console.log(err)
             })

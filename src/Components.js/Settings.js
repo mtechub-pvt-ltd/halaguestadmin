@@ -47,11 +47,15 @@ const btn = {
     backgroundColor: '#ada6f2',
     borderColor: '#ada6f2'
 }
-function Settings() {
+const Settings=(props)=> {
+    console.log('setting props');
+    console.log(props.data)
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [open1, setOpen1] = React.useState(false);
     const [open2, setOpen2] = React.useState(false);
+    const [openR, setOpenR] = React.useState(false);
+
 
     //Get API Axios Update-km-per hour
     const [data, setData] = useState([]);
@@ -70,6 +74,8 @@ function Settings() {
     useEffect(() => {
         getAllData();
         getAllData1();
+        getAllData2();
+        getAllDataR();
     }, []);
     const headers = {
         'Content-Type': 'application/json'
@@ -127,6 +133,77 @@ function Settings() {
             console.log(data1);
             // window.alert('data updated successfully')
             setOpen1(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+
+    // Ride Radius 
+
+    const [dataR, setDataR] = useState([]);
+    const getAllDataR = () => {
+        axios.get(`${url}get-order-radius`)
+            .then((response) => {
+                const allData = response.data.orderRadius;
+                console.log('ride radius')
+                console.log(allData);
+                //    setDataR(response.data);
+                setDataR(allData);
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+    const submitHandlerR = (e) => {
+        e.preventDefault()
+        // POst Request 
+        axios.put('https://hiiguest.com/change-ride-radius', {
+            orderRadius: dataR
+        }, { headers }).then(response => {
+            console.log(dataR);
+            // window.alert('data updated successfully')
+            setOpenR(true);
+        })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    //Admin Credentials 
+
+    const [data2, setData2] = useState([]);
+    // setData2(props.data)
+    const [pass2, setPass2] = useState([]);
+    const [emailuser,setEmailUser]= useState([props.data]);
+    
+
+    const getAllData2 = () => {
+        axios.get(`${url}get-admin-profile`, {
+            params: {
+                email: props.data
+            }
+
+        })
+            .then((response) => {
+                const allData = response.data;
+                console.log('get admin profile state')
+                console.log(allData);
+                //    setData(response.data);
+                setData2(allData.email);
+                setPass2(allData.password);
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+    const submitHandler2 = (e) => {
+        e.preventDefault()
+        // POst Request 
+        axios.put('https://hiiguest.com/edit-admin-profile', {
+            email: data2,
+            password: pass2
+        }, { headers }).then(response => {
+            console.log(data2);
+            // window.alert('data updated successfully')
+            setOpen2(true);
         })
             .catch(err => {
                 console.log(err)
@@ -217,13 +294,38 @@ function Settings() {
                                         <Grid item xs={12} md={12}>
                                             <Typography variant='h6'>Change Ride Radius</Typography>
                                         </Grid>
+                                        <Grid item xs={12} md={12}>
+
+                                            <Collapse in={openR}>
+                                                <Alert
+                                                    action={
+                                                        <IconButton
+                                                            aria-label="close"
+                                                            color="inherit"
+                                                            size="small"
+                                                            onClick={() => {
+                                                                setOpenR(false);
+                                                            }}
+                                                        >
+                                                            <CloseIcon fontSize="inherit" />
+                                                        </IconButton>
+                                                    }
+                                                    sx={{ mb: 2 }}
+                                                >
+                                                    Updated Successfully
+                                                </Alert>
+                                            </Collapse>
+
+
+                                        </Grid>
 
                                         <Grid item xs={12} md={12}>
 
-                                        <input className={classes.InputStyle} name="first" type="text" 
-                                                // onChange={
-                                                //     (e) => setDataRide(e.target.value)
-                                                // }
+                                            <input className={classes.InputStyle} name="first" type="text"
+                                                value={dataR}
+                                                onChange={
+                                                    (e) => setDataR(e.target.value)
+                                                }
                                                 placeholder="Enter Value" />
                                         </Grid>
                                         <Grid item xs={12} md={12}>
@@ -232,7 +334,7 @@ function Settings() {
 
                                                 </Grid>
                                                 <Grid item xs={12} md={4}>
-                                                    <Button variant="contained" style={btn} >Update</Button>
+                                                    <Button variant="contained" style={btn} onClick={submitHandlerR}>Update</Button>
                                                 </Grid>
                                                 <Grid item xs={12} md={4}>
 
@@ -326,11 +428,45 @@ function Settings() {
                                         </Grid>
                                         <Grid item xs={12} md={12}>
 
-                                            <input className={classes.InputStyle} name="first" type="text" placeholder="Enter Email"></input>
+<Collapse in={open2}>
+    <Alert
+        action={
+            <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                    setOpen2(false);
+                }}
+            >
+                <CloseIcon fontSize="inherit" />
+            </IconButton>
+        }
+        sx={{ mb: 2 }}
+    >
+        Updated Successfully
+    </Alert>
+</Collapse>
+
+
+</Grid>
+                                        <Grid item xs={12} md={12}>
+
+                                            <input className={classes.InputStyle} name="email" type="text" placeholder="Enter Email"
+                                                value={data2}
+                                                onChange={
+                                                    (e) => setData2(e.target.value)
+                                                }
+                                            />
                                         </Grid>
                                         <Grid item xs={12} md={12}>
 
-                                            <input className={classes.InputStyle} name="first" type="text" placeholder="Enter Password"></input>
+                                            <input className={classes.InputStyle} name="password" type="text" placeholder="Enter Password"
+                                            //  value={pass2}
+                                            //  onChange={
+                                            //      (e) => setPass2(e.target.value)
+                                            //  }
+                                            />
                                         </Grid>
                                         <Grid item xs={12} md={12}>
                                             <Grid container spacing={2}>
@@ -338,7 +474,7 @@ function Settings() {
 
                                                 </Grid>
                                                 <Grid item xs={12} md={4}>
-                                                    <Button variant="contained" style={btn} >Update</Button>
+                                                    <Button variant="contained" style={btn} onClick={submitHandler2}>Update</Button>
                                                 </Grid>
                                                 <Grid item xs={12} md={4}>
 

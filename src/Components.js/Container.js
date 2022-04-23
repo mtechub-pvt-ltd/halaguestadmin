@@ -3,11 +3,13 @@ import Box from '@mui/material/Box';
 import AppBar1 from './AppBar1';
 import MainComponent from './MainComponent';
 
-function Container() {
+const Container=(props)=> {
   return (
     <>
     <Box sx={{ display: 'flex' }} >
-        <AppBar1/>
+      {console.log('propsss')}
+      {console.log(props.data)}
+        <AppBar1 data={props.data} />
         {/* <MainComponent/> */}
 
     </Box>

@@ -13,7 +13,13 @@
 #             "city":"city" ,
 #             "description":"description"
 # }
-GET  https://hiiguest.com/get-hotel-types HTTP/1.1
+Put  https://hiiguest.com/edit-admin-profile HTTP/1.1
+ Content-Type: :application/json
+[{
+    "email":"rimsha22@gmail.com",
+    "password":"1234"
+}
+]
 
 
 

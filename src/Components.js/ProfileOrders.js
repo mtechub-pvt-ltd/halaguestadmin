@@ -865,14 +865,14 @@ function ProfileOrders() {
                 <Main open={open} style={MarginTop} className={classes.BackGround}>
                     {/* <ProfileData/> */}
                     {show ? <DashboardUser /> : null}
-                    {show1 ? <CompanyTable /> : null}
-                    {show2 ? <HotelTable /> : null}
-                    {show3 ? <AllDriversTable /> : null}
-                    {show4 ? < CustomerTable /> : null}
-                    {show5 ? < OrderTable /> : null}
-                    {show6 ? <VehicleTable /> : null}
+                    {show1 ? <CompanyTable data ={state.data}/> : null}
+                    {show2 ? <HotelTable data ={state.data}/> : null}
+                    {show3 ? <AllDriversTable data ={state.data}/> : null}
+                    {show4 ? < CustomerTable data ={state.data}/> : null}
+                    {show5 ? < OrderTable data ={state.data}/> : null}
+                    {show6 ? <VehicleTable data ={state.data}/> : null}
                     {show7 ? <HotelTypesTable /> : null}
-                    {show8 ? <Settings /> : null}
+                    {show8 ? <Settings data ={state.data}/> : null}
                     {show9 ?
 
                         <>
