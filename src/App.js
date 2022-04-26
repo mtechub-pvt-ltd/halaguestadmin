@@ -20,7 +20,9 @@ import ProfileHotel from './Components.js/ProfileHotel';
 import ProfileCompany from './Components.js/ProfileCompany'
 import ProfileCustomer from './Components.js/ProfileCustomer';
 import ProfileVehicle from './Components.js/ProfileVehicle';
-import ProfileOrders from './Components.js/ProfileOrders'
+import ProfileOrders from './Components.js/ProfileOrders';
+import Image from './Components.js/Image';
+import Charts from './Pages.js/Charts';
 
 const useStyles = makeStyles({
   root1: {
@@ -82,7 +84,13 @@ function App() {
             <Route exact path="/imgupload" element={<ImageUpload/>}></Route>
           </Routes>
           <Routes>
+            <Route exact path="/img" element={<Image/>}></Route>
+          </Routes>
+          <Routes>
             <Route exact path="/print" element={<Print/>}></Route>
+          </Routes> 
+          <Routes>
+            <Route exact path="/chart" element={<Charts/>}></Route>
           </Routes> 
           {/* <Routes>
             <Route exact path="/delete" element={<Delete/>}></Route>

@@ -32,6 +32,8 @@ import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 // Axios 
@@ -109,6 +111,16 @@ const useStyles = makeStyles({
         borderRadius: '5px',
         color: 'white',
         marginLeft: '234px'
+    },
+    user: {
+        // justifyContent:'center',
+        // alignItems:'center',
+        backgroundColor: 'white',
+        borderRadius: '4px',
+        color: 'white',
+        height: '100%',
+        padding: '0px',
+        width: '200px',
     }
 })
 const TextColor = {
@@ -223,7 +235,25 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-const CustomerTable=(props)=> {
+const CustomerTable = (props) => {
+    const [searchtext, setsearchtext] = React.useState("")
+    const [allData, setAllData] = useState([]);
+    const handleSearch = (event) => {
+        console.log('search')
+        // .toLowerCase()
+        let value = event.target.value;
+        let result = [];
+        console.log(value);
+                     
+        result = data1.filter((row) => {
+            return row.name.search(value) != -1;
+        });
+        console.log('result')
+        console.log(result);
+        setData(result);
+ 
+
+    }
     // Tabs 
     const [value, setValue] = React.useState(0);
 
@@ -243,7 +273,7 @@ const CustomerTable=(props)=> {
             {
                 state: {
                     post_id: idData,
-                    data:props.data
+                    data: props.data
                 }
             });
     };
@@ -293,7 +323,7 @@ const CustomerTable=(props)=> {
     const [description, setDescription] = useState("");
 
 
-    
+
     const checkbox = (Did) => {
         console.log(Did);
 
@@ -327,21 +357,22 @@ const CustomerTable=(props)=> {
                 // setOpen1(true);
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
-                      confirmButton: 'btn btn-success',
-                      cancelButton: 'btn btn-danger'
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
                     },
-                    buttonsStyling:{
+                    buttonsStyling: {
                         backgroundColor: '#4CAF50', /* Green */
-                    border: 'none',
-                    color: 'white',
-                    padding: '15px 32px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                    fontSize: '16px'}
-                  })
-                  
-                  swalWithBootstrapButtons.fire({
+                        border: 'none',
+                        color: 'white',
+                        padding: '15px 32px',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        fontSize: '16px'
+                    }
+                })
+
+                swalWithBootstrapButtons.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
                     icon: 'warning',
@@ -349,25 +380,35 @@ const CustomerTable=(props)=> {
                     confirmButtonText: 'Yes, delete it!',
                     cancelButtonText: 'No, cancel!',
                     reverseButtons: true
-                  }).then((result) => {
+                }).then((result) => {
                     if (result.isConfirmed) {
-                      swalWithBootstrapButtons.fire(
-                        'Deleted!',
-                        'Customer has been deleted.',
-                        'success'
-                      )
-            // window.location.reload(false);
+                        swalWithBootstrapButtons.fire(
+                            'Deleted!',
+                            'Customer has been deleted.',
+                            'success'
+                        )
+                                               //    refresh componenet 
+                axios.get(`${url}get-all-customers`)
+                .then((response) => {
+                    const allData = response.data;
+                    console.log(allData);
+                    setData(response.data);
+                    setLoading(true)
+                })
+                .catch(error => console.error(`Error:${error}`));
+
+                        // window.location.reload(false);
                     } else if (
-                      /* Read more about handling dismissals below */
-                      result.dismiss === Swal.DismissReason.cancel
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
                     ) {
-                      swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Customer is safe :)',
-                        'error'
-                      )
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Customer is safe :)',
+                            'error'
+                        )
                     }
-                  })
+                })
             }).catch(err => {
                 console.log(err)
             })
@@ -396,7 +437,7 @@ const CustomerTable=(props)=> {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        
+
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
@@ -404,7 +445,21 @@ const CustomerTable=(props)=> {
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Customers</Typography>
                                 </Item>
-                              
+                                <Item sx={{ flexGrow: 1 }}>
+
+                                    <Autocomplete
+                                        id="free-solo-demo"
+                                        freeSolo
+                                        options={data.map((option) => option.name)}
+                                        renderInput={(params) => <TextField className={classes.user} {...params} 
+                                        onChange={(event) =>{
+                                            handleSearch(event)
+                                          
+                                       }}
+                                       label="Search" />}
+                                    />
+                                </Item>
+
 
                             </Box>
                         </Grid>

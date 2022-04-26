@@ -39,6 +39,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ImageUpload from '../Pages.js/ImageUpload'
 import Swal from 'sweetalert2'
+import Autocomplete from '@mui/material/Autocomplete';
 
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
@@ -134,6 +135,15 @@ const useStyles = makeStyles({
         borderRadius: '50%',
         display: 'inline-block'
 
+    },user: {
+        // justifyContent:'center',
+        // alignItems:'center',
+        backgroundColor: 'white',
+        borderRadius: '4px',
+        color: 'white',
+        height: '100%',
+        padding: '0px',
+        width: '200px',
     }
 })
 
@@ -211,7 +221,26 @@ Item.propTypes = {
 };
 
 
-const AllDriversTable=(props)=> {
+const AllDriversTable = (props) => {
+    // Search
+    const [searchtext, setsearchtext] = React.useState("")
+    const [allData, setAllData] = useState([]);
+    const handleSearch = (event) => {
+        console.log('search')
+        // .toLowerCase()
+        let value = event.target.value;
+        let result = [];
+        console.log(value);
+                     
+        result = data1.filter((row) => {
+            return row.name.search(value) != -1;
+        });
+        console.log('result')
+        console.log(result);
+        setData(result);
+ 
+
+    }
     // Active status 
     const headers = {
         'Content-Type': 'application/json'
@@ -253,7 +282,7 @@ const AllDriversTable=(props)=> {
             {
                 state: {
                     post_id: idData,
-                    data:props.data
+                    data: props.data
                 }
             });
     };
@@ -301,38 +330,38 @@ const AllDriversTable=(props)=> {
             .catch(error => console.error(`Error:${error}`));
 
     }
-       //Get Specific API Axios Online
-       const [data2, setData2] = useState([]);
-       const [loading2, setLoading2] = useState(false);
-       const getAllData2 = async () => {
-           await axios.get(`${url}get-online-drivers`)
-               .then((response) => {
-                   console.log('Online Drivers')
-                   const allData2 = response.data;
-                   console.log(allData2);
-                   setData2(response.data);
-                   setLoading2(true)
-                   // }
-               })
-               .catch(error => console.error(`Error:${error}`));
-   
-       }
-         //Get Specific API Axios Offline
-         const [data3, setData3] = useState([]);
-         const [loading3, setLoading3] = useState(false);
-         const getAllData3 = async () => {
-             await axios.get(`${url}get-offline-drivers`)
-                 .then((response) => {
-                     console.log('Offline Drivers')
-                     const allData3 = response.data;
-                     console.log(allData3);
-                     setData3(response.data);
-                     setLoading3(true)
-                     // }
-                 })
-                 .catch(error => console.error(`Error:${error}`));
-     
-         }
+    //Get Specific API Axios Online
+    const [data2, setData2] = useState([]);
+    const [loading2, setLoading2] = useState(false);
+    const getAllData2 = async () => {
+        await axios.get(`${url}get-online-drivers`)
+            .then((response) => {
+                console.log('Online Drivers')
+                const allData2 = response.data;
+                console.log(allData2);
+                setData2(response.data);
+                setLoading2(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
+    //Get Specific API Axios Offline
+    const [data3, setData3] = useState([]);
+    const [loading3, setLoading3] = useState(false);
+    const getAllData3 = async () => {
+        await axios.get(`${url}get-offline-drivers`)
+            .then((response) => {
+                console.log('Offline Drivers')
+                const allData3 = response.data;
+                console.log(allData3);
+                setData3(response.data);
+                setLoading3(true)
+                // }
+            })
+            .catch(error => console.error(`Error:${error}`));
+
+    }
 
     // Add 
     const [openAdd, setOpenAdd] = React.useState(false);
@@ -385,6 +414,7 @@ const AllDriversTable=(props)=> {
             console.log(response)
             // window.alert('Create DriverSuccessfully')
             setOpenAdd(false);
+            setData([...data, response.data]);
             let timerInterval
             Swal.fire({
                 title: 'Created Driver Successfully',
@@ -490,24 +520,26 @@ const AllDriversTable=(props)=> {
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+              
                 // setOpen1(true);
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
-                      confirmButton: 'btn btn-success',
-                      cancelButton: 'btn btn-danger'
+                        confirmButton: 'btn btn-success',
+                        cancelButton: 'btn btn-danger'
                     },
-                    buttonsStyling:{
+                    buttonsStyling: {
                         backgroundColor: '#4CAF50', /* Green */
-                    border: 'none',
-                    color: 'white',
-                    padding: '15px 32px',
-                    textAlign: 'center',
-                    textDecoration: 'none',
-                    display: 'inline-block',
-                    fontSize: '16px'}
-                  })
-                  
-                  swalWithBootstrapButtons.fire({
+                        border: 'none',
+                        color: 'white',
+                        padding: '15px 32px',
+                        textAlign: 'center',
+                        textDecoration: 'none',
+                        display: 'inline-block',
+                        fontSize: '16px'
+                    }
+                })
+
+                swalWithBootstrapButtons.fire({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
                     icon: 'warning',
@@ -515,25 +547,34 @@ const AllDriversTable=(props)=> {
                     confirmButtonText: 'Yes, delete it!',
                     cancelButtonText: 'No, cancel!',
                     reverseButtons: true
-                  }).then((result) => {
+                }).then((result) => {
                     if (result.isConfirmed) {
-                      swalWithBootstrapButtons.fire(
-                        'Deleted!',
-                        'Driver has been deleted.',
-                        'success'
-                      )
-            // window.location.reload(false);
+                        swalWithBootstrapButtons.fire(
+                            'Deleted!',
+                            'Driver has been deleted.',
+                            'success'
+                        )
+                           //    refresh componenet 
+                 axios.get(`${url}get-all-drivers`)
+                 .then((response) => {
+                     const allData = response.data;
+                     console.log(allData);
+                     setData(response.data);
+                     setLoading(true)
+                 })
+                 .catch(error => console.error(`Error:${error}`));
+                        // window.location.reload(false);
                     } else if (
-                      /* Read more about handling dismissals below */
-                      result.dismiss === Swal.DismissReason.cancel
+                        /* Read more about handling dismissals below */
+                        result.dismiss === Swal.DismissReason.cancel
                     ) {
-                      swalWithBootstrapButtons.fire(
-                        'Cancelled',
-                        'Driver is safe :)',
-                        'error'
-                      )
+                        swalWithBootstrapButtons.fire(
+                            'Cancelled',
+                            'Driver is safe :)',
+                            'error'
+                        )
                     }
-                  })
+                })
             }).catch(err => {
                 console.log(err)
             })
@@ -548,7 +589,7 @@ const AllDriversTable=(props)=> {
                     {/* heading */}
                     <Grid container spacing={2}>
                         <Grid item xs={12} md={12}>
-                            
+
                         </Grid>
                         <Grid item xs={12} md={12}>
                             <Box
@@ -556,6 +597,21 @@ const AllDriversTable=(props)=> {
                             >
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Drivers</Typography>
+                                </Item>
+                                <Item sx={{ flexGrow: 1 }}>
+
+                                    <Autocomplete
+                                        id="free-solo-demo"
+                                        freeSolo
+                                        options={data.map((option) => option.name)}
+                                        renderInput={(params) => <TextField className={classes.user} {...params} 
+                                        value={searchtext}
+                                        onChange={(event) =>{
+                                             handleSearch(event)
+                                           
+                                        }}
+                                        label="Search" />}
+                                    />
                                 </Item>
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
@@ -1126,8 +1182,8 @@ const AllDriversTable=(props)=> {
                                                             <TableCell style={TextColor} >{row.phoneNo}</TableCell>
                                                             <TableCell style={TextColor} >{row.ownerCompany.name}</TableCell>
                                                             <TableCell style={TextColor} >
-                                                        <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
-                                                    </TableCell>
+                                                                <Checkbox {...label} onChange={() => checkbox(row.phoneNo)} />
+                                                            </TableCell>
 
                                                             <TableCell >
                                                                 <button className={classes.btn} onClick={() => {

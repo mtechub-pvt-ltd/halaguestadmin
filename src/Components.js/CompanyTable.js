@@ -34,9 +34,17 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 // Axios 
 import axios from 'axios'
+import { ResetTvOutlined } from '@mui/icons-material';
+// Redux Add 
+// import { useDispatch } from 'react-redux';
+// import { addData,deleteData } from '../actions/index';
+
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -110,11 +118,22 @@ const useStyles = makeStyles({
         borderRadius: '5px',
         color: 'white',
         marginLeft: '234px'
+    },
+    user: {
+        // justifyContent:'center',
+        // alignItems:'center',
+        backgroundColor: 'white',
+        borderRadius: '4px',
+        color: 'white',
+        height: '100%',
+        padding: '0px',
+        width: '200px',
     }
 })
 const TextColor = {
     color: '#9a9cab',
 }
+
 // Tabs 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -224,7 +243,29 @@ BootstrapDialogTitle.propTypes = {
 const imgStyle = {
     width: '50px',
 }
-const CompanyTable=(props) =>{
+const CompanyTable = (props) => {
+    // Redux AddData 
+    // const dispatch=useDispatch();
+    // Search 
+    const [searchtext, setsearchtext] = React.useState("")
+    const [allData, setAllData] = useState([]);
+    const handleSearch = (event) => {
+        console.log('search')
+        // .toLowerCase()
+        let value = event.target.value;
+        let result = [];
+        console.log(value);
+                     
+        result = data1.filter((row) => {
+            return row.companyName.search(value) != -1;
+        });
+        console.log('result')
+        console.log(result);
+        setData(result);
+ 
+
+    }
+
     // Tabs 
     const [value, setValue] = React.useState(0);
 
@@ -244,7 +285,7 @@ const CompanyTable=(props) =>{
             {
                 state: {
                     post_id: idData,
-                    data:props.data
+                    data: props.data
                 }
             });
     };
@@ -262,6 +303,7 @@ const CompanyTable=(props) =>{
                 const allData = response.data;
                 console.log(allData);
                 setData(response.data);
+                setAllData(response.data);
                 setLoading(true)
             })
             .catch(error => console.error(`Error:${error}`));
@@ -298,7 +340,7 @@ const CompanyTable=(props) =>{
     const [accountHolderName, setaccountHolderName] = useState("");
     const [swiftCode, setswiftCode] = useState("");
     const [ibanNo, setibanNo] = useState("");
-    const [companyLicense, getcompanyLicense] = useState("");
+    const [companyLicense, setcompanyLicense] = useState("");
 
 
     const submitHandler = (e) => {
@@ -327,9 +369,30 @@ const CompanyTable=(props) =>{
             }
 
         }, { headers }).then(response => {
-            console.log(response)
+            console.log('RESPONSE')
+            console.log(response.data)
             // window.alert('Created Company Successfully')
             setOpenAdd(false);
+            // REfresh Componenet 
+
+            setData([...data, response.data]);
+
+
+            // clear added data 
+            setImage("");
+            setPhno("");
+            setcompanyName("");
+            setName("");
+            setEmail("");
+            setgender("");
+            setdescription("");
+            setbankName("");
+            setaccountNumber("");
+            setaccountHolderName("");
+            setswiftCode("");
+            setibanNo("");
+            setcompanyLicense("");
+
             let timerInterval
             Swal.fire({
                 title: 'Created Company Successfully',
@@ -384,6 +447,7 @@ const CompanyTable=(props) =>{
             .then(res => {
                 console.log(res);
                 console.log(res.data);
+               
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: 'btn btn-success',
@@ -416,6 +480,16 @@ const CompanyTable=(props) =>{
                             'Comapny has been deleted.',
                             'success'
                         )
+                         //    refresh componenet 
+                axios.get(`${url}get-all-companies`)
+                .then((response) => {
+                    const allData = response.data;
+                    console.log(allData);
+                    setData(response.data);
+                    setLoading(true)
+                })
+                .catch(error => console.error(`Error:${error}`));
+
                         // window.location.reload(false);
                     } else if (
                         result.dismiss === Swal.DismissReason.cancel
@@ -464,6 +538,7 @@ const CompanyTable=(props) =>{
 
     }
 
+
     return (
         <div>
             <Grid container spacing={2}>
@@ -478,6 +553,22 @@ const CompanyTable=(props) =>{
                             >
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Dispachers</Typography>
+                                </Item>
+                                {/* Search  */}{/* filter(data1=> data1.profileApproved=="true"). */}
+                                <Item sx={{ flexGrow: 1 }}>
+
+                                    <Autocomplete
+                                        id="free-solo-demo"
+                                        freeSolo
+                                        options={data.map((option) => option.companyName)}
+                                        renderInput={(params) => <TextField className={classes.user} {...params}
+                                            value={searchtext}
+                                            onChange={(event) =>{
+                                                 handleSearch(event)
+                                               
+                                            }}
+                                            label="Search" />}
+                                    />
                                 </Item>
                                 {/* Add Hotel  */}
                                 <Item>
@@ -684,7 +775,7 @@ const CompanyTable=(props) =>{
                                             <TableHead>
                                                 <TableRow>
                                                     <TableCell style={TextColor}>Image</TableCell>
-                                                    <TableCell style={TextColor}>Hotel Name</TableCell>
+                                                    <TableCell style={TextColor}>Company Name</TableCell>
                                                     <TableCell style={TextColor}>gender</TableCell>
                                                     <TableCell style={TextColor}>Hotel Type</TableCell>
                                                     <TableCell style={TextColor}>Approved</TableCell>

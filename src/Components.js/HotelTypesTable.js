@@ -34,7 +34,8 @@ import Collapse from '@mui/material/Collapse';
 import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
-
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 // Axios 
 import axios from 'axios'
 
@@ -110,6 +111,16 @@ const useStyles = makeStyles({
         borderRadius: '5px',
         color: 'white',
         marginLeft: '234px'
+    },
+    user: {
+        // justifyContent:'center',
+        // alignItems:'center',
+        backgroundColor: 'white',
+        borderRadius: '4px',
+        color: 'white',
+        height: '100%',
+        padding: '0px',
+        width: '200px',
     }
 })
 const TextColor = {
@@ -225,12 +236,12 @@ const imgStyle = {
     width: '50px',
 }
 function HotelTypesTable() {
-     // Tabs 
-     const [value, setValue] = React.useState(0);
+    // Tabs 
+    const [value, setValue] = React.useState(0);
 
-     const handleChange = (event, newValue) => {
-         setValue(newValue);
-     };
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     const classes = useStyles();
 
     const [open, setOpen] = React.useState(false);
@@ -252,7 +263,7 @@ function HotelTypesTable() {
     const handleClose = () => {
         setOpen(false);
     };
-  
+
     //Get API Axios
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -288,20 +299,21 @@ function HotelTypesTable() {
     const [name, setName] = useState("");
     const [price, setPrice] = useState("");
 
- 
+
 
 
     const submitHandler = (e) => {
         e.preventDefault()
         // POst Request 
         axios.post('https://hiiguest.com/create-hotel-type', {
-           
+
             name: name,
-           price:price
+            price: price
 
         }, { headers }).then(response => {
             console.log(response)
             setOpenAdd(false)
+            setData([...data, response.data]);
             // window.alert('Created Hotel Type Successfully')
             let timerInterval
             Swal.fire({
@@ -329,7 +341,23 @@ function HotelTypesTable() {
                 console.log(err)
             })
     }
+    const handleSearch = (event) => {
+        console.log('search')
+        // .toLowerCase()
+        let value = event.target.value;
+        let result = [];
+        console.log(value);
+                     
+        result = data.filter((row) => {
+            return row.name.search(value) != -1;
+        });
+        console.log('result')
+        console.log(result);
+        setData(result);
  
+
+    }
+
     return (
         <div>
             <Grid container spacing={2}>
@@ -365,6 +393,20 @@ function HotelTypesTable() {
                                 <Item sx={{ flexGrow: 1 }}>
                                     <Typography variant='h6'>Hotels Type</Typography>
                                 </Item>
+                                <Item sx={{ flexGrow: 1 }}>
+
+                                    <Autocomplete
+                                        id="free-solo-demo"
+                                        freeSolo
+                                        options={data.map((option) => option.name)}
+                                        renderInput={(params) => <TextField className={classes.user} {...params} 
+                                        onChange={(event) =>{
+                                            handleSearch(event)
+                                          
+                                       }}
+                                       label="Search" />}
+                                    />
+                                </Item>
                                 {/* Add Hotel  */}
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
@@ -382,9 +424,9 @@ function HotelTypesTable() {
 
                                             <form onSubmit={submitHandler}>
                                                 <Grid container spacing={2} className={classes.gridS}>
-                                                
-                                                
-                                                    
+
+
+
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
 
@@ -395,8 +437,8 @@ function HotelTypesTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="Name" className={classes.inputStyle} value={name} placeholder="Enter Name"
                                                             onChange={(e) => setName(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
                                                     <Grid item xs={6} md={6}>
                                                         <div className={classes.TextStyle}>
@@ -408,14 +450,14 @@ function HotelTypesTable() {
                                                     <Grid item xs={6} md={6}>
                                                         <input type="text" name="Name" className={classes.inputStyle} value={price} placeholder="Enter Price"
                                                             onChange={(e) => setPrice(e.target.value)
-                                                            } 
-                                                            />
+                                                            }
+                                                        />
                                                     </Grid>
-                                                    
+
                                                     <Grid item xs={6} md={6} >
                                                         <button className={classes.btnSubmit} type='submit'>Submit</button>
                                                     </Grid>
-                                                    
+
                                                 </Grid>
                                             </form>
 
@@ -434,57 +476,57 @@ function HotelTypesTable() {
                         {/* Tabs  */}
                         <Grid item xs={12} md={12}>
 
-<Box sx={{ width: '100%' }}>
-    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-            <Tab style={TabsStyle} label="View All Hotel Type" {...a11yProps(0)} />
-            {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
+                            <Box sx={{ width: '100%' }}>
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                    <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                        <Tab style={TabsStyle} label="View All Hotel Type" {...a11yProps(0)} />
+                                        {/* <Tab style={TabsStyle} label="Online Hotels" {...a11yProps(3)} />
             <Tab style={TabsStyle} label="Offline Hotels" {...a11yProps(4)} /> */}
-        </Tabs>
-    </Box>
-    <TabPanel value={value} index={0}>
-        {/* Table  */}
-        <TableContainer >
-                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell style={TextColor}>Hotel Id</TableCell>
-                                    <TableCell style={TextColor}>Name</TableCell>
-                                    <TableCell style={TextColor}>Price</TableCell>
-                                    
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
+                                    </Tabs>
+                                </Box>
+                                <TabPanel value={value} index={0}>
+                                    {/* Table  */}
+                                    <TableContainer >
+                                        <Table sx={{ minWidth: 650 }} aria-label="simple table" >
+                                            <TableHead>
+                                                <TableRow>
+                                                    <TableCell style={TextColor}>Hotel Id</TableCell>
+                                                    <TableCell style={TextColor}>Name</TableCell>
+                                                    <TableCell style={TextColor}>Price</TableCell>
+
+                                                </TableRow>
+                                            </TableHead>
+                                            <TableBody>
 
 
-                                {loading && data.map((row) => (
-                                    <TableRow
-                                        key={row.name}
-                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                                    >
-                                        <TableCell style={TextColor} component="th" scope="row">
-{row._id}
+                                                {loading && data.map((row) => (
+                                                    <TableRow
+                                                        key={row.name}
+                                                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                    >
+                                                        <TableCell style={TextColor} component="th" scope="row">
+                                                            {row._id}
 
-                                        </TableCell>
-                                        <TableCell style={TextColor} >{row.name}</TableCell>
-                                        <TableCell style={TextColor} >{row.price}</TableCell>
-                                        
-                                        
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                                        </TableCell>
+                                                        <TableCell style={TextColor} >{row.name}</TableCell>
+                                                        <TableCell style={TextColor} >{row.price}</TableCell>
 
-    </TabPanel>
- 
-    {/* Third tab  */}
-   
-    </Box>
-    </Grid>
+
+                                                    </TableRow>
+                                                ))}
+                                            </TableBody>
+                                        </Table>
+                                    </TableContainer>
+
+                                </TabPanel>
+
+                                {/* Third tab  */}
+
+                            </Box>
+                        </Grid>
 
                     </Grid>
-                    
+
 
 
                 </Grid>
