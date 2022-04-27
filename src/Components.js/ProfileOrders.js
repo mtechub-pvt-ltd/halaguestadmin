@@ -20,9 +20,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import CustomerTable from './CustomerTable';
-
 import List from '@mui/material/List';
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import DashboardUser from '../Pages.js/DashboardUser';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompanyTable from './CompanyTable';
@@ -33,10 +32,7 @@ import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ProfileData from './ProfileData';
-
 import React, { useState, useEffect } from 'react'
-import { Container, Paper } from '@mui/material';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -47,25 +43,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@material-ui/core/styles'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import BackspaceIcon from '@mui/icons-material/Backspace';
-import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import axios from 'axios'
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Avatar } from '@material-ui/core';
 import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
 import ClipLoader from "react-spinners/ClipLoader";
 import image from './Images/image.svg'
+import DirectionsIcon from '@mui/icons-material/Directions';
+import RoutesTable from './RoutesTable';
+
 const logoStyle = {
     width: '100%',
     height: '100%',
@@ -335,6 +326,8 @@ function ProfileOrders() {
     const [show7, setShow7] = React.useState(false);
     const [show8, setShow8] = React.useState(false);
     const [show9, setShow9] = React.useState(true);
+    const [show10, setShow10] = React.useState(false);
+
 
 
     const { state } = useLocation();
@@ -625,6 +618,8 @@ function ProfileOrders() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }}>
                             <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
                             {/* <img */}
@@ -649,6 +644,8 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <DashboardIcon className={classes.iconColor} />
@@ -669,6 +666,8 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
 
                             }}>
                                 <ListItemIcon>
@@ -694,6 +693,8 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <HotelIcon className={classes.iconColor} />
@@ -713,6 +714,8 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
                             }}>
                                 <ListItemIcon>
                                     <DirectionsBusIcon className={classes.iconColor} />
@@ -733,6 +736,8 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <HotelIcon className={classes.iconColor} />
@@ -753,6 +758,7 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
 
                             }}>
                                 <ListItemIcon>
@@ -776,6 +782,9 @@ function ProfileOrders() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
+
 
                             }}>
                                 <ListItemIcon>
@@ -797,6 +806,8 @@ function ProfileOrders() {
                                 setShow7(true);
                                 setShow8(false);
                                 setShow9(false);
+                                setShow10(false);
+
                             }}>
                                 <ListItemIcon>
                                     <StorefrontIcon className={classes.iconColor} />
@@ -804,6 +815,26 @@ function ProfileOrders() {
                                 <ListItemText primary="Hotel Types" />
                             </ListItemButton>
                         </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
+                            setShow10(true);
+                        }}>
+                            <ListItemIcon>
+                                <DirectionsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Routes" />
+                        </ListItemButton>
+                    </ListItem>
 
                         <ListItem disablePadding className={classes.ListStyle1}>
                             <ListItemButton onClick={() => {
@@ -873,6 +904,7 @@ function ProfileOrders() {
                     {show6 ? <VehicleTable data ={state.data}/> : null}
                     {show7 ? <HotelTypesTable /> : null}
                     {show8 ? <Settings data ={state.data}/> : null}
+                    {show10 ? <RoutesTable /> : null}
                     {show9 ?
 
                         <>
@@ -894,11 +926,11 @@ function ProfileOrders() {
                                                 </Item>
                                                 <Item>
                                                     {/* startIcon={<AddIcon />} */}
-                                                    <Button variant="contained" color='success'
+                                                    {/* <Button variant="contained" color='success'
                                                         onClick={handleClickOpenTrans}
                                                     >
                                                         Transaction
-                                                    </Button>
+                                                    </Button> */}
                                                     {/* Dialog */}
                                                     <Dialog className={classes.DialogWidth} open={openTrans} onClose={handleCloseTrans}>
                                                         <DialogTitle>Transaction Details</DialogTitle>
@@ -956,12 +988,12 @@ function ProfileOrders() {
                                                 </Item>
                                                 <Item>
                                                     {/* startIcon={<AddIcon />} */}
-                                                    <Button variant="contained" color='success'
+                                                    {/* <Button variant="contained" color='success'
                                                         onClick={handleClickOpenAdd}
                                                     //  onClick={handleClickOpenAdd} 
                                                     >
                                                         Orders
-                                                    </Button>
+                                                    </Button> */}
                                                     {/* Dialog */}
                                                     <Dialog className={classes.DialogWidth} open={openAdd} onClose={handleCloseAdd}>
                                                         <DialogTitle>Order Details</DialogTitle>

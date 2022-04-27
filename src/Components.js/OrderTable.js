@@ -6,7 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@material-ui/core/Grid';
-import { Avatar, Typography } from '@mui/material';
+import {  Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -15,32 +15,20 @@ import BackspaceIcon from '@mui/icons-material/Backspace';
 import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Button } from '@mui/material';
-import DialogContentText from '@mui/material/DialogContentText';
-import ImageUpload from '../Pages.js/ImageUpload'
+
 // Tabs 
-import Checkbox from '@mui/material/Checkbox';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
-import Img from './sir.jpg'
 // Alert 
-import Collapse from '@mui/material/Collapse';
-import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
-
-
 // Axios 
 import axios from 'axios'
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -477,32 +465,12 @@ const OrderTable = (props) => {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
-                        </Grid>
+                        
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 4 }}>
                                     <Typography variant='h6'>Orders</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>

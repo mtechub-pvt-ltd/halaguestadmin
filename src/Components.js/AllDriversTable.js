@@ -141,11 +141,14 @@ const useStyles = makeStyles({
         backgroundColor: 'white',
         borderRadius: '4px',
         color: 'white',
-        height: '100%',
+        height: '50px',
         padding: '0px',
         width: '200px',
     }
 })
+const addbtn={
+    height:'50px',
+}
 
 // Tabs 
 function TabPanel(props) {
@@ -453,11 +456,7 @@ const AllDriversTable = (props) => {
             console.log('updating data')
             const allData = response.data;
             console.log(allData);
-            // setcompPhno1(allData.ownerCompany.phoneNo);
             console.log(allData.ownerCompany.phoneNo)
-
-            //    setData(response.data);
-            // setData1(allData);
         })
             .catch(error => console.error(`Error:${error}`));
 
@@ -502,7 +501,7 @@ const AllDriversTable = (props) => {
 
         }, { headers }).then(response => {
             console.log(response)
-            window.alert('Create Driver Successfully')
+            window.alert('Create Updated Successfully')
         })
             .catch(err => {
                 console.log(err)
@@ -521,7 +520,6 @@ const AllDriversTable = (props) => {
                 console.log(res);
                 console.log(res.data);
               
-                // setOpen1(true);
                 const swalWithBootstrapButtons = Swal.mixin({
                     customClass: {
                         confirmButton: 'btn btn-success',
@@ -563,7 +561,6 @@ const AllDriversTable = (props) => {
                      setLoading(true)
                  })
                  .catch(error => console.error(`Error:${error}`));
-                        // window.location.reload(false);
                     } else if (
                         /* Read more about handling dismissals below */
                         result.dismiss === Swal.DismissReason.cancel
@@ -595,7 +592,7 @@ const AllDriversTable = (props) => {
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 2 }}>
                                     <Typography variant='h6'>Drivers</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>
@@ -613,9 +610,9 @@ const AllDriversTable = (props) => {
                                         label="Search" />}
                                     />
                                 </Item>
-                                <Item>
+                                <Item >
                                     {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                    <Button variant="contained" style={addbtn} color='success' onClick={handleClickOpenAdd} >
                                         + Driver
                                     </Button>
                                     {/* Dialog */}
@@ -795,10 +792,6 @@ const AllDriversTable = (props) => {
                                             </form>
                                             {/* End form  */}
                                         </DialogContent>
-                                        {/* <DialogActions>
-                                            <Button onClick={handleCloseAdd}>Cancel</Button>
-                                            <Button onClick={handleCloseAdd}>Subscribe</Button>
-                                        </DialogActions> */}
                                     </Dialog>
                                     {/* Dialog End  */}
                                 </Item>
@@ -857,7 +850,6 @@ const AllDriversTable = (props) => {
                                                             setActive(row.activeStatus)
                                                             } */}
 
-                                                        {/* <span className={classes.dot}></span> */}
                                                         {row.activeStatus ? <span className={classes.dot}></span> : <span className={classes.dot1}></span>}
 
                                                     </TableCell>
@@ -1124,7 +1116,6 @@ const AllDriversTable = (props) => {
                                                                     onClick={() => {
                                                                         console.log(row.phoneNo)
                                                                         deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
 
                                                                     }}
                                                                 > <BackspaceIcon /></button>
@@ -1197,7 +1188,6 @@ const AllDriversTable = (props) => {
                                                                     onClick={() => {
                                                                         console.log(row.phoneNo)
                                                                         deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
 
                                                                     }}
                                                                 > <BackspaceIcon /></button>
@@ -1331,7 +1321,6 @@ const AllDriversTable = (props) => {
                                                                     onClick={() => {
                                                                         console.log(row.phoneNo)
                                                                         deleteData(row.phoneNo)
-                                                                        // setOpen1(true);
 
                                                                     }}
                                                                 > <BackspaceIcon /></button>

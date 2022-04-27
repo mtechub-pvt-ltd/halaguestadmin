@@ -55,16 +55,14 @@ import ClipLoader from "react-spinners/ClipLoader";
 import image from './Images/image.svg'
 import { Avatar } from '@material-ui/core';
 import CustomerTable from './CustomerTable';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import RoutesTable from './RoutesTable';
 
 
 const logoStyle = {
     width: '100%',
     height: '100%',
 }
-
-
-
-
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -304,6 +302,8 @@ function ProfileVehicle() {
     const [show7, setShow7] = React.useState(false);
     const [show8, setShow8] = React.useState(false);
     const [show9, setShow9] = React.useState(true);
+    const [show10, setShow10] = React.useState(false);
+
 
 
     const { state } = useLocation();
@@ -383,6 +383,8 @@ function ProfileVehicle() {
                         setShow7(false);
                         setShow8(false);
                         setShow9(false);
+                        setShow10(false);
+
                     }}>
                         <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
                         {/* <img */}
@@ -407,6 +409,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }} >
                             <ListItemIcon>
                                 <DashboardIcon className={classes.iconColor} />
@@ -427,6 +431,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
 
                         }}>
                             <ListItemIcon>
@@ -452,6 +458,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -471,6 +479,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }}>
                             <ListItemIcon>
                                 <DirectionsBusIcon className={classes.iconColor} />
@@ -491,6 +501,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }} >
                             <ListItemIcon>
                                 <HotelIcon className={classes.iconColor} />
@@ -511,6 +523,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
 
                         }}>
                             <ListItemIcon>
@@ -534,6 +548,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
 
                         }}>
                             <ListItemIcon>
@@ -555,11 +571,34 @@ function ProfileVehicle() {
                             setShow7(true);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }}>
                             <ListItemIcon>
                                 <StorefrontIcon className={classes.iconColor} />
                             </ListItemIcon>
                             <ListItemText primary="Hotel Types" />
+                        </ListItemButton>
+                    </ListItem>
+
+                    <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
+                            setShow10(true);
+                        }}>
+                            <ListItemIcon>
+                                <DirectionsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Routes" />
                         </ListItemButton>
                     </ListItem>
 
@@ -584,6 +623,8 @@ function ProfileVehicle() {
                             setShow7(false);
                             setShow8(true);
                             setShow9(false);
+                            setShow10(false);
+
                         }}>
                             <ListItemIcon>
                                 <SettingsIcon className={classes.iconColor} />
@@ -631,6 +672,7 @@ function ProfileVehicle() {
                 {show6 ? <VehicleTable data={state.data}/> : null}
                 {show7 ? <HotelTypesTable/> : null}
                 {show8 ? <Settings data={state.data} /> : null}
+                {show10 ? <RoutesTable /> : null}
                 {show9 ?   
 
 <>

@@ -133,6 +133,9 @@ const useStyles = makeStyles({
 const TextColor = {
     color: '#9a9cab',
 }
+const addbtn={
+    height:'50px',
+}
 
 // Tabs 
 function TabPanel(props) {
@@ -551,7 +554,7 @@ const CompanyTable = (props) => {
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 2 }}>
                                     <Typography variant='h6'>Dispachers</Typography>
                                 </Item>
                                 {/* Search  */}{/* filter(data1=> data1.profileApproved=="true"). */}
@@ -572,7 +575,7 @@ const CompanyTable = (props) => {
                                 </Item>
                                 {/* Add Hotel  */}
                                 <Item>
-                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                    <Button variant="contained" color='success' style={addbtn} onClick={handleClickOpenAdd} >
                                         + Dispacher
                                     </Button>
                                     {/* Dialog */}

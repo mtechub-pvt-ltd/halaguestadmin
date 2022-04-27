@@ -118,9 +118,9 @@ const useStyles = makeStyles({
         backgroundColor: 'white',
         borderRadius: '4px',
         color: 'white',
-        height: '100%',
+        height: '50px',
         padding: '0px',
-        width: '200px',
+        // width: '100%',
     }
 })
 const TextColor = {
@@ -442,7 +442,7 @@ const CustomerTable = (props) => {
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 4 }}>
                                     <Typography variant='h6'>Customers</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>

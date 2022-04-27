@@ -20,7 +20,7 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import List from '@mui/material/List';
-import { Link, useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import DashboardUser from '../Pages.js/DashboardUser';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import CompanyTable from './CompanyTable';
@@ -31,11 +31,9 @@ import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ProfileData from './ProfileData';
 
 
 import React, { useState, useEffect } from 'react'
-import { Container, Paper } from '@mui/material';
 import Grid from '@material-ui/core/Grid';
 import { useLocation } from 'react-router-dom';
 import Box from '@mui/material/Box';
@@ -46,19 +44,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { makeStyles } from '@material-ui/core/styles'
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import BackspaceIcon from '@mui/icons-material/Backspace';
 import Button from '@mui/material/Button';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
-import Tab from '@mui/material/Tab';
-import Tabs from '@mui/material/Tabs';
 import axios from 'axios'
-import Checkbox from '@mui/material/Checkbox';
 import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import ReactToPrint from 'react-to-print';
 import { useRef } from 'react';
@@ -66,6 +57,10 @@ import ClipLoader from "react-spinners/ClipLoader";
 import CustomerTable from './CustomerTable';
 import image from './Images/image.svg'
 import { Avatar } from '@material-ui/core';
+import Badge from '@mui/material/Badge';
+import DirectionsIcon from '@mui/icons-material/Directions';
+import RoutesTable from './RoutesTable';
+
 
 
 const logoStyle = {
@@ -329,6 +324,8 @@ function ProfileCompany() {
     const [show7, setShow7] = React.useState(false);
     const [show8, setShow8] = React.useState(false);
     const [show9, setShow9] = React.useState(true);
+    const [show10, setShow10] = React.useState(false);
+
 
 
     const { state } = useLocation();
@@ -459,6 +456,7 @@ function ProfileCompany() {
         setOpenAdd(false);
     };
     //  Orders Api 
+    const [ordersvalue,setordersvalue]= useState([]);
     const [ordersdata, setOrdersData] = useState([]);
     const [ordersloading, setOrdersLoading] = useState(false);
     const getTrans = async () => {
@@ -473,12 +471,14 @@ function ProfileCompany() {
 
                 console.log(allData);
                 setOrdersData(response.data);
+                setordersvalue(response.data.length)
                 setOrdersLoading(true)
             })
             .catch(error => console.error(`Error:${error}`));
 
     }
     //  Transaction Api 
+    const [transvalue,settransvalue]= useState([]);
     const [transdata, setTransData] = useState([]);
     const [transloading, setTransLoading] = useState(false);
     const getOrders = async () => {
@@ -492,6 +492,7 @@ function ProfileCompany() {
                 const allData = response.data;
                 console.log(allData);
                 setTransData(response.data);
+                settransvalue(response.data.length);
                 setTransLoading(true);
             })
             .catch(error => console.error(`Error:${error}`));
@@ -544,6 +545,8 @@ function ProfileCompany() {
                             setShow7(false);
                             setShow8(false);
                             setShow9(false);
+                            setShow10(false);
+
                         }}>
                             <Avatar src={image} variant="square" style={logoStyle} ></Avatar>
                             {/* <img */}
@@ -568,6 +571,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <DashboardIcon className={classes.iconColor} />
@@ -588,6 +593,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
 
                             }}>
                                 <ListItemIcon>
@@ -613,6 +620,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <HotelIcon className={classes.iconColor} />
@@ -632,6 +641,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
                             }}>
                                 <ListItemIcon>
                                     <DirectionsBusIcon className={classes.iconColor} />
@@ -652,6 +663,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
                             }} >
                                 <ListItemIcon>
                                     <HotelIcon className={classes.iconColor} />
@@ -672,6 +685,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
 
                             }}>
                                 <ListItemIcon>
@@ -695,6 +710,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
 
                             }}>
                                 <ListItemIcon>
@@ -716,6 +733,8 @@ function ProfileCompany() {
                                 setShow7(true);
                                 setShow8(false);
                                 setShow9(false);
+                            setShow10(false);
+
                             }}>
                                 <ListItemIcon>
                                     <StorefrontIcon className={classes.iconColor} />
@@ -723,6 +742,26 @@ function ProfileCompany() {
                                 <ListItemText primary="Hotel Types" />
                             </ListItemButton>
                         </ListItem>
+                        <ListItem disablePadding className={classes.ListStyle1}>
+                        <ListItemButton onClick={() => {
+                            setShow(false);
+                            setShow1(false);
+                            setShow2(false)
+                            setShow3(false);
+                            setShow4(false);
+                            setShow5(false);
+                            setShow6(false);
+                            setShow7(false);
+                            setShow8(false);
+                            setShow9(false);
+                            setShow10(true);
+                        }}>
+                            <ListItemIcon>
+                                <DirectionsIcon className={classes.iconColor} />
+                            </ListItemIcon>
+                            <ListItemText primary="Routes" />
+                        </ListItemButton>
+                    </ListItem>
 
                         <ListItem disablePadding className={classes.ListStyle1}>
                             <ListItemButton onClick={() => {
@@ -745,6 +784,8 @@ function ProfileCompany() {
                                 setShow7(false);
                                 setShow8(true);
                                 setShow9(false);
+                            setShow10(false);
+
                             }}>
                                 <ListItemIcon>
                                     <SettingsIcon className={classes.iconColor} />
@@ -792,6 +833,8 @@ function ProfileCompany() {
                     {show6 ? <VehicleTable data={state.data}/> : null}
                     {show7 ? <HotelTypesTable /> : null}
                     {show8 ? <Settings data={state.data}/> : null}
+                {show10 ? <RoutesTable /> : null}
+
                     {show9 ?
 
                         <>
@@ -813,11 +856,13 @@ function ProfileCompany() {
                                                 </Item>
                                                 <Item>
                                                     {/* startIcon={<AddIcon />} */}
+                                                    <Badge badgeContent={transvalue} color="primary">
                                                     <Button variant="contained" color='success'
                                                         onClick={handleClickOpenTrans}
                                                     >
                                                         Transaction
                                                     </Button>
+                                                    </Badge>
                                                     {/* Dialog */}
                                                     <Dialog className={classes.DialogWidth} open={openTrans} onClose={handleCloseTrans}>
                                                         <DialogTitle>Transaction Details</DialogTitle>
@@ -875,12 +920,14 @@ function ProfileCompany() {
                                                 </Item>
                                                 <Item>
                                                     {/* startIcon={<AddIcon />} */}
+                                                    <Badge badgeContent={ordersvalue} color="primary">
+
                                                     <Button variant="contained" color='success'
                                                         onClick={handleClickOpenAdd}
-                                                    //  onClick={handleClickOpenAdd} 
                                                     >
                                                         Orders
                                                     </Button>
+                                                    </Badge>
                                                     {/* Dialog */}
                                                     <Dialog className={classes.DialogWidth} open={openAdd} onClose={handleCloseAdd}>
                                                         <DialogTitle>Order Details</DialogTitle>

@@ -6,30 +6,21 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Grid from '@material-ui/core/Grid';
-import { Avatar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Box from '@mui/material/Box';
 import PropTypes from 'prop-types';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import BackspaceIcon from '@mui/icons-material/Backspace';
 //dialog
-import { styled } from '@mui/material/styles';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import { Button } from '@mui/material';
 import DialogContentText from '@mui/material/DialogContentText';
 import ImageUpload from '../Pages.js/ImageUpload'
 // Tabs 
-import Checkbox from '@mui/material/Checkbox';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-
-import Img from './sir.jpg'
-// Alert 
-import Collapse from '@mui/material/Collapse';
-import Alert from '@mui/material/Alert';
 import { makeStyles } from '@material-ui/core/styles'
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2'
@@ -39,8 +30,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 // Axios 
 import axios from 'axios'
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const useStyles = makeStyles({
     GridStyle: {
@@ -124,6 +113,9 @@ const useStyles = makeStyles({
         width: '200px',
     }
 })
+const addbtn={
+    height:'50px',
+}
 const TextColor = {
     color: '#9a9cab',
 }
@@ -164,35 +156,6 @@ const TabsStyle = {
     color: 'white'
 
 }
-
-
-//end
-// function createData(id, name, email, gender) {
-//     return { id, name, email, gender };
-// }
-
-// const rows = [
-//     createData(1, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(2, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(3, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-//     createData(4, 'Rimsha Riaz', 'rimshanimo22@gmail.com', 'female'),
-// ];
-// Dialog data 
-// function createProfile(name, data) {
-//     return { name, data };
-// }
-
-// const rows1 = [
-//     createProfile('User Id', 1),
-//     createProfile('User Name', 'Usama'),
-//     createProfile('Full Name', 'Muhammad Usama'),
-//     createProfile('Gender', 'Male'),
-//     createProfile('Date of Birth', '--'),
-//     createProfile('Country', '--'),
-//     createProfile('Email', '--'),
-//     createProfile('Bio', '--'),
-//     createProfile('Genre', '--'),
-// ];
 function Item(props) {
     const { sx, ...other } = props;
     return (
@@ -223,42 +186,6 @@ Item.propTypes = {
         PropTypes.func,
         PropTypes.object,
     ]),
-};
-
-const BootstrapDialog = styled(Dialog)(({ theme }) => ({
-    '& .MuiDialogContent-root': {
-        padding: theme.spacing(2),
-    },
-}));
-
-const BootstrapDialogTitle = (props) => {
-    const { children, onClose, ...other } = props;
-    const classes = useStyles();
-
-    return (
-        <DialogTitle sx={{ m: 0, p: 2 }} {...other}>
-            {children}
-            {onClose ? (
-                <IconButton
-                    aria-label="close"
-                    onClick={onClose}
-                    sx={{
-                        position: 'absolute',
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[100],
-                    }}
-                >
-                    <button className={classes.closebtn}><CloseIcon /></button>
-                </IconButton>
-            ) : null}
-        </DialogTitle>
-    );
-};
-
-BootstrapDialogTitle.propTypes = {
-    children: PropTypes.node,
-    onClose: PropTypes.func.isRequired,
 };
 
 const imgStyle = {
@@ -307,9 +234,6 @@ const VehicleTable = (props) => {
                     data: props.data
                 }
             });
-    };
-    const handleClose = () => {
-        setOpen(false);
     };
 
     //Get API Axios
@@ -394,7 +318,6 @@ const VehicleTable = (props) => {
 
     // Delete 
     // Alert 
-    const [open1, setOpen1] = React.useState(false);
     const deleteData = (id) => {
         console.log('deleting phone no')
         console.log(id);
@@ -494,7 +417,7 @@ const VehicleTable = (props) => {
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 2 }}>
                                     <Typography variant='h6'>Vehicles</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>
@@ -514,7 +437,7 @@ const VehicleTable = (props) => {
                                 {/* Add Hotel  */}
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                    <Button variant="contained" style={addbtn} color='success' onClick={handleClickOpenAdd} >
                                         + Vehicle
                                     </Button>
                                     {/* Dialog */}

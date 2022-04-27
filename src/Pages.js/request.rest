@@ -13,13 +13,8 @@
 #             "city":"city" ,
 #             "description":"description"
 # }
-Put  https://hiiguest.com/edit-admin-profile HTTP/1.1
- Content-Type: :application/json
-[{
-    "email":"rimsha22@gmail.com",
-    "password":"1234"
-}
-]
+GET  https://hiiguest.com/get-all-routes HTTP/1.1
+
 
 
 

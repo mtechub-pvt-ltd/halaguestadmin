@@ -123,6 +123,9 @@ const useStyles = makeStyles({
         width: '200px',
     }
 })
+const addbtn={
+    height:'50px',
+}
 
 const TextColor = {
     color: '#9a9cab',
@@ -488,7 +491,7 @@ const HotelTable = (props) => {
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 2 }}>
                                     <Typography variant='h6'>Hotels</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>
@@ -503,7 +506,7 @@ const HotelTable = (props) => {
                                 {/* Add Hotel  */}
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                    <Button variant="contained" color='success' style={addbtn} onClick={handleClickOpenAdd} >
                                         + Hotel
                                     </Button>
                                     {/* Dialog */}

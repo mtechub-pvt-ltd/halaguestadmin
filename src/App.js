@@ -6,7 +6,6 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import ViewData from './Pages.js/ViewData';
 import Homepage from './Pages.js/Homepage';
 import { makeStyles } from '@material-ui/core/styles'
 import Logout from './Pages.js/Logout';
@@ -23,6 +22,7 @@ import ProfileVehicle from './Components.js/ProfileVehicle';
 import ProfileOrders from './Components.js/ProfileOrders';
 import Image from './Components.js/Image';
 import Charts from './Pages.js/Charts';
+import AddDeleteTableRows from './Pages.js/AddDeleteTableRows';
 
 const useStyles = makeStyles({
   root1: {
@@ -49,9 +49,6 @@ function App() {
         <Router>
           <Routes>
             <Route exact path="/" element={<Login />}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/view" element={<ViewData />}></Route>
           </Routes>
           <Routes>
             <Route exact path="/home" element={<Homepage />}></Route>
@@ -92,49 +89,16 @@ function App() {
           <Routes>
             <Route exact path="/chart" element={<Charts/>}></Route>
           </Routes> 
-          {/* <Routes>
-            <Route exact path="/delete" element={<Delete/>}></Route>
-          </Routes>
-       
-          <Routes>
-            <Route exact path="/tabs" element={<Tabsui/>}></Route>
-          </Routes> */}
-          {/* <Routes>
-            <Route exact path="/post" element={<PostForm />}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/formpost" element={<FormPost/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/formdata" element={<FormData/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/upload" element={<UploadAndDisplayImage/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/img" element={<ImageUpload/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/get" element={<Getdata/>}></Route>
-  </Routes>*/}
-
+        
           <Routes>
             <Route exact path="/create" element={<CreateAdmin/>}></Route>
           </Routes> 
-          {/* <Routes>
-            <Route exact path="/postdata" element={<Postdata/>}></Route>
-          </Routes> 
-          <Routes>
-            <Route exact path="/postdetails" element={<Postdetails/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/profile1" element={<Profile/>}></Route>
-          </Routes>
-          <Routes>
-            <Route exact path="/print" element={<Print/>}></Route>
-          </Routes> */}
+        
           <Routes>
             <Route exact path="/profiledata" element={<ProfileData/>}></Route>
+          </Routes>
+          <Routes>
+            <Route exact path="/adddelete" element={<AddDeleteTableRows/>}></Route>
           </Routes>
           
          

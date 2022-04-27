@@ -123,6 +123,9 @@ const useStyles = makeStyles({
         width: '200px',
     }
 })
+const addbtn={
+    height:'50px',
+}
 const TextColor = {
     color: '#9a9cab',
 }
@@ -365,32 +368,12 @@ function HotelTypesTable() {
 
                     {/* heading */}
                     <Grid container spacing={2}>
-                        <Grid item xs={12} md={12}>
-                            <Collapse in={open1}>
-                                <Alert variant="filled" severity="error"
-                                    action={
-                                        <IconButton
-                                            aria-label="close"
-                                            color="inherit"
-                                            size="small"
-                                            onClick={() => {
-                                                setOpen1(false);
-                                            }}
-                                        >
-                                            <CloseIcon fontSize="inherit" />
-                                        </IconButton>
-                                    }
-                                    sx={{ mb: 2 }}
-                                >
-                                    Data Deleted Successfully
-                                </Alert>
-                            </Collapse>
-                        </Grid>
+                        
                         <Grid item xs={12} md={12}>
                             <Box
                                 sx={{ display: 'flex', p: 1, bgcolor: '#181821', borderRadius: 1 }}
                             >
-                                <Item sx={{ flexGrow: 1 }}>
+                                <Item sx={{ flexGrow: 2 }}>
                                     <Typography variant='h6'>Hotels Type</Typography>
                                 </Item>
                                 <Item sx={{ flexGrow: 1 }}>
@@ -410,7 +393,7 @@ function HotelTypesTable() {
                                 {/* Add Hotel  */}
                                 <Item>
                                     {/* startIcon={<AddIcon />} */}
-                                    <Button variant="contained" color='success' onClick={handleClickOpenAdd} >
+                                    <Button variant="contained" style={addbtn} color='success' onClick={handleClickOpenAdd} >
                                         + Hotel Type
                                     </Button>
                                     {/* Dialog */}

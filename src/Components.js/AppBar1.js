@@ -35,10 +35,10 @@ import HotelTypesTable from './HotelTypesTable';
 import VehicleTable from './VehicleTable';
 import Settings from './Settings';
 import StorefrontIcon from '@mui/icons-material/Storefront';
-import ProfileData from './ProfileData';
 import { Avatar } from '@mui/material';
 import CustomerTable from './CustomerTable';
-import TransactionTable from './TransactionTable'
+import RoutesTable from './RoutesTable';
+import DirectionsIcon from '@mui/icons-material/Directions';
 
 
 const drawerWidth = 240;
@@ -378,7 +378,7 @@ const AppBar1=(props)=> {
                         </ListItemButton>
                     </ListItem>
 
-                    {/* <ListItem disablePadding className={classes.ListStyle1}>
+                    <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
                             setShow(false);
                             setShow1(false);
@@ -392,11 +392,11 @@ const AppBar1=(props)=> {
                             setShow9(true);
                         }}>
                             <ListItemIcon>
-                                <StorefrontIcon className={classes.iconColor} />
+                                <DirectionsIcon className={classes.iconColor} />
                             </ListItemIcon>
-                            <ListItemText primary="Transactions" />
+                            <ListItemText primary="Routes" />
                         </ListItemButton>
-                    </ListItem> */}
+                    </ListItem>
 
                     <ListItem disablePadding className={classes.ListStyle1}>
                         <ListItemButton onClick={() => {
@@ -466,7 +466,7 @@ const AppBar1=(props)=> {
                 {show6 ? <VehicleTable data={props.data}/> : null}
                 {show7 ? <HotelTypesTable /> : null}
                 {show8 ? <Settings data={props.data} /> : null}
-                {show9 ? <TransactionTable /> : null}
+                {show9 ? <RoutesTable /> : null}
 
 
             </Main>
